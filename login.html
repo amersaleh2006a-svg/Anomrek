@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>تسجيل الدخول — عَن عُمْرِك</title>
+<meta name="description" content="سجّل دخولك إلى عَن عُمْرِك">
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+<script>
+(function(){
+  var t=localStorage.getItem('theme')||(matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light');
+  if(t==='dark') document.documentElement.setAttribute('data-theme','dark');
+})();
+</script>
+<style>
+:root {
+  --navy:        #1a2744;
+  --navy-deep:   #111c36;
+  --navy-light:  #243560;
+  --cream:       #f5f0e8;
+  --cream-light: #faf7f2;
+  --gold:        #c9a84c;
+  --gold-light:  #e8c97a;
+  --rose:        #c49a8a;
+  --text-dark:   #1a2744;
+  --text-muted:  #7a8aaa;
+  --card-bg:     #ffffff;
+  --error:       #b3413e;
+}
+[data-theme="dark"] {
+  --cream:       #111c36;
+  --cream-light: #1a2744;
+  --text-dark:   #f0ead6;
+  --text-muted:  #b8a87a;
+  --card-bg:     #1e2f52;
+  --error:       #e8918e;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body {
+  background: var(--cream);
+  font-family: 'Cairo', sans-serif;
+  color: var(--text-dark);
+  min-height: 100vh;
+  opacity: 0;
+  transition: opacity .4s, background .3s, color .3s;
+}
+body.loaded { opacity: 1; }
+
+.auth-shell { display:flex; min-height:100vh; }
+
+/* ── BRAND PANEL (desktop) ── */
+.auth-brand {
+  display:none;
+  flex:1;
+  background: linear-gradient(160deg, var(--navy-deep), var(--navy));
+  color: var(--cream);
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 40px;
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+}
+.auth-brand::before {
+  content:''; position:absolute; inset:0;
+  background-image: radial-gradient(circle at 30% 20%, rgba(201,168,76,.14), transparent 60%);
+}
+@media (min-width: 860px) { .auth-brand { display:flex; } }
+.brand-ornament { font-family:'Amiri',serif; font-size:4rem; color:var(--gold); opacity:.35; line-height:.6; position:relative; z-index:1; }
+.brand-name { font-family:'Amiri',serif; font-weight:700; font-size:2.3rem; color:var(--gold-light); margin:10px 0 16px; position:relative; z-index:1; }
+.brand-divider { width:50px; height:2px; background:linear-gradient(90deg,var(--gold),var(--gold-light)); margin:0 auto 18px; position:relative; z-index:1; }
+.brand-tagline { font-family:'Amiri',serif; font-size:1.05rem; line-height:2; max-width:330px; color:rgba(245,240,232,.78); position:relative; z-index:1; }
+
+/* ── MOBILE BRAND HEADER ── */
+.mobile-brand { display:flex; align-items:center; justify-content:center; gap:8px; padding:28px 0 8px; }
+@media (min-width: 860px) { .mobile-brand { display:none; } }
+.mobile-brand span { font-family:'Amiri',serif; color:var(--gold); font-weight:700; font-size:1.3rem; }
+
+/* ── FORM PANEL ── */
+.auth-panel { flex:1; display:flex; align-items:center; justify-content:center; padding:24px; position:relative; }
+.theme-toggle { position:absolute; top:20px; left:20px; background:none; border:none; font-size:1.2rem; cursor:pointer; color:var(--text-muted); line-height:1; }
+.back-home { position:absolute; top:22px; right:22px; font-size:.78rem; color:var(--text-muted); text-decoration:none; display:flex; align-items:center; gap:5px; transition:color .2s; }
+.back-home:hover { color:var(--gold); }
+
+.auth-card { width:100%; max-width:400px; opacity:0; transform:translateY(18px); transition:opacity .6s ease, transform .6s ease; }
+.auth-card.visible { opacity:1; transform:translateY(0); }
+
+.auth-tabs { display:flex; background:var(--cream-light); border-radius:14px; padding:4px; margin-bottom:26px; box-shadow:inset 0 0 0 1px rgba(26,39,68,.06); }
+[data-theme="dark"] .auth-tabs { box-shadow:inset 0 0 0 1px rgba(201,168,76,.12); }
+.auth-tab { flex:1; padding:10px; border:none; background:none; border-radius:11px; font-family:'Cairo',sans-serif; font-size:.85rem; font-weight:700; color:var(--text-muted); cursor:pointer; transition:all .25s; }
+.auth-tab.active { background:var(--navy); color:var(--gold-light); box-shadow:0 2px 10px rgba(26,39,68,.18); }
+
+.auth-head { text-align:center; margin-bottom:22px; }
+.auth-head h1 { font-family:'Amiri',serif; font-size:1.45rem; color:var(--text-dark); margin-bottom:4px; }
+.auth-head p { font-size:.8rem; color:var(--text-muted); }
+
+.auth-form { display:none; }
+.auth-form.active { display:block; }
+
+.field { margin-bottom:15px; }
+.field label { display:block; font-size:.78rem; color:var(--text-muted); margin-bottom:6px; font-weight:600; }
+.field-wrap { position:relative; }
+.field input {
+  width:100%; padding:12px 14px; border:1.5px solid rgba(26,39,68,.15); border-radius:10px;
+  font-family:'Cairo',sans-serif; font-size:.88rem; color:var(--text-dark); background:var(--cream-light);
+  outline:none; transition:border-color .2s, background .3s, color .3s; direction:ltr; text-align:right;
+}
+[data-theme="dark"] .field input { border-color: rgba(201,168,76,.2); }
+.field input:focus { border-color: var(--gold); }
+.field-wrap.has-toggle input { padding-left:40px; }
+.eye-btn { position:absolute; left:10px; top:50%; transform:translateY(-50%); background:none; border:none; cursor:pointer; color:var(--text-muted); padding:4px; display:flex; }
+.eye-btn svg { width:18px; height:18px; stroke:currentColor; fill:none; stroke-width:1.8; }
+
+.field-row { display:flex; justify-content:space-between; align-items:center; font-size:.78rem; margin-bottom:18px; }
+.remember { display:flex; align-items:center; gap:6px; color:var(--text-muted); cursor:pointer; }
+.link-btn { background:none; border:none; color:var(--gold); font-weight:700; cursor:pointer; font-family:'Cairo',sans-serif; font-size:.78rem; padding:0; }
+.link-btn:hover { color:var(--gold-light); }
+
+.auth-alert { font-size:.78rem; padding:10px 14px; border-radius:10px; margin-bottom:16px; display:none; text-align:center; }
+.auth-alert.error { background:rgba(179,65,62,.08); border:1px solid rgba(179,65,62,.25); color:var(--error); }
+.auth-alert.success { background:rgba(45,106,79,.08); border:1px solid rgba(45,106,79,.25); color:#2d6a4f; }
+
+.submit-btn {
+  width:100%; padding:13px; background:var(--navy); color:#fff; border:none; border-radius:12px;
+  font-family:'Cairo',sans-serif; font-size:.9rem; font-weight:700; cursor:pointer;
+  transition:background .2s, opacity .2s; letter-spacing:.5px;
+  display:flex; align-items:center; justify-content:center; gap:8px;
+}
+.submit-btn:hover { background:var(--navy-light); }
+.submit-btn:disabled { opacity:.65; cursor:not-allowed; }
+.spinner { width:16px; height:16px; border:2px solid rgba(255,255,255,.4); border-top-color:#fff; border-radius:50%; animation:spin .7s linear infinite; display:none; }
+.submit-btn.loading .spinner { display:inline-block; }
+.submit-btn.loading .btn-text { opacity:.7; }
+@keyframes spin { to { transform:rotate(360deg); } }
+
+.divider { display:flex; align-items:center; gap:10px; margin:22px 0; color:var(--text-muted); font-size:.78rem; }
+.divider::before, .divider::after { content:''; flex:1; height:1px; background:rgba(26,39,68,.12); }
+[data-theme="dark"] .divider::before, [data-theme="dark"] .divider::after { background:rgba(201,168,76,.18); }
+
+.google-btn {
+  width:100%; padding:11px; background:var(--card-bg); border:1.5px solid rgba(26,39,68,.15); border-radius:12px;
+  font-family:'Cairo',sans-serif; font-size:.84rem; font-weight:600; color:var(--text-dark); cursor:pointer;
+  display:flex; align-items:center; justify-content:center; gap:10px; transition:all .2s;
+}
+[data-theme="dark"] .google-btn { border-color:rgba(201,168,76,.2); }
+.google-btn:hover { border-color:var(--gold); }
+
+.auth-switch { text-align:center; margin-top:22px; font-size:.82rem; color:var(--text-muted); }
+
+/* ── RESET PASSWORD VIEW ── */
+.reset-view { display:none; }
+.reset-view.active { display:block; }
+.reset-view p.hint { font-size:.82rem; color:var(--text-muted); margin-bottom:18px; line-height:1.8; text-align:center; }
+.back-to-login { display:flex; align-items:center; justify-content:center; gap:6px; margin-top:18px; font-size:.8rem; color:var(--gold); background:none; border:none; cursor:pointer; width:100%; font-family:'Cairo',sans-serif; }
+</style>
+</head>
+<body>
+
+<div class="auth-shell">
+
+  <!-- BRAND PANEL -->
+  <aside class="auth-brand">
+    <span class="brand-ornament">❝</span>
+    <h2 class="brand-name">عَن عُمْرِك</h2>
+    <div class="brand-divider"></div>
+    <p class="brand-tagline">سجّل دخولك لتتابع رحلتك التكتيكية، وتحفظ تقدّمك أينما توقّفت.</p>
+  </aside>
+
+  <!-- FORM PANEL -->
+  <main class="auth-panel">
+    <button class="theme-toggle" id="themeToggle" aria-label="تبديل الوضع الليلي" title="الوضع الليلي">🌙</button>
+    <a class="back-home" href="index.html">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      الرئيسية
+    </a>
+
+    <div class="mobile-brand">
+      <span>عَن عُمْرِك</span>
+    </div>
+
+    <div class="auth-card" id="authCard">
+
+      <!-- LOGIN / SIGNUP VIEW -->
+      <div id="mainView">
+        <div class="auth-tabs">
+          <button class="auth-tab active" id="tabLogin" onclick="switchTab('login')">تسجيل الدخول</button>
+          <button class="auth-tab" id="tabSignup" onclick="switchTab('signup')">إنشاء حساب</button>
+        </div>
+
+        <div class="auth-head" id="authHead">
+          <h1>أهلاً من جديد</h1>
+          <p>سجّل دخولك للمتابعة في عَن عُمْرِك</p>
+        </div>
+
+        <div class="auth-alert error" id="authError"></div>
+        <div class="auth-alert success" id="authSuccess"></div>
+
+        <!-- LOGIN FORM -->
+        <form class="auth-form active" id="loginForm">
+          <div class="field">
+            <label for="loginEmail">البريد الإلكتروني</label>
+            <input type="email" id="loginEmail" required placeholder="example@email.com">
+          </div>
+          <div class="field">
+            <label for="loginPassword">كلمة السر</label>
+            <div class="field-wrap has-toggle">
+              <input type="password" id="loginPassword" required placeholder="••••••••">
+              <button type="button" class="eye-btn" data-target="loginPassword">
+                <svg viewBox="0 0 24 24"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg>
+              </button>
+            </div>
+          </div>
+          <div class="field-row">
+            <label class="remember"><input type="checkbox" id="rememberMe"> تذكّرني</label>
+            <button type="button" class="link-btn" onclick="showReset()">نسيت كلمة السر؟</button>
+          </div>
+          <button type="submit" class="submit-btn" id="loginBtn">
+            <span class="spinner"></span>
+            <span class="btn-text">تسجيل الدخول</span>
+          </button>
+        </form>
+
+        <!-- SIGNUP FORM -->
+        <form class="auth-form" id="signupForm">
+          <div class="field">
+            <label for="signupName">الاسم</label>
+            <input type="text" id="signupName" required placeholder="اسمك">
+          </div>
+          <div class="field">
+            <label for="signupEmail">البريد الإلكتروني</label>
+            <input type="email" id="signupEmail" required placeholder="example@email.com">
+          </div>
+          <div class="field">
+            <label for="signupPassword">كلمة السر</label>
+            <div class="field-wrap has-toggle">
+              <input type="password" id="signupPassword" required minlength="6" placeholder="6 أحرف على الأقل">
+              <button type="button" class="eye-btn" data-target="signupPassword">
+                <svg viewBox="0 0 24 24"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg>
+              </button>
+            </div>
+          </div>
+          <button type="submit" class="submit-btn" id="signupBtn">
+            <span class="spinner"></span>
+            <span class="btn-text">إنشاء حساب</span>
+          </button>
+        </form>
+
+        <div class="divider">أو</div>
+
+        <button class="google-btn" id="googleBtn">
+          <svg width="18" height="18" viewBox="0 0 18 18">
+            <path fill="#4285F4" d="M17.64 9.2c0-.64-.06-1.25-.16-1.84H9v3.48h4.84c-.21 1.13-.84 2.09-1.8 2.73v2.27h2.91c1.7-1.57 2.69-3.88 2.69-6.64z"/>
+            <path fill="#34A853" d="M9 18c2.43 0 4.47-.8 5.96-2.16l-2.91-2.27c-.81.54-1.84.86-3.05.86-2.34 0-4.33-1.58-5.04-3.71H.95v2.33C2.44 15.98 5.48 18 9 18z"/>
+            <path fill="#FBBC05" d="M3.96 10.72c-.18-.54-.28-1.12-.28-1.72s.1-1.18.28-1.72V4.95H.95C.34 6.17 0 7.55 0 9s.34 2.83.95 4.05l3.01-2.33z"/>
+            <path fill="#EA4335" d="M9 3.58c1.32 0 2.51.45 3.44 1.35l2.58-2.58C13.46.89 11.43 0 9 0 5.48 0 2.44 2.02.95 4.95l3.01 2.33C4.67 5.16 6.66 3.58 9 3.58z"/>
+          </svg>
+          الدخول باستخدام جوجل
+        </button>
+
+        <p class="auth-switch" id="switchHint">
+          ليس لديك حساب؟ <button class="link-btn" onclick="switchTab('signup')">إنشاء حساب جديد</button>
+        </p>
+      </div>
+
+      <!-- RESET PASSWORD VIEW -->
+      <div class="reset-view" id="resetView">
+        <div class="auth-head">
+          <h1>إعادة تعيين كلمة السر</h1>
+        </div>
+        <p class="hint">أدخل بريدك الإلكتروني وسنرسل لك رابطاً لإعادة تعيين كلمة السر.</p>
+        <div class="auth-alert error" id="resetError"></div>
+        <div class="auth-alert success" id="resetSuccess"></div>
+        <form id="resetForm">
+          <div class="field">
+            <label for="resetEmail">البريد الإلكتروني</label>
+            <input type="email" id="resetEmail" required placeholder="example@email.com">
+          </div>
+          <button type="submit" class="submit-btn" id="resetBtn">
+            <span class="spinner"></span>
+            <span class="btn-text">إرسال رابط الاستعادة</span>
+          </button>
+        </form>
+        <button class="back-to-login" onclick="hideReset()">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          العودة لتسجيل الدخول
+        </button>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js";
+  import {
+    getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword,
+    signInWithPopup, GoogleAuthProvider, sendPasswordResetEmail,
+    setPersistence, browserLocalPersistence, browserSessionPersistence,
+    updateProfile
+  } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-auth.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCGQH8ifVKgRpsN-sqVaC7VqV4RpucCT1c",
+    authDomain: "anomrek.firebaseapp.com",
+    projectId: "anomrek",
+    storageBucket: "anomrek.firebasestorage.app",
+    messagingSenderId: "617738540912",
+    appId: "1:617738540912:web:39f51da06b684c5181e1b5",
+    measurementId: "G-9G98V3FLE2"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  // ---------- helpers ----------
+  function showAlert(el, msg) { el.textContent = msg; el.style.display = 'block'; }
+  function hideAlert(el) { el.style.display = 'none'; }
+  function setLoading(btn, loading) { btn.disabled = loading; btn.classList.toggle('loading', loading); }
+
+  function arabicError(code) {
+    const map = {
+      'auth/invalid-email': 'صيغة البريد الإلكتروني غير صحيحة',
+      'auth/user-not-found': 'لا يوجد حساب بهذا البريد الإلكتروني',
+      'auth/wrong-password': 'كلمة السر غير صحيحة',
+      'auth/invalid-credential': 'البريد الإلكتروني أو كلمة السر غير صحيحة',
+      'auth/email-already-in-use': 'هذا البريد الإلكتروني مستخدم من قبل',
+      'auth/weak-password': 'كلمة السر ضعيفة، استخدم 6 أحرف على الأقل',
+      'auth/too-many-requests': 'محاولات كثيرة، حاول لاحقاً',
+      'auth/popup-closed-by-user': 'تم إغلاق نافذة جوجل قبل إكمال الدخول',
+      'auth/network-request-failed': 'تحقق من اتصالك بالإنترنت'
+    };
+    return map[code] || 'حدث خطأ ما، حاول مرة أخرى';
+  }
+
+  // ---------- tabs ----------
+  window.switchTab = function(tab) {
+    document.getElementById('tabLogin').classList.toggle('active', tab === 'login');
+    document.getElementById('tabSignup').classList.toggle('active', tab === 'signup');
+    document.getElementById('loginForm').classList.toggle('active', tab === 'login');
+    document.getElementById('signupForm').classList.toggle('active', tab === 'signup');
+    document.getElementById('authHead').innerHTML = tab === 'login'
+      ? '<h1>أهلاً من جديد</h1><p>سجّل دخولك للمتابعة في عَن عُمْرِك</p>'
+      : '<h1>أنشئ حسابك</h1><p>انضم إلى عَن عُمْرِك وابدأ رحلتك</p>';
+    document.getElementById('switchHint').innerHTML = tab === 'login'
+      ? 'ليس لديك حساب؟ <button class="link-btn" onclick="switchTab(\'signup\')">إنشاء حساب جديد</button>'
+      : 'لديك حساب؟ <button class="link-btn" onclick="switchTab(\'login\')">تسجيل الدخول</button>';
+    hideAlert(document.getElementById('authError'));
+    hideAlert(document.getElementById('authSuccess'));
+  };
+
+  // ---------- reset password view ----------
+  window.showReset = function() {
+    document.getElementById('mainView').style.display = 'none';
+    document.getElementById('resetView').classList.add('active');
+  };
+  window.hideReset = function() {
+    document.getElementById('resetView').classList.remove('active');
+    document.getElementById('mainView').style.display = 'block';
+  };
+
+  // ---------- password visibility ----------
+  document.querySelectorAll('.eye-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const input = document.getElementById(btn.dataset.target);
+      input.type = input.type === 'password' ? 'text' : 'password';
+    });
+  });
+
+  // ---------- login ----------
+  document.getElementById('loginForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const errEl = document.getElementById('authError');
+    const sucEl = document.getElementById('authSuccess');
+    hideAlert(errEl); hideAlert(sucEl);
+    const btn = document.getElementById('loginBtn');
+    setLoading(btn, true);
+    try {
+      const remember = document.getElementById('rememberMe').checked;
+      await setPersistence(auth, remember ? browserLocalPersistence : browserSessionPersistence);
+      await signInWithEmailAndPassword(
+        auth,
+        document.getElementById('loginEmail').value.trim(),
+        document.getElementById('loginPassword').value
+      );
+      window.location.href = 'index.html';
+    } catch (err) {
+      showAlert(errEl, arabicError(err.code));
+    } finally {
+      setLoading(btn, false);
+    }
+  });
+
+  // ---------- signup ----------
+  document.getElementById('signupForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const errEl = document.getElementById('authError');
+    const sucEl = document.getElementById('authSuccess');
+    hideAlert(errEl); hideAlert(sucEl);
+    const btn = document.getElementById('signupBtn');
+    setLoading(btn, true);
+    try {
+      const cred = await createUserWithEmailAndPassword(
+        auth,
+        document.getElementById('signupEmail').value.trim(),
+        document.getElementById('signupPassword').value
+      );
+      const name = document.getElementById('signupName').value.trim();
+      if (name) await updateProfile(cred.user, { displayName: name });
+      window.location.href = 'index.html';
+    } catch (err) {
+      showAlert(errEl, arabicError(err.code));
+    } finally {
+      setLoading(btn, false);
+    }
+  });
+
+  // ---------- google ----------
+  document.getElementById('googleBtn').addEventListener('click', async () => {
+    const errEl = document.getElementById('authError');
+    hideAlert(errEl);
+    try {
+      await signInWithPopup(auth, new GoogleAuthProvider());
+      window.location.href = 'index.html';
+    } catch (err) {
+      showAlert(errEl, arabicError(err.code));
+    }
+  });
+
+  // ---------- reset password ----------
+  document.getElementById('resetForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const errEl = document.getElementById('resetError');
+    const sucEl = document.getElementById('resetSuccess');
+    hideAlert(errEl); hideAlert(sucEl);
+    const btn = document.getElementById('resetBtn');
+    setLoading(btn, true);
+    try {
+      await sendPasswordResetEmail(auth, document.getElementById('resetEmail').value.trim());
+      showAlert(sucEl, 'تم إرسال رابط إعادة التعيين، تحقق من بريدك الإلكتروني');
+    } catch (err) {
+      showAlert(errEl, arabicError(err.code));
+    } finally {
+      setLoading(btn, false);
+    }
+  });
+
+  // ---------- theme toggle ----------
+  const themeBtn = document.getElementById('themeToggle');
+  function applyThemeIcon() {
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    themeBtn.textContent = isDark ? '☀️' : '🌙';
+  }
+  themeBtn.addEventListener('click', () => {
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    if (isDark) {
+      document.documentElement.removeAttribute('data-theme');
+      localStorage.setItem('theme', 'light');
+    } else {
+      document.documentElement.setAttribute('data-theme', 'dark');
+      localStorage.setItem('theme', 'dark');
+    }
+    applyThemeIcon();
+  });
+  applyThemeIcon();
+
+  // ---------- entrance ----------
+  document.body.classList.add('loaded');
+  requestAnimationFrame(() => document.getElementById('authCard').classList.add('visible'));
+</script>
+</body>
+</html>
