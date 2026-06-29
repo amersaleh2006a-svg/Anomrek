@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>لوحة تحكم المدير — عَن عُمْرِك</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body { font-family: 'Cairo', sans-serif; background-color: #111c36; color: #ffffff; }
+    .bg-navy { background-color: #1a2744; }
+    .bg-navy-deep { background-color: #111c36; }
+    .border-navy { border-color: #243560; }
+  </style>
+</head>
+<body class="p-6">
+  <div class="max-w-6xl mx-auto">
+    
+    <div class="flex flex-col md:flex-row justify-between items-center mb-8 border-b border-navy pb-4 gap-4">
+      <div>
+        <h1 class="text-3xl font-bold text-amber-400">لوحة تحكم المدير 📊</h1>
+        <p class="text-gray-400 mt-1">مشروع عَن عُمْرِك — مراقبة إحصائيات وإدارة الطلاب</p>
+      </div>
+      <a href="index.html" class="bg-amber-500 hover:bg-amber-600 text-navy-deep font-bold px-5 py-2 rounded-lg transition text-sm">
+        العودة للموقع الرئيسي ←
+      </a>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+      <div class="bg-navy p-6 rounded-xl border border-navy shadow-lg">
+        <h3 class="text-gray-400 font-medium">إجمالي الطلاب المسجلين</h3>
+        <p id="total-users" class="text-4xl font-bold text-amber-400 mt-2">جاري التحميل...</p>
+      </div>
+      <div class="bg-navy p-6 rounded-xl border border-navy shadow-lg">
+        <h3 class="text-gray-400 font-medium">نشاط المنصة</h3>
+        <p id="active-status" class="text-4xl font-bold text-emerald-400 mt-2">مستقر</p>
+      </div>
+      <div class="bg-navy p-6 rounded-xl border border-navy shadow-lg">
+        <h3 class="text-gray-400 font-medium">حالة قاعدة البيانات</h3>
+        <p id="db-status" class="text-xl font-bold text-emerald-400 mt-3">جاري الفحص... ⏳</p>
+      </div>
+    </div>
+
+    <div class="bg-navy rounded-xl border border-navy shadow-lg p-6">
+      <h2 class="text-xl font-bold mb-4 text-amber-400">قائمة الطلاب المسجلين في Firestore</h2>
+      <div class="overflow-x-auto">
+        <table class="w-full text-right border-collapse">
+          <thead>
+            <tr class="border-b border-navy text-gray-400">
+              <th class="pb-3 pl-4">الاسم</th>
+              <th class="pb-3 pl-4">البريد الإلكتروني</th>
+              <th class="pb-3">معرف المستخدم (UID)</th>
+            </tr>
+          </thead>
+          <tbody id="users-list">
+            <tr>
+              <td colspan="3" class="py-4 text-center text-gray-400">جاري جلب البيانات من Firestore...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js";
+    import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-auth.js";
+
+    // إعدادات مشروع Anomrek الخاصة بك
+    const firebaseConfig = {
+      apiKey: "AIzaSyCGQH8ifVKgRpsN-sqVaC7VqV4RpucCT1c",
+      authDomain: "anomrek.firebaseapp.com",
+      projectId: "anomrek",
+      storageBucket: "anomrek.firebasestorage.app",
+      messagingSenderId: "617738540912",
+      appId: "1:617738540912:web:39f51da06b684c5181e1b5",
+      measurementId: "G-9G98V3FLE2"
+    };
+
+    // تهيئة الخدمات
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const auth = getAuth(app);
+
+    // مراقبة حالة الأدمن (مفتوحة حالياً لتتمكن من معاينتها مباشرة)
+    onAuthStateChanged(auth, (user) => {
+      loadDashboardData();
+    });
+
+    // دالة جلب وعرض البيانات من Firestore
+    async function loadDashboardData() {
+      try {
+        const usersRef = collection(db, "users");
+        const querySnapshot = await getDocs(usersRef);
+        
+        // حساب إجمالي عدد المستندات (الطلاب)
+        const totalUsers = querySnapshot.size;
+        document.getElementById("total-users").innerText = totalUsers + " طالب";
+        document.getElementById("db-status").innerText = "متصل بنجاح 🟢";
+
+        const usersList = document.getElementById("users-list");
+        usersList.innerHTML = ""; // تنظيف جدول التحميل المؤقت
+
+        if (totalUsers === 0) {
+          usersList.innerHTML = `<tr><td colspan="3" class="py-4 text-center text-gray-500">لا يوجد مستخدمون مسجلون في قاعدة البيانات حتى الآن.</td></tr>`;
+          return;
+        }
+
+        // بناء الصفوف لكل طالب متواجد في الكولكشن
+        querySnapshot.forEach((doc) => {
+          const data = doc.data();
+          const row = document.createElement("tr");
+          row.className = "border-b border-navy hover:bg-navy-deep/50 transition";
+          row.innerHTML = `
+            <td class="py-3 pl-4 font-medium text-white">${data.name || 'بدون اسم'}</td>
+            <td class="py-3 pl-4 text-gray-300">${data.email || 'غير متوفر'}</td>
+            <td class="py-3 text-gray-400 text-sm font-mono">${doc.id}</td>
+          `;
+          usersList.appendChild(row);
+        });
+
+      } catch (error) {
+        console.error("حدث خطأ أثناء جلب البيانات الأساسية للوحة التحكم:", error);
+        document.getElementById("db-status").innerText = "فشل الاتصال (تحتاج لضبط القواعد) 🔴";
+        document.getElementById("total-users").innerText = "خطأ";
+      }
+    }
+  </script>
+</body>
+</html>
