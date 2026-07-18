@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>إدارة صور الموقع — عَن عُمْرِك</title>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1a2744; --navy-deep: #111c36; --navy-light: #243560;
+    --cream: #f5f0e8; --cream-light: #faf7f2;
+    --gold: #c9a84c; --gold-light: #e8c97a;
+    --text-dark: #1a2744; --text-muted: #7a8aaa;
+    --error: #e53e3e; --success: #38a169;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    background: var(--cream); font-family:'Cairo',sans-serif; color:var(--text-dark);
+    min-height:100vh; padding-bottom:60px;
+  }
+  header {
+    background: var(--navy-deep); padding:28px 20px 22px; text-align:center;
+    border-bottom:3px solid var(--gold);
+  }
+  header .brand { font-family:'Amiri',serif; color:white; font-size:1.6rem; letter-spacing:1px; }
+  header .sub { color:var(--gold-light); font-size:.85rem; margin-top:4px; }
+
+  .wrap { max-width:640px; margin:0 auto; padding:24px 16px; }
+
+  .gate {
+    text-align:center; padding:60px 20px; font-family:'Amiri',serif; font-size:1.1rem; color:var(--text-muted);
+  }
+  .gate button {
+    margin-top:18px; background:var(--navy); color:white; border:none; padding:12px 28px;
+    border-radius:12px; font-family:'Cairo',sans-serif; font-weight:700; cursor:pointer;
+  }
+
+  .card {
+    background:white; border-radius:16px; padding:20px; margin-bottom:18px;
+    box-shadow:0 2px 16px rgba(26,39,68,.07);
+  }
+  .card h2 {
+    font-family:'Amiri',serif; font-size:1.1rem; color:var(--navy); margin-bottom:14px;
+    padding-bottom:10px; border-bottom:1px solid rgba(26,39,68,.08);
+  }
+  .card p.hint { font-size:.78rem; color:var(--text-muted); margin-bottom:12px; line-height:1.6; }
+
+  .img-row {
+    display:flex; align-items:center; gap:12px; padding:10px 0;
+    border-bottom:1px solid rgba(26,39,68,.06);
+  }
+  .img-row:last-child { border-bottom:none; }
+  .img-row img {
+    width:56px; height:56px; object-fit:cover; border-radius:10px; flex-shrink:0;
+    box-shadow:0 2px 8px rgba(0,0,0,.15); background:var(--cream);
+  }
+  .img-row .meta { flex:1; min-width:0; }
+  .img-row .slot-label { font-weight:700; font-size:.85rem; color:var(--navy); }
+  .img-row .slot-key { font-size:.7rem; color:var(--text-muted); direction:ltr; text-align:right; }
+  .img-row .actions { display:flex; gap:6px; flex-shrink:0; }
+  .btn-mini {
+    border:none; padding:7px 12px; border-radius:8px; font-size:.72rem; cursor:pointer;
+    font-family:'Cairo',sans-serif; font-weight:600; white-space:nowrap;
+  }
+  .btn-replace { background:rgba(201,168,76,.15); color:#8a6d1f; }
+  .btn-delete  { background:rgba(229,62,62,.1); color:var(--error); }
+
+  label { display:block; font-size:.8rem; font-weight:600; color:var(--navy); margin-bottom:6px; }
+  input[type="text"], input[type="password"], input[type="file"] {
+    width:100%; padding:11px 14px; border:1.5px solid rgba(26,39,68,.15); border-radius:10px;
+    font-family:'Cairo',sans-serif; font-size:.85rem; color:var(--navy); background:var(--cream-light);
+    margin-bottom:14px; outline:none; direction:ltr; text-align:right;
+  }
+  .submit-btn {
+    width:100%; padding:13px; background:var(--navy); color:white; border:none; border-radius:12px;
+    font-family:'Cairo',sans-serif; font-size:.9rem; font-weight:700; cursor:pointer;
+  }
+  .submit-btn:disabled { opacity:.5; cursor:not-allowed; }
+  .link-btn {
+    background:none; border:none; color:var(--text-muted); font-size:.75rem; text-decoration:underline;
+    cursor:pointer; font-family:'Cairo',sans-serif; padding:0; margin-top:-6px; margin-bottom:14px;
+  }
+
+  .msg {
+    padding:10px 14px; border-radius:10px; font-size:.82rem; margin-bottom:14px; display:none;
+  }
+  .msg.error   { background:rgba(229,62,62,.08); color:var(--error); display:block; }
+  .msg.success { background:rgba(56,161,105,.08); color:var(--success); display:block; }
+  .msg.info    { background:rgba(26,39,68,.06); color:var(--navy); display:block; }
+
+  .preview { max-width:160px; border-radius:10px; margin-bottom:12px; display:none; }
+  #hiddenAdmin { display:none; }
+  .token-badge {
+    display:inline-block; background:rgba(56,161,105,.1); color:var(--success);
+    padding:4px 10px; border-radius:10px; font-size:.72rem; margin-bottom:14px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">إدارة صور الموقع</div>
+  <div class="sub">عَن عُمْرِك — بدون لمس الكود، وبدون أي تكلفة</div>
+</header>
+
+<div class="wrap">
+
+  <!-- GATE: shown until we confirm admin -->
+  <div class="gate" id="gate">
+    جاري التحقق من الدخول...
+  </div>
+
+  <div id="hiddenAdmin">
+
+    <!-- GitHub token setup -->
+    <div class="card" id="tokenCard">
+      <h2>ربط GitHub 🔑</h2>
+      <p class="hint">
+        الصور بتنرفع مباشرة على مستودع GitHub تبعك (نفس طريقة أداة الرفع اللي عندك).
+        هيدا الرمز (Token) بينحفظ بمتصفح جهازك بس — ما بينترفع لأي مكان.
+      </p>
+      <div id="tokenSavedBadge" class="token-badge" style="display:none;">✓ الرمز محفوظ بهذا الجهاز</div>
+      <label>Personal Access Token</label>
+      <input type="password" id="ghToken" placeholder="ghp_xxxxxxxxxxxx">
+      <label>اسم المستودع (owner/repo)</label>
+      <input type="text" id="ghRepo" placeholder="amersaleh2006a-svg/Anomrek" value="amersaleh2006a-svg/Anomrek">
+      <button class="submit-btn" onclick="saveGhSettings()">حفظ الإعدادات</button>
+      <button class="link-btn" onclick="clearGhSettings()">مسح الرمز المحفوظ من هذا الجهاز</button>
+    </div>
+
+    <div class="card">
+      <h2>الصور الحالية 🖼️</h2>
+      <div id="currentImagesList"></div>
+    </div>
+
+    <div class="card">
+      <h2>إضافة صورة جديدة للمعرض ➕</h2>
+      <div class="msg" id="addMsg"></div>
+      <img class="preview" id="addPreview">
+      <label>اختر صورة</label>
+      <input type="file" id="addFile" accept="image/*">
+      <label>وصف قصير للصورة (اختياري)</label>
+      <input type="text" id="addAlt" placeholder="مثال: صفحة داخلية من الدفتر">
+      <button class="submit-btn" id="addBtn" onclick="uploadNewImage()">رفع الصورة ←</button>
+    </div>
+
+  </div>
+</div>
+
+<input type="file" id="replaceFileInput" accept="image/*" style="display:none;">
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-auth.js";
+import {
+  getFirestore, doc, getDoc, setDoc, deleteDoc, collection, getDocs, serverTimestamp
+} from "https://www.gstatic.com/firebasejs/11.0.0/firebase-firestore.js";
+
+const app = initializeApp({
+  apiKey: "AIzaSyCGQH8ifVKgRpsN-sqVaC7VqV4RpucCT1c",
+  authDomain: "anomerk.firebaseapp.com",
+  projectId: "anomerk",
+  storageBucket: "anomerk.firebasestorage.app",
+  messagingSenderId: "617738540912",
+  appId: "1:617738540912:web:39f51da06b684c5181e1b5"
+});
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+// Known fixed slots (always shown even before any Firestore doc exists for them)
+const FIXED_SLOTS = [
+  { slot: "notebook-rose", label: "دفتر — الإصدار الوردي", deletable: false, fallback: "assets/images/notebook-rose.webp" },
+  { slot: "notebook-navy", label: "دفتر — الإصدار الكحلي", deletable: false, fallback: "assets/images/notebook-navy.webp" },
+  { slot: "gallery-1", label: "معرض 1", deletable: true, fallback: "assets/images/gallery-photo-1.webp" },
+  { slot: "gallery-2", label: "معرض 2", deletable: true, fallback: "assets/images/gallery-cover-back.webp" },
+  { slot: "gallery-3", label: "معرض 3", deletable: true, fallback: "assets/images/gallery-study-hall.webp" },
+];
+
+// ── GitHub settings (stored locally on this device only) ──
+function getGhSettings() {
+  return {
+    token: localStorage.getItem('gh_pat') || '',
+    repo:  localStorage.getItem('gh_repo') || 'amersaleh2006a-svg/Anomrek'
+  };
+}
+window.saveGhSettings = function() {
+  const token = document.getElementById('ghToken').value.trim();
+  const repo  = document.getElementById('ghRepo').value.trim();
+  if (!token || !repo) { alert('عبّي الرمز واسم المستودع'); return; }
+  localStorage.setItem('gh_pat', token);
+  localStorage.setItem('gh_repo', repo);
+  document.getElementById('ghToken').value = '';
+  document.getElementById('tokenSavedBadge').style.display = 'inline-block';
+  alert('تم الحفظ ✓');
+};
+window.clearGhSettings = function() {
+  if (!confirm('مسح الرمز المحفوظ من هذا الجهاز؟')) return;
+  localStorage.removeItem('gh_pat');
+  document.getElementById('tokenSavedBadge').style.display = 'none';
+};
+(function initGhUi() {
+  const s = getGhSettings();
+  if (s.token) document.getElementById('tokenSavedBadge').style.display = 'inline-block';
+  document.getElementById('ghRepo').value = s.repo;
+})();
+
+// ── Firebase Auth gate (admin check via Firestore — no Storage needed) ──
+onAuthStateChanged(auth, async function(user) {
+  const gate = document.getElementById('gate');
+  if (!user) {
+    gate.innerHTML = 'يجب تسجيل الدخول بحسابك أولاً للوصول لهذه الصفحة.<br><button onclick="location.href=\'index.html\'">الذهاب لتسجيل الدخول</button>';
+    return;
+  }
+  try {
+    const snap = await getDoc(doc(db, 'users', user.uid));
+    const role = snap.exists() ? snap.data().role : null;
+    if (role !== 'admin') {
+      gate.innerHTML = 'هذا الحساب غير مصرح له بإدارة صور الموقع 🔒';
+      return;
+    }
+    gate.style.display = 'none';
+    document.getElementById('hiddenAdmin').style.display = 'block';
+    renderImagesList();
+  } catch (e) {
+    gate.textContent = 'حدث خطأ أثناء التحقق من صلاحياتك.';
+  }
+});
+
+async function fetchSiteImagesMap() {
+  const map = {};
+  const snap = await getDocs(collection(db, 'siteImages'));
+  snap.forEach(function(d) { map[d.id] = d.data(); });
+  return map;
+}
+
+async function renderImagesList() {
+  const listEl = document.getElementById('currentImagesList');
+  listEl.innerHTML = '<div style="text-align:center;color:var(--text-muted);font-size:.8rem;padding:10px;">جاري التحميل...</div>';
+
+  const map = await fetchSiteImagesMap();
+
+  const rows = FIXED_SLOTS.map(function(s) { return Object.assign({}, s); });
+  const knownKeys = rows.map(function(r){ return r.slot; });
+  Object.keys(map).forEach(function(key) {
+    if (knownKeys.indexOf(key) === -1 && key.indexOf('gallery-') === 0) {
+      rows.push({ slot: key, label: 'معرض — ' + key.replace('gallery-', ''), deletable: true, fallback: '' });
+    }
+  });
+  rows.sort(function(a, b) {
+    if (a.slot.indexOf('notebook') === 0 && b.slot.indexOf('notebook') !== 0) return -1;
+    if (b.slot.indexOf('notebook') === 0 && a.slot.indexOf('notebook') !== 0) return 1;
+    return a.slot.localeCompare(b.slot);
+  });
+
+  listEl.innerHTML = '';
+  rows.forEach(function(row) {
+    const data = map[row.slot];
+    const thumb = (data && data.url) ? data.url : row.fallback;
+    const div = document.createElement('div');
+    div.className = 'img-row';
+    div.innerHTML =
+      '<img src="' + thumb + '" alt="">' +
+      '<div class="meta"><div class="slot-label">' + row.label + '</div><div class="slot-key">' + row.slot + '</div></div>' +
+      '<div class="actions">' +
+        '<button class="btn-mini btn-replace" data-slot="' + row.slot + '">استبدال</button>' +
+        (row.deletable ? '<button class="btn-mini btn-delete" data-slot="' + row.slot + '">حذف</button>' : '') +
+      '</div>';
+    listEl.appendChild(div);
+  });
+
+  listEl.querySelectorAll('.btn-replace').forEach(function(btn) {
+    btn.addEventListener('click', function() { startReplace(btn.getAttribute('data-slot')); });
+  });
+  listEl.querySelectorAll('.btn-delete').forEach(function(btn) {
+    btn.addEventListener('click', function() { deleteSlot(btn.getAttribute('data-slot')); });
+  });
+}
+
+// ── Image compression (client-side, before upload) ──
+function compressImage(file, maxWidth) {
+  return new Promise(function(resolve, reject) {
+    const img = new Image();
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      img.onload = function() {
+        let w = img.width, h = img.height;
+        if (w > maxWidth) { h = Math.round(h * (maxWidth / w)); w = maxWidth; }
+        const canvas = document.createElement('canvas');
+        canvas.width = w; canvas.height = h;
+        canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+        canvas.toBlob(function(blob) {
+          if (blob) resolve(blob); else reject(new Error('فشل ضغط الصورة'));
+        }, 'image/webp', 0.78);
+      };
+      img.onerror = reject;
+      img.src = e.target.result;
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+function blobToBase64(blob) {
+  return blob.arrayBuffer().then(function(buffer) {
+    let binary = '';
+    const bytes = new Uint8Array(buffer);
+    const chunkSize = 0x8000;
+    for (let i = 0; i < bytes.length; i += chunkSize) {
+      binary += String.fromCharCode.apply(null, bytes.subarray(i, i + chunkSize));
+    }
+    return btoa(binary);
+  });
+}
+
+// ── GitHub Contents API helpers ──
+async function ghGetFileSha(repo, path, token) {
+  const res = await fetch('https://api.github.com/repos/' + repo + '/contents/' + path, {
+    headers: { Authorization: 'Bearer ' + token, Accept: 'application/vnd.github+json' }
+  });
+  if (res.status === 200) {
+    const data = await res.json();
+    return data.sha;
+  }
+  return null; // file doesn't exist yet
+}
+
+async function ghUploadFile(repo, path, base64Content, token, message) {
+  const sha = await ghGetFileSha(repo, path, token);
+  const body = { message: message, content: base64Content };
+  if (sha) body.sha = sha;
+  const res = await fetch('https://api.github.com/repos/' + repo + '/contents/' + path, {
+    method: 'PUT',
+    headers: {
+      Authorization: 'Bearer ' + token,
+      Accept: 'application/vnd.github+json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(body)
+  });
+  if (!res.ok) {
+    const errData = await res.json().catch(function() { return {}; });
+    throw new Error(errData.message || ('GitHub error ' + res.status));
+  }
+  return res.json();
+}
+
+async function ghDeleteFile(repo, path, token, message) {
+  const sha = await ghGetFileSha(repo, path, token);
+  if (!sha) return; // already gone
+  const res = await fetch('https://api.github.com/repos/' + repo + '/contents/' + path, {
+    method: 'DELETE',
+    headers: {
+      Authorization: 'Bearer ' + token,
+      Accept: 'application/vnd.github+json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ message: message, sha: sha })
+  });
+  if (!res.ok) {
+    const errData = await res.json().catch(function() { return {}; });
+    throw new Error(errData.message || ('GitHub error ' + res.status));
+  }
+}
+
+async function uploadToSlot(slot, file, alt, order) {
+  const s = getGhSettings();
+  if (!s.token) throw new Error('لازم تحفظ رمز GitHub أولاً من الأعلى ⚠️');
+
+  const blob = await compressImage(file, 900);
+  const base64 = await blobToBase64(blob);
+  const path = 'assets/images/' + slot + '.webp';
+
+  await ghUploadFile(s.repo, path, base64, s.token, 'تحديث صورة: ' + slot);
+
+  const docData = { url: path, alt: alt || '', updatedAt: serverTimestamp() };
+  if (order !== undefined) docData.order = order;
+  await setDoc(doc(db, 'siteImages', slot), docData, { merge: true });
+}
+
+// ── Replace flow ──
+let _replaceSlot = null;
+const replaceInput = document.getElementById('replaceFileInput');
+function startReplace(slot) {
+  const s = getGhSettings();
+  if (!s.token) { alert('احفظ رمز GitHub أولاً من الأعلى ⚠️'); return; }
+  _replaceSlot = slot;
+  replaceInput.value = '';
+  replaceInput.click();
+}
+replaceInput.addEventListener('change', async function() {
+  if (!replaceInput.files || !replaceInput.files[0] || !_replaceSlot) return;
+  const file = replaceInput.files[0];
+  try {
+    await uploadToSlot(_replaceSlot, file, '');
+    await renderImagesList();
+    alert('تم رفع الصورة على GitHub ✓\nرح تظهر على الموقع خلال دقيقة أو دقيقتين (وقت تحديث Netlify).');
+  } catch (e) {
+    console.error(e);
+    alert('حدث خطأ: ' + e.message);
+  }
+});
+
+// ── Delete flow ──
+async function deleteSlot(slot) {
+  if (!confirm('حذف هذه الصورة نهائياً من المعرض؟')) return;
+  const s = getGhSettings();
+  if (!s.token) { alert('احفظ رمز GitHub أولاً من الأعلى ⚠️'); return; }
+  try {
+    await deleteDoc(doc(db, 'siteImages', slot));
+    try {
+      await ghDeleteFile(s.repo, 'assets/images/' + slot + '.webp', s.token, 'حذف صورة: ' + slot);
+    } catch (e) { /* file may not exist on GitHub if slot only had a bundled fallback — ignore */ }
+    await renderImagesList();
+  } catch (e) {
+    console.error(e);
+    alert('حدث خطأ أثناء الحذف: ' + e.message);
+  }
+}
+
+// ── Add new gallery image flow ──
+const addFileInput = document.getElementById('addFile');
+addFileInput.addEventListener('change', function() {
+  const file = addFileInput.files[0];
+  const preview = document.getElementById('addPreview');
+  if (!file) { preview.style.display = 'none'; return; }
+  const reader = new FileReader();
+  reader.onload = function(e) { preview.src = e.target.result; preview.style.display = 'block'; };
+  reader.readAsDataURL(file);
+});
+
+window.uploadNewImage = async function() {
+  const file = addFileInput.files[0];
+  const alt = document.getElementById('addAlt').value.trim();
+  const msgEl = document.getElementById('addMsg');
+  const btn = document.getElementById('addBtn');
+
+  if (!file) {
+    msgEl.className = 'msg error'; msgEl.textContent = '⚠ اختر صورة أولاً';
+    return;
+  }
+  const s = getGhSettings();
+  if (!s.token) {
+    msgEl.className = 'msg error'; msgEl.textContent = '⚠ احفظ رمز GitHub أولاً من الأعلى';
+    return;
+  }
+
+  btn.disabled = true; btn.textContent = 'جاري الرفع...';
+  try {
+    const map = await fetchSiteImagesMap();
+    let maxN = 0;
+    Object.keys(map).forEach(function(k) {
+      const m = k.match(/^gallery-(\d+)$/);
+      if (m) maxN = Math.max(maxN, parseInt(m[1]));
+    });
+    FIXED_SLOTS.forEach(function(fs) {
+      const m = fs.slot.match(/^gallery-(\d+)$/);
+      if (m) maxN = Math.max(maxN, parseInt(m[1]));
+    });
+    const newSlot = 'gallery-' + (maxN + 1);
+
+    await uploadToSlot(newSlot, file, alt, maxN + 1);
+
+    msgEl.className = 'msg success';
+    msgEl.textContent = '✓ تمت الإضافة — رح تظهر على الموقع خلال دقيقة أو دقيقتين';
+    addFileInput.value = '';
+    document.getElementById('addAlt').value = '';
+    document.getElementById('addPreview').style.display = 'none';
+    await renderImagesList();
+  } catch (e) {
+    console.error(e);
+    msgEl.className = 'msg error'; msgEl.textContent = '⚠ حدث خطأ: ' + e.message;
+  }
+  btn.disabled = false; btn.textContent = 'رفع الصورة ←';
+};
+</script>
+
+</body>
+</html>
