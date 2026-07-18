@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>لوحة تحكم المدير — عَن عُمْرِك</title>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--navy:#1a2744;--navy-deep:#111c36;--cream:#f5f0e8;--gold:#c9a84c;--gold-light:#e8c97a;--text-dark:#1a2744;--text-muted:#7a8aaa}
+body{font-family:'Cairo',sans-serif;background:var(--cream);color:var(--text-dark);min-height:100vh}
+header{background:var(--navy-deep);padding:20px 28px;display:flex;align-items:center;justify-content:space-between;border-bottom:2px solid var(--gold)}
+.brand{font-family:'Amiri',serif;color:var(--gold);font-size:1.4rem}
+.admin-badge{background:rgba(201,168,76,.15);border:1px solid rgba(201,168,76,.3);color:var(--gold-light);padding:4px 14px;border-radius:20px;font-size:.78rem}
+#adminName{color:rgba(255,255,255,.7);font-size:.82rem;margin-top:4px}
+.logout-btn{background:rgba(229,62,62,.12);border:1px solid rgba(229,62,62,.3);color:#fc8181;padding:7px 16px;border-radius:10px;cursor:pointer;font-family:'Cairo',sans-serif;font-size:.82rem}
+.main{max-width:1100px;margin:0 auto;padding:28px 20px}
+h1{font-family:'Amiri',serif;font-size:1.6rem;color:var(--navy);margin-bottom:24px}
+/* STATS GRID */
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:32px}
+.stat-card{background:white;border-radius:16px;padding:22px 20px;box-shadow:0 2px 16px rgba(26,39,68,.07);border-top:3px solid var(--gold)}
+.stat-num{font-size:2.2rem;font-weight:700;color:var(--navy);line-height:1}
+.stat-label{font-size:.78rem;color:var(--text-muted);margin-top:6px}
+.stat-icon{font-size:1.6rem;margin-bottom:10px}
+/* USERS TABLE */
+.section-title{font-family:'Amiri',serif;font-size:1.2rem;color:var(--navy);margin-bottom:16px;padding-bottom:10px;border-bottom:2px solid rgba(201,168,76,.2)}
+.table-wrap{background:white;border-radius:16px;box-shadow:0 2px 16px rgba(26,39,68,.07);overflow:hidden;margin-bottom:32px}
+table{width:100%;border-collapse:collapse}
+th{background:var(--navy);color:var(--gold-light);padding:12px 16px;font-size:.78rem;font-weight:600;text-align:right}
+td{padding:12px 16px;border-bottom:1px solid rgba(26,39,68,.06);font-size:.82rem;color:var(--text-dark)}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:rgba(201,168,76,.04)}
+.role-badge{padding:3px 10px;border-radius:12px;font-size:.68rem;font-weight:700}
+.role-admin{background:rgba(201,168,76,.15);color:var(--gold)}
+.role-student{background:rgba(26,39,68,.08);color:var(--text-muted)}
+.empty-state{text-align:center;padding:40px;color:var(--text-muted);font-family:'Amiri',serif;font-size:1.05rem}
+/* ACCESS DENIED */
+#accessDenied{display:none;text-align:center;padding:80px 20px}
+#accessDenied h2{font-family:'Amiri',serif;font-size:1.8rem;color:var(--navy);margin-bottom:12px}
+#loading{text-align:center;padding:80px;color:var(--text-muted);font-family:'Amiri',serif;font-size:1.1rem}
+.refresh-btn{background:var(--navy);color:white;border:none;padding:8px 20px;border-radius:10px;cursor:pointer;font-family:'Cairo',sans-serif;font-size:.82rem;margin-bottom:20px}
+/* MEDIA SECTION */
+.media-card{background:white;border-radius:16px;padding:20px;margin-bottom:18px;box-shadow:0 2px 16px rgba(26,39,68,.07)}
+.media-card h3{font-family:'Amiri',serif;font-size:1.05rem;color:var(--navy);margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid rgba(26,39,68,.08)}
+.media-card p.hint{font-size:.78rem;color:var(--text-muted);margin-bottom:12px;line-height:1.6}
+.token-badge{display:inline-block;background:rgba(56,161,105,.1);color:#38a169;padding:4px 10px;border-radius:10px;font-size:.72rem;margin-bottom:14px}
+.media-card label{display:block;font-size:.8rem;font-weight:600;color:var(--navy);margin-bottom:6px}
+.media-card input[type="text"],.media-card input[type="password"],.media-card input[type="file"]{width:100%;padding:11px 14px;border:1.5px solid rgba(26,39,68,.15);border-radius:10px;font-family:'Cairo',sans-serif;font-size:.85rem;color:var(--navy);background:var(--cream);margin-bottom:14px;outline:none;direction:ltr;text-align:right}
+.media-submit-btn{width:100%;padding:13px;background:var(--navy);color:white;border:none;border-radius:12px;font-family:'Cairo',sans-serif;font-size:.9rem;font-weight:700;cursor:pointer}
+.media-submit-btn:disabled{opacity:.5;cursor:not-allowed}
+.media-link-btn{background:none;border:none;color:var(--text-muted);font-size:.75rem;text-decoration:underline;cursor:pointer;font-family:'Cairo',sans-serif;padding:0;margin-top:-6px;margin-bottom:14px}
+.img-row{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid rgba(26,39,68,.06)}
+.img-row:last-child{border-bottom:none}
+.img-row img{width:56px;height:56px;object-fit:cover;border-radius:10px;flex-shrink:0;box-shadow:0 2px 8px rgba(0,0,0,.15);background:var(--cream)}
+.img-row .meta{flex:1;min-width:0}
+.img-row .slot-label{font-weight:700;font-size:.85rem;color:var(--navy)}
+.img-row .slot-key{font-size:.7rem;color:var(--text-muted);direction:ltr;text-align:right}
+.img-row .actions{display:flex;gap:6px;flex-shrink:0}
+.btn-mini{border:none;padding:7px 12px;border-radius:8px;font-size:.72rem;cursor:pointer;font-family:'Cairo',sans-serif;font-weight:600;white-space:nowrap}
+.btn-replace{background:rgba(201,168,76,.15);color:#8a6d1f}
+.btn-delete{background:rgba(229,62,62,.1);color:#e53e3e}
+.media-msg{padding:10px 14px;border-radius:10px;font-size:.82rem;margin-bottom:14px;display:none}
+.media-msg.error{background:rgba(229,62,62,.08);color:#e53e3e;display:block}
+.media-msg.success{background:rgba(56,161,105,.08);color:#38a169;display:block}
+.media-preview{max-width:160px;border-radius:10px;margin-bottom:12px;display:none}
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <div class="brand">عَن عُمْرِك — لوحة المدير</div>
+    <div id="adminName">جاري التحقق...</div>
+  </div>
+  <div style="display:flex;align-items:center;gap:12px;">
+    <span class="admin-badge">🛡 مدير</span>
+    <button class="logout-btn" onclick="adminLogout()">خروج</button>
+  </div>
+</header>
+
+<div id="loading">⏳ جاري التحقق من الصلاحيات...</div>
+
+<div id="accessDenied">
+  <h2>⛔ غير مصرح</h2>
+  <p style="color:var(--text-muted);margin-bottom:20px;">هذه الصفحة للمدير فقط</p>
+  <a href="index.html" style="color:var(--gold);font-weight:700;">← العودة للموقع</a>
+</div>
+
+<div id="adminPanel" style="display:none;">
+  <div class="main">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;">
+      <h1>📊 لوحة التحكم</h1>
+      <button class="refresh-btn" onclick="loadDashboard()">🔄 تحديث</button>
+    </div>
+
+    <!-- STATS -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-icon">👥</div>
+        <div class="stat-num" id="totalUsers">—</div>
+        <div class="stat-label">إجمالي المستخدمين</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">🍅</div>
+        <div class="stat-num" id="totalSessions">—</div>
+        <div class="stat-label">جلسات بومودورو</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">✅</div>
+        <div class="stat-num" id="totalTodos">—</div>
+        <div class="stat-label">مهام مكتملة</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">🔥</div>
+        <div class="stat-num" id="totalStreak">—</div>
+        <div class="stat-label">أعلى سلسلة أيام</div>
+      </div>
+    </div>
+
+    <!-- USERS TABLE -->
+    <div class="section-title">المستخدمون المسجلون</div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>الاسم</th>
+            <th>البريد / الجوال</th>
+            <th>الجامعة</th>
+            <th>التخصص</th>
+            <th>الجلسات</th>
+            <th>الدور</th>
+            <th>آخر دخول</th>
+          </tr>
+        </thead>
+        <tbody id="usersTable">
+          <tr><td colspan="8" class="empty-state">جاري التحميل...</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- MEDIA MANAGEMENT -->
+    <div class="section-title">🖼️ إدارة صور الموقع</div>
+
+    <div class="media-card" id="tokenCard">
+      <h3>ربط GitHub 🔑</h3>
+      <p class="hint">
+        الصور بتنرفع مباشرة على مستودع GitHub تبعك. هيدا الرمز (Token) بينحفظ بمتصفح جهازك بس — ما بينترفع لأي مكان.
+      </p>
+      <div id="tokenSavedBadge" class="token-badge" style="display:none;">✓ الرمز محفوظ بهذا الجهاز</div>
+      <label>Personal Access Token</label>
+      <input type="password" id="ghToken" placeholder="ghp_xxxxxxxxxxxx">
+      <label>اسم المستودع (owner/repo)</label>
+      <input type="text" id="ghRepo" placeholder="amersaleh2006a-svg/Anomrek" value="amersaleh2006a-svg/Anomrek">
+      <button class="media-submit-btn" onclick="saveGhSettings()">حفظ الإعدادات</button>
+      <button class="media-link-btn" onclick="clearGhSettings()">مسح الرمز المحفوظ من هذا الجهاز</button>
+    </div>
+
+    <div class="media-card">
+      <h3>الصور الحالية</h3>
+      <div id="currentImagesList"></div>
+    </div>
+
+    <div class="media-card">
+      <h3>إضافة صورة جديدة للمعرض ➕</h3>
+      <div class="media-msg" id="addMsg"></div>
+      <img class="media-preview" id="addPreview">
+      <label>اختر صورة</label>
+      <input type="file" id="addFile" accept="image/*">
+      <label>وصف قصير للصورة (اختياري)</label>
+      <input type="text" id="addAlt" placeholder="مثال: صفحة داخلية من الدفتر">
+      <button class="media-submit-btn" id="addBtn" onclick="uploadNewImage()">رفع الصورة ←</button>
+    </div>
+
+  </div>
+</div>
+
+<input type="file" id="replaceFileInput" accept="image/*" style="display:none;">
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-app.js";
+import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-auth.js";
+import { getFirestore, collection, getDocs, doc, getDoc, setDoc, deleteDoc, orderBy, query, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-firestore.js";
+
+const app  = initializeApp({
+  apiKey: "AIzaSyCGQH8ifVKgRpsN-sqVaC7VqV4RpucCT1c",
+  authDomain: "anomrek.firebaseapp.com",
+  projectId: "anomrek",
+  storageBucket: "anomrek.firebasestorage.app",
+  messagingSenderId: "617738540912",
+  appId: "1:617738540912:web:39f51da06b684c5181e1b5"
+});
+const auth = getAuth(app);
+const db   = getFirestore(app);
+
+// ── Check admin access ──
+onAuthStateChanged(auth, async (user) => {
+  document.getElementById('loading').style.display = 'none';
+  if (!user) { window.location.href = 'login.html'; return; }
+
+  // Check role in Firestore
+  const snap = await getDoc(doc(db, 'users', user.uid));
+  const role = snap.exists() ? snap.data().role : 'student';
+
+  if (role !== 'admin') {
+    document.getElementById('accessDenied').style.display = 'block';
+    return;
+  }
+
+  document.getElementById('adminName').textContent = user.displayName || user.email;
+  document.getElementById('adminPanel').style.display = 'block';
+  loadDashboard();
+  renderImagesList();
+});
+
+window.loadDashboard = async function() {
+  try {
+    const q    = query(collection(db, 'users'));
+    const snap = await getDocs(q);
+    const users = [];
+    snap.forEach(d => users.push({ id: d.id, ...d.data() }));
+
+    // Stats
+    const total    = users.length;
+    let sessions = 0, todos = 0, maxStreak = 0;
+    users.forEach(u => {
+      const s = u.stats || {};
+      sessions  += s.pomodoroSessions || 0;
+      todos     += s.todosCompleted   || 0;
+      if ((s.streakDays||0) > maxStreak) maxStreak = s.streakDays||0;
+    });
+
+    document.getElementById('totalUsers').textContent    = total;
+    document.getElementById('totalSessions').textContent = sessions;
+    document.getElementById('totalTodos').textContent    = todos;
+    document.getElementById('totalStreak').textContent   = maxStreak;
+
+    // Table
+    const tbody = document.getElementById('usersTable');
+    if (users.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="8" class="empty-state">لا يوجد مستخدمون بعد</td></tr>';
+      return;
+    }
+
+    // Sort by createdAt desc
+    users.sort((a,b) => {
+      const ta = a.createdAt?.seconds||0;
+      const tb = b.createdAt?.seconds||0;
+      return tb - ta;
+    });
+
+    tbody.innerHTML = users.map((u,i) => {
+      const last = u.lastLogin?.seconds
+        ? new Date(u.lastLogin.seconds*1000).toLocaleDateString('ar-SY')
+        : '—';
+      const s = u.stats || {};
+      const roleHtml = u.role === 'admin'
+        ? '<span class="role-badge role-admin">مدير</span>'
+        : '<span class="role-badge role-student">طالب</span>';
+      return `<tr>
+        <td>${i+1}</td>
+        <td><strong>${u.name||'—'}</strong></td>
+        <td style="direction:ltr;text-align:right;">${u.email||u.phone||'—'}</td>
+        <td>${u.university||'—'}</td>
+        <td>${u.major||'—'}</td>
+        <td>${s.pomodoroSessions||0}</td>
+        <td>${roleHtml}</td>
+        <td>${last}</td>
+      </tr>`;
+    }).join('');
+
+  } catch(e) {
+    console.error(e);
+    document.getElementById('usersTable').innerHTML =
+      '<tr><td colspan="8" class="empty-state">⚠ تحقق من Firestore Rules</td></tr>';
+  }
+};
+
+window.adminLogout = async function() {
+  await signOut(auth);
+  window.location.href = 'login.html';
+};
+
+// ══════════════ MEDIA MANAGEMENT (site images via GitHub) ══════════════
+
+const FIXED_SLOTS = [
+  { slot: "notebook-rose", label: "دفتر — الإصدار الوردي", deletable: false, fallback: "assets/images/notebook-rose.webp" },
+  { slot: "notebook-navy", label: "دفتر — الإصدار الكحلي", deletable: false, fallback: "assets/images/notebook-navy.webp" },
+  { slot: "gallery-1", label: "معرض 1", deletable: true, fallback: "assets/images/gallery-photo-1.webp" },
+  { slot: "gallery-2", label: "معرض 2", deletable: true, fallback: "assets/images/gallery-cover-back.webp" },
+  { slot: "gallery-3", label: "معرض 3", deletable: true, fallback: "assets/images/gallery-study-hall.webp" },
+];
+
+function getGhSettings() {
+  return {
+    token: localStorage.getItem('gh_pat') || '',
+    repo:  localStorage.getItem('gh_repo') || 'amersaleh2006a-svg/Anomrek'
+  };
+}
+window.saveGhSettings = function() {
+  const token = document.getElementById('ghToken').value.trim();
+  const repo  = document.getElementById('ghRepo').value.trim();
+  if (!token || !repo) { alert('عبّي الرمز واسم المستودع'); return; }
+  localStorage.setItem('gh_pat', token);
+  localStorage.setItem('gh_repo', repo);
+  document.getElementById('ghToken').value = '';
+  document.getElementById('tokenSavedBadge').style.display = 'inline-block';
+  alert('تم الحفظ ✓');
+};
+window.clearGhSettings = function() {
+  if (!confirm('مسح الرمز المحفوظ من هذا الجهاز؟')) return;
+  localStorage.removeItem('gh_pat');
+  document.getElementById('tokenSavedBadge').style.display = 'none';
+};
+(function initGhUi() {
+  const s = getGhSettings();
+  if (s.token) document.getElementById('tokenSavedBadge').style.display = 'inline-block';
+  document.getElementById('ghRepo').value = s.repo;
+})();
+
+function compressImage(file, maxWidth) {
+  return new Promise(function(resolve, reject) {
+    const img = new Image();
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      img.onload = function() {
+        let w = img.width, h = img.height;
+        if (w > maxWidth) { h = Math.round(h * (maxWidth / w)); w = maxWidth; }
+        const canvas = document.createElement('canvas');
+        canvas.width = w; canvas.height = h;
+        canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+        canvas.toBlob(function(blob) {
+          if (blob) resolve(blob); else reject(new Error('فشل ضغط الصورة'));
+        }, 'image/webp', 0.78);
+      };
+      img.onerror = reject;
+      img.src = e.target.result;
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+function blobToBase64(blob) {
+  return blob.arrayBuffer().then(function(buffer) {
+    let binary = '';
+    const bytes = new Uint8Array(buffer);
+    const chunkSize = 0x8000;
+    for (let i = 0; i < bytes.length; i += chunkSize) {
+      binary += String.fromCharCode.apply(null, bytes.subarray(i, i + chunkSize));
+    }
+    return btoa(binary);
+  });
+}
+
+async function ghGetFileSha(repo, path, token) {
+  const res = await fetch('https://api.github.com/repos/' + repo + '/contents/' + path, {
+    headers: { Authorization: 'Bearer ' + token, Accept: 'application/vnd.github+json' }
+  });
+  if (res.status === 200) {
+    const data = await res.json();
+    return data.sha;
+  }
+  return null;
+}
+
+async function ghUploadFile(repo, path, base64Content, token, message) {
+  const sha = await ghGetFileSha(repo, path, token);
+  const body = { message: message, content: base64Content };
+  if (sha) body.sha = sha;
+  const res = await fetch('https://api.github.com/repos/' + repo + '/contents/' + path, {
+    method: 'PUT',
+    headers: {
+      Authorization: 'Bearer ' + token,
+      Accept: 'application/vnd.github+json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(body)
+  });
+  if (!res.ok) {
+    const errData = await res.json().catch(function() { return {}; });
+    throw new Error(errData.message || ('GitHub error ' + res.status));
+  }
+  return res.json();
+}
+
+async function ghDeleteFile(repo, path, token, message) {
+  const sha = await ghGetFileSha(repo, path, token);
+  if (!sha) return;
+  const res = await fetch('https://api.github.com/repos/' + repo + '/contents/' + path, {
+    method: 'DELETE',
+    headers: {
+      Authorization: 'Bearer ' + token,
+      Accept: 'application/vnd.github+json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ message: message, sha: sha })
+  });
+  if (!res.ok) {
+    const errData = await res.json().catch(function() { return {}; });
+    throw new Error(errData.message || ('GitHub error ' + res.status));
+  }
+}
+
+async function uploadToSlot(slot, file, alt, order) {
+  const s = getGhSettings();
+  if (!s.token) throw new Error('لازم تحفظ رمز GitHub أولاً من الأعلى ⚠️');
+
+  const blob = await compressImage(file, 900);
+  const base64 = await blobToBase64(blob);
+  const path = 'assets/images/' + slot + '.webp';
+
+  await ghUploadFile(s.repo, path, base64, s.token, 'تحديث صورة: ' + slot);
+
+  const docData = { url: path, alt: alt || '', updatedAt: serverTimestamp() };
+  if (order !== undefined) docData.order = order;
+  await setDoc(doc(db, 'siteImages', slot), docData, { merge: true });
+}
+
+async function fetchSiteImagesMap() {
+  const map = {};
+  const snap = await getDocs(collection(db, 'siteImages'));
+  snap.forEach(function(d) { map[d.id] = d.data(); });
+  return map;
+}
+
+window.renderImagesList = async function renderImagesList() {
+  const listEl = document.getElementById('currentImagesList');
+  if (!listEl) return;
+  listEl.innerHTML = '<div style="text-align:center;color:var(--text-muted);font-size:.8rem;padding:10px;">جاري التحميل...</div>';
+
+  const map = await fetchSiteImagesMap();
+
+  const rows = FIXED_SLOTS.map(function(s) { return Object.assign({}, s); });
+  const knownKeys = rows.map(function(r){ return r.slot; });
+  Object.keys(map).forEach(function(key) {
+    if (knownKeys.indexOf(key) === -1 && key.indexOf('gallery-') === 0) {
+      rows.push({ slot: key, label: 'معرض — ' + key.replace('gallery-', ''), deletable: true, fallback: '' });
+    }
+  });
+  rows.sort(function(a, b) {
+    if (a.slot.indexOf('notebook') === 0 && b.slot.indexOf('notebook') !== 0) return -1;
+    if (b.slot.indexOf('notebook') === 0 && a.slot.indexOf('notebook') !== 0) return 1;
+    return a.slot.localeCompare(b.slot);
+  });
+
+  listEl.innerHTML = '';
+  rows.forEach(function(row) {
+    const data = map[row.slot];
+    const thumb = (data && data.url) ? data.url : row.fallback;
+    const div = document.createElement('div');
+    div.className = 'img-row';
+    div.innerHTML =
+      '<img src="' + thumb + '" alt="">' +
+      '<div class="meta"><div class="slot-label">' + row.label + '</div><div class="slot-key">' + row.slot + '</div></div>' +
+      '<div class="actions">' +
+        '<button class="btn-mini btn-replace" data-slot="' + row.slot + '">استبدال</button>' +
+        (row.deletable ? '<button class="btn-mini btn-delete" data-slot="' + row.slot + '">حذف</button>' : '') +
+      '</div>';
+    listEl.appendChild(div);
+  });
+
+  listEl.querySelectorAll('.btn-replace').forEach(function(btn) {
+    btn.addEventListener('click', function() { startReplace(btn.getAttribute('data-slot')); });
+  });
+  listEl.querySelectorAll('.btn-delete').forEach(function(btn) {
+    btn.addEventListener('click', function() { deleteSlot(btn.getAttribute('data-slot')); });
+  });
+};
+
+let _replaceSlot = null;
+const replaceInput = document.getElementById('replaceFileInput');
+function startReplace(slot) {
+  const s = getGhSettings();
+  if (!s.token) { alert('احفظ رمز GitHub أولاً من الأعلى ⚠️'); return; }
+  _replaceSlot = slot;
+  replaceInput.value = '';
+  replaceInput.click();
+}
+replaceInput.addEventListener('change', async function() {
+  if (!replaceInput.files || !replaceInput.files[0] || !_replaceSlot) return;
+  const file = replaceInput.files[0];
+  try {
+    await uploadToSlot(_replaceSlot, file, '');
+    await renderImagesList();
+    alert('تم رفع الصورة على GitHub ✓\nرح تظهر على الموقع خلال دقيقة أو دقيقتين (وقت تحديث Netlify).');
+  } catch (e) {
+    console.error(e);
+    alert('حدث خطأ: ' + e.message);
+  }
+});
+
+async function deleteSlot(slot) {
+  if (!confirm('حذف هذه الصورة نهائياً من المعرض؟')) return;
+  const s = getGhSettings();
+  if (!s.token) { alert('احفظ رمز GitHub أولاً من الأعلى ⚠️'); return; }
+  try {
+    await deleteDoc(doc(db, 'siteImages', slot));
+    try {
+      await ghDeleteFile(s.repo, 'assets/images/' + slot + '.webp', s.token, 'حذف صورة: ' + slot);
+    } catch (e) { /* file may not exist on GitHub if slot only had a bundled fallback — ignore */ }
+    await renderImagesList();
+  } catch (e) {
+    console.error(e);
+    alert('حدث خطأ أثناء الحذف: ' + e.message);
+  }
+}
+
+const addFileInput = document.getElementById('addFile');
+addFileInput.addEventListener('change', function() {
+  const file = addFileInput.files[0];
+  const preview = document.getElementById('addPreview');
+  if (!file) { preview.style.display = 'none'; return; }
+  const reader = new FileReader();
+  reader.onload = function(e) { preview.src = e.target.result; preview.style.display = 'block'; };
+  reader.readAsDataURL(file);
+});
+
+window.uploadNewImage = async function() {
+  const file = addFileInput.files[0];
+  const alt = document.getElementById('addAlt').value.trim();
+  const msgEl = document.getElementById('addMsg');
+  const btn = document.getElementById('addBtn');
+
+  if (!file) {
+    msgEl.className = 'media-msg error'; msgEl.textContent = '⚠ اختر صورة أولاً';
+    return;
+  }
+  const s = getGhSettings();
+  if (!s.token) {
+    msgEl.className = 'media-msg error'; msgEl.textContent = '⚠ احفظ رمز GitHub أولاً من الأعلى';
+    return;
+  }
+
+  btn.disabled = true; btn.textContent = 'جاري الرفع...';
+  try {
+    const map = await fetchSiteImagesMap();
+    let maxN = 0;
+    Object.keys(map).forEach(function(k) {
+      const m = k.match(/^gallery-(\d+)$/);
+      if (m) maxN = Math.max(maxN, parseInt(m[1]));
+    });
+    FIXED_SLOTS.forEach(function(fs) {
+      const m = fs.slot.match(/^gallery-(\d+)$/);
+      if (m) maxN = Math.max(maxN, parseInt(m[1]));
+    });
+    const newSlot = 'gallery-' + (maxN + 1);
+
+    await uploadToSlot(newSlot, file, alt, maxN + 1);
+
+    msgEl.className = 'media-msg success';
+    msgEl.textContent = '✓ تمت الإضافة — رح تظهر على الموقع خلال دقيقة أو دقيقتين';
+    addFileInput.value = '';
+    document.getElementById('addAlt').value = '';
+    document.getElementById('addPreview').style.display = 'none';
+    await renderImagesList();
+  } catch (e) {
+    console.error(e);
+    msgEl.className = 'media-msg error'; msgEl.textContent = '⚠ حدث خطأ: ' + e.message;
+  }
+  btn.disabled = false; btn.textContent = 'رفع الصورة ←';
+};
+</script>
+</body>
+</html>
