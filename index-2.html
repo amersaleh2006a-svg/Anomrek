@@ -1,0 +1,3221 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>عَن عُمْرِك — وفيمَ أفنيتَه؟</title>
+<meta name="description" content="دليلك التكتيكي لرحلتك الجامعية">
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+(function(){
+  var t=localStorage.getItem('theme')||(matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light');
+  if(t==='dark') document.documentElement.setAttribute('data-theme','dark');
+})();
+</script>
+<style>
+/* ══════════════════════════════════════
+   ROOT PALETTE — Brand Identity
+   ══════════════════════════════════════ */
+:root {
+  --navy:        #1a2744;
+  --navy-deep:   #111c36;
+  --navy-light:  #243560;
+  --cream:       #f5f0e8;
+  --cream-light: #faf7f2;
+  --gold:        #c9a84c;
+  --gold-light:  #e8c97a;
+  --rose:        #c49a8a;
+  --rose-light:  #e8d5cc;
+  --text-dark:   #1a2744;
+  --text-muted:  #7a8aaa;
+  --card-bg:     #ffffff;
+  --sidebar-w:   72px;
+}
+
+/* ── DARK MODE ── */
+[data-theme="dark"] {
+  --cream:       #111c36;
+  --cream-light: #1a2744;
+  --text-dark:   #f0ead6;
+  --text-muted:  #b8a87a;
+  --card-bg:     #1e2f52;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+
+body {
+  background: var(--cream);
+  font-family: 'Cairo', sans-serif;
+  color: var(--text-dark);
+  min-height: 100vh;
+  transition: background .3s, color .3s;
+  opacity: 0;
+  transition: opacity .4s;
+}
+body.loaded { opacity: 1; }
+
+/* ══════════════════════════════════════
+   DESKTOP LAYOUT — Sidebar + Content
+   ══════════════════════════════════════ */
+.app-shell {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* ── SIDEBAR (desktop only) ── */
+.sidebar {
+  display: none;
+  width: var(--sidebar-w);
+  background: var(--navy-deep);
+  flex-direction: column;
+  align-items: center;
+  padding: 24px 0;
+  position: fixed;
+  top: 0; right: 0;
+  height: 100vh;
+  z-index: 100;
+  border-left: 1px solid rgba(201,168,76,.15);
+}
+@media (min-width: 768px) {
+  .sidebar { display: flex; }
+  body { padding-right: var(--sidebar-w); padding-bottom: 0; }
+}
+
+.sidebar-brand {
+  font-family: 'Amiri', serif;
+  color: var(--gold);
+  font-size: 1.1rem;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  transform: rotate(180deg);
+  letter-spacing: 2px;
+  margin-bottom: 28px;
+}
+
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+  width: 100%;
+  align-items: center;
+  padding-top: 8px;
+}
+
+.sidebar-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  border: none;
+  background: transparent;
+  color: rgba(255,255,255,.45);
+  cursor: pointer;
+  transition: all .25s;
+  font-size: .6rem;
+  gap: 4px;
+  padding: 6px;
+}
+.sidebar-btn svg { width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 1.8; flex-shrink: 0; }
+.sidebar-btn span { font-family: 'Cairo', sans-serif; font-size: .58rem; }
+.sidebar-btn:hover { background: rgba(201,168,76,.12); color: var(--gold-light); }
+.sidebar-btn.active { background: rgba(201,168,76,.18); color: var(--gold-light); border: 1px solid rgba(201,168,76,.3); }
+
+.sidebar-theme {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  border: 1px solid rgba(201,168,76,.3);
+  background: rgba(255,255,255,.06);
+  color: var(--gold);
+  font-size: 1rem;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all .2s;
+  margin-top: auto;
+  margin-bottom: 16px;
+}
+.sidebar-theme:hover { background: rgba(201,168,76,.18); }
+
+/* ── MAIN CONTENT AREA ── */
+.main-content {
+  flex: 1;
+  min-height: 100vh;
+}
+
+/* ══════════════════════════════════════
+   MOBILE HEADER
+   ══════════════════════════════════════ */
+.mobile-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px 14px;
+  background: var(--navy-deep);
+  position: sticky; top: 0; z-index: 90;
+  border-bottom: 1px solid rgba(201,168,76,.2);
+}
+@media (min-width: 768px) { .mobile-header { display: none; } }
+
+.mobile-header .brand {
+  font-family: 'Amiri', serif;
+  color: white;
+  font-size: 1.25rem;
+  letter-spacing: 1px;
+  flex: 1; text-align: center;
+}
+.mobile-header button {
+  background: none; border: none;
+  font-size: 1.25rem; cursor: pointer;
+  width: 38px; height: 38px;
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  transition: background .2s;
+  color: var(--gold);
+}
+.mobile-header button:hover { background: rgba(255,255,255,.1); }
+
+/* ══════════════════════════════════════
+   MOBILE BOTTOM NAV
+   ══════════════════════════════════════ */
+.bottom-nav {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  z-index: 100;
+  display: flex; align-items: center; justify-content: space-around;
+  padding: 0 8px calc(10px + env(safe-area-inset-bottom)) 0;
+  background: rgba(17,28,54,.88);
+  backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+  border-top: 1px solid rgba(201,168,76,.2);
+  height: 68px;
+}
+@media (min-width: 768px) { .bottom-nav { display: none; } }
+@media (min-width: 768px) { body { padding-bottom: 0; } }
+
+body { padding-bottom: 68px; }
+
+.nav-btn {
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 2px;
+  background: none; border: none;
+  color: rgba(255,255,255,.45);
+  font-family: 'Cairo', sans-serif;
+  font-size: .6rem;
+  cursor: pointer;
+  transition: color .2s, transform .2s;
+  padding: 6px 4px;
+  flex: 1;
+  min-width: 0;
+}
+.nav-btn svg { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 1.8; }
+.nav-btn.active { color: var(--gold-light); }
+.nav-btn:not(.fab):hover { transform: translateY(-2px); }
+
+/* FAB — Center Home button */
+.fab-wrapper {
+  position: relative;
+  flex: 1;
+  display: flex; align-items: center; justify-content: center;
+}
+.fab {
+  position: absolute;
+  bottom: 8px;
+  width: 58px; height: 58px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--gold), var(--gold-light));
+  border: 3px solid rgba(17,28,54,.9);
+  color: var(--navy-deep);
+  font-size: 1.4rem;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 4px 20px rgba(201,168,76,.5);
+  transition: all .25s;
+  z-index: 10;
+}
+.fab:hover, .fab.active { transform: translateY(-4px) scale(1.06); box-shadow: 0 8px 28px rgba(201,168,76,.6); }
+.fab span { font-size: .58rem; display: none; }
+
+/* ══════════════════════════════════════
+   PAGE SECTIONS
+   ══════════════════════════════════════ */
+.page-section { display: none; }
+.page-section.active { display: block; }
+
+/* ══════════════════════════════════════
+   SETTINGS MODAL
+   ══════════════════════════════════════ */
+.modal-overlay {
+  position: fixed; inset: 0; z-index: 200;
+  background: rgba(17,28,54,.65);
+  backdrop-filter: blur(6px);
+  display: none; align-items: flex-start; justify-content: flex-start;
+  padding: 70px 16px 0;
+  transition: opacity .3s;
+}
+.modal-overlay.open { display: flex; }
+.settings-panel {
+  background: var(--cream-light);
+  border-radius: 20px;
+  padding: 8px 0;
+  width: 100%; max-width: 300px;
+  box-shadow: 0 20px 60px rgba(17,28,54,.4);
+  animation: slideDown .25s ease;
+}
+@keyframes slideDown { from { opacity:0; transform:translateY(-12px); } to { opacity:1; transform:translateY(0); } }
+.settings-item {
+  display: flex; align-items: center; gap: 14px;
+  padding: 14px 20px;
+  cursor: pointer;
+  font-size: .9rem;
+  color: var(--text-dark);
+  border-bottom: 1px solid rgba(26,39,68,.06);
+  transition: background .15s;
+}
+.settings-item:last-child { border-bottom: none; }
+.settings-item:hover { background: rgba(201,168,76,.08); }
+.settings-item svg { width: 20px; height: 20px; stroke: var(--gold); fill: none; stroke-width: 1.8; flex-shrink: 0; }
+
+/* ══════════════════════════════════════
+   QUOTE HERO
+   ══════════════════════════════════════ */
+.quote-hero {
+  background: var(--cream-light);
+  padding: 52px 24px 44px;
+  text-align: center;
+  border-top: 3px solid var(--gold);
+  border-bottom: 3px solid var(--gold);
+  transition: background .3s;
+}
+@media (min-width:768px) {
+  .quote-hero {
+    margin: 32px;
+    border-radius: 24px;
+    border: 2px solid var(--gold);
+    box-shadow: 0 8px 40px rgba(26,39,68,.08);
+  }
+}
+.quote-ornament { font-family:'Amiri',serif; font-size:3.5rem; color:var(--gold); opacity:.3; line-height:.6; margin-bottom:18px; display:block; }
+.quote-text { font-family:'Amiri',serif; font-size:clamp(1.3rem,4vw,1.85rem); color:var(--text-dark); line-height:2; max-width:680px; margin:0 auto 16px; transition:opacity .5s,transform .5s,color .3s; }
+.quote-text.fade-out { opacity:0; transform:translateY(-8px); }
+.quote-source { font-size:.82rem; font-weight:700; color:var(--navy-light); letter-spacing:.8px; display:flex; align-items:center; justify-content:center; gap:10px; transition:opacity .5s,color .3s; }
+.quote-source::before,.quote-source::after { content:''; display:inline-block; width:28px; height:1px; background:var(--gold); }
+.quote-source.fade-out { opacity:0; }
+.quote-type-badge { display:inline-block; padding:4px 14px; background:var(--navy); color:var(--gold); border-radius:20px; font-size:.68rem; font-weight:600; margin-top:12px; transition:opacity .5s; }
+.quote-type-badge.fade-out { opacity:0; }
+.quote-actions { display:flex; gap:10px; justify-content:center; margin-top:20px; flex-wrap:wrap; }
+.qa-btn { border:1px solid rgba(26,39,68,.18); background:var(--cream-light); color:var(--text-dark); padding:8px 18px; border-radius:20px; font-family:'Cairo',sans-serif; font-size:.8rem; cursor:pointer; transition:all .2s; }
+.qa-btn:hover { background:var(--navy); color:var(--gold-light); border-color:var(--navy); }
+[data-theme="dark"] .qa-btn { border-color:rgba(201,168,76,.25); background:var(--card-bg); }
+
+/* ── VERSE BAND ── */
+.verse-band { background:var(--navy); padding:20px; text-align:center; }
+.verse-text { font-family:'Amiri',serif; font-size:clamp(1rem,3vw,1.2rem); color:var(--cream); opacity:.85; line-height:2; }
+
+/* ══════════════════════════════════════
+   VIDEO CARDS — Bento Grid
+   ══════════════════════════════════════ */
+.container { max-width:680px; margin:0 auto; padding:32px 20px 20px; }
+@media (min-width:768px) { .container { padding:32px 32px 20px; } }
+.section-title { font-family:'Amiri',serif; font-size:1.3rem; color:var(--text-dark); text-align:center; margin-bottom:26px; position:relative; padding-bottom:14px; }
+.section-title::after { content:''; position:absolute; bottom:0; left:50%; transform:translateX(-50%); width:50px; height:2px; background:linear-gradient(90deg,var(--gold),var(--gold-light)); }
+
+.bento-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:14px; max-width:680px; margin:0 auto; padding:0 20px 20px; }
+@media (min-width:768px) { .bento-grid { padding:0 32px 24px; } }
+@media (max-width:480px) { .bento-grid { grid-template-columns:1fr; } }
+
+.video-card { background:var(--card-bg); border-radius:14px; margin-bottom:0; overflow:hidden; box-shadow:0 2px 16px rgba(26,39,68,.07); transition:transform .25s,box-shadow .25s,background .3s; display:flex; align-items:stretch; text-decoration:none; color:inherit; position:relative; }
+.video-card:hover { transform:translateY(-3px); box-shadow:0 8px 28px rgba(26,39,68,.14); }
+.video-card.wide { grid-column:span 2; }
+@media (max-width:480px) { .video-card.wide { grid-column:span 1; } }
+.card-accent { width:5px; background:linear-gradient(180deg,var(--navy),var(--navy-light)); flex-shrink:0; }
+.card-body { padding:14px 14px; flex:1; min-width:0; }
+.card-topic { font-size:.68rem; font-weight:700; color:var(--gold); letter-spacing:1px; margin-bottom:4px; text-transform:uppercase; }
+.card-title { font-size:.88rem; font-weight:600; color:var(--text-dark); line-height:1.5; margin-bottom:4px; }
+.card-channel { font-size:.74rem; color:var(--text-muted); }
+.card-arrow { display:flex; align-items:center; padding:0 14px; color:var(--gold); font-size:1rem; flex-shrink:0; transition:transform .2s; }
+.video-card:hover .card-arrow { transform:translateX(-4px); }
+
+/* Watched badge */
+.watch-btn { position:absolute; top:8px; left:8px; background:rgba(201,168,76,.15); border:1px solid rgba(201,168,76,.3); color:var(--gold); border-radius:10px; font-size:.65rem; padding:3px 8px; cursor:pointer; font-family:'Cairo',sans-serif; transition:all .2s; }
+.watch-btn:hover,.watch-btn.watched { background:var(--gold); color:var(--navy-deep); }
+.watch-btn.watched::before { content:'✓ '; }
+
+/* ══════════════════════════════════════
+   COLOR PICKER + GALLERY (dafater)
+   ══════════════════════════════════════ */
+.color-section { background:var(--navy-deep); padding:48px 20px; text-align:center; }
+.color-section-title { font-family:'Amiri',serif; color:white; font-size:1.4rem; margin-bottom:6px; }
+.color-section-sub { color:rgba(255,255,255,.45); font-size:.82rem; margin-bottom:32px; }
+.notebooks-row { display:flex; gap:20px; justify-content:center; align-items:flex-end; flex-wrap:wrap; max-width:640px; margin:0 auto 28px; overflow-x:auto; }
+.notebook-option { flex:1; min-width:200px; max-width:280px; cursor:pointer; transition:transform .3s; position:relative; }
+.notebook-option:hover { transform:translateY(-6px) scale(1.02); }
+.notebook-option img { width:100%; border-radius:14px; box-shadow:0 10px 36px rgba(0,0,0,.5); display:block; }
+.notebook-badge { position:absolute; top:12px; right:12px; padding:5px 12px; border-radius:20px; font-size:.72rem; font-weight:700; letter-spacing:.5px; }
+.badge-navy { background:var(--navy); color:var(--gold); border:1px solid var(--gold); }
+.badge-rose { background:#c49a8a; color:white; }
+.notebook-label { margin-top:12px; font-family:'Amiri',serif; font-size:1rem; font-weight:700; }
+.label-navy { color:var(--gold-light); }
+.label-rose { color:var(--rose-light); }
+.color-question { font-family:'Amiri',serif; color:rgba(255,255,255,.7); font-size:1.05rem; margin-top:8px; }
+
+.gallery-section { background:var(--navy-deep); padding:44px 20px; text-align:center; }
+.gallery-title { font-family:'Amiri',serif; color:white; font-size:1.3rem; margin-bottom:6px; }
+.gallery-sub { color:rgba(255,255,255,.45); font-size:.8rem; margin-bottom:28px; }
+.gallery-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:14px; max-width:600px; margin:0 auto; }
+.gallery-grid img { width:100%; border-radius:12px; object-fit:cover; aspect-ratio:3/4; box-shadow:0 6px 24px rgba(0,0,0,.4); transition:transform .3s; }
+.gallery-grid img:hover { transform:scale(1.02); }
+.gallery-grid img.wide { grid-column:span 2; aspect-ratio:4/3; }
+
+/* ══════════════════════════════════════
+   ADAWAT — Pomodoro + To-Do
+   ══════════════════════════════════════ */
+.progress-track { height:5px; background:rgba(26,39,68,.08); transition:background .3s; }
+[data-theme="dark"] .progress-track { background:rgba(201,168,76,.08); }
+.progress-fill { height:100%; width:0%; background:linear-gradient(90deg,var(--gold),var(--gold-light)); transition:width .5s; }
+
+.pomodoro-wrap { text-align:center; padding:36px 20px; }
+.pomodoro-modes { display:flex; gap:10px; justify-content:center; margin-bottom:24px; flex-wrap:wrap; }
+.pomodoro-modes button { border:1px solid var(--gold); background:transparent; color:var(--text-dark); padding:8px 18px; border-radius:20px; font-family:'Cairo',sans-serif; font-size:.82rem; cursor:pointer; transition:all .2s; }
+.pomodoro-modes button.active { background:var(--navy); color:var(--gold-light); border-color:var(--navy); }
+[data-theme="dark"] .pomodoro-modes button { color:var(--text-dark); }
+.pomodoro-ring { width:200px; height:200px; margin:0 auto 20px; }
+.pomodoro-ring circle { fill:none; stroke-width:8; }
+.pomodoro-ring .track { stroke:rgba(26,39,68,.1); }
+[data-theme="dark"] .pomodoro-ring .track { stroke:rgba(201,168,76,.15); }
+.pomodoro-ring .progress { stroke:var(--gold); stroke-linecap:round; transition:stroke-dashoffset 1s linear; }
+.pomodoro-time { font-family:'Amiri',serif; font-size:2.2rem; fill:var(--text-dark); }
+[data-theme="dark"] .pomodoro-time { fill:var(--text-dark); }
+.pomodoro-actions button { background:var(--navy); color:white; border:none; padding:10px 28px; border-radius:12px; font-family:'Cairo',sans-serif; font-weight:700; cursor:pointer; margin:0 6px; transition:background .2s; }
+.pomodoro-actions button:hover { background:var(--navy-light); }
+
+/* To-Do List */
+.todo-wrap { background:var(--cream-light); border-radius:18px; padding:24px; max-width:560px; margin:30px auto; box-shadow:0 4px 24px rgba(26,39,68,.08); transition:background .3s; }
+[data-theme="dark"] .todo-wrap { background:var(--card-bg); }
+.todo-header { font-family:'Amiri',serif; font-size:1.15rem; color:var(--text-dark); margin-bottom:16px; text-align:center; }
+.todo-input-row { display:flex; gap:8px; margin-bottom:16px; }
+.todo-input { flex:1; padding:10px 14px; border:1.5px solid rgba(26,39,68,.15); border-radius:10px; font-family:'Cairo',sans-serif; font-size:.85rem; color:var(--text-dark); background:var(--cream); outline:none; transition:border-color .2s, background .3s, color .3s; }
+[data-theme="dark"] .todo-input { background:var(--navy); border-color:rgba(201,168,76,.25); color:var(--text-dark); }
+.todo-input:focus { border-color:var(--gold); }
+.todo-add-btn { padding:10px 18px; background:var(--navy); color:white; border:none; border-radius:10px; font-family:'Cairo',sans-serif; font-size:.82rem; cursor:pointer; transition:background .2s; white-space:nowrap; }
+.todo-add-btn:hover { background:var(--navy-light); }
+.todo-list { list-style:none; display:flex; flex-direction:column; gap:8px; }
+.todo-item { display:flex; align-items:center; gap:10px; padding:10px 14px; background:var(--cream); border-radius:10px; border:1px solid rgba(26,39,68,.08); transition:all .2s, background .3s; }
+[data-theme="dark"] .todo-item { background:var(--navy); border-color:rgba(201,168,76,.1); }
+.todo-item.done .todo-text { text-decoration:line-through; opacity:.5; }
+.todo-check { width:20px; height:20px; border-radius:50%; border:2px solid var(--gold); background:none; cursor:pointer; flex-shrink:0; transition:all .2s; display:flex; align-items:center; justify-content:center; }
+.todo-check.checked { background:var(--gold); border-color:var(--gold); }
+.todo-check.checked::after { content:'✓'; color:white; font-size:.7rem; }
+.todo-text { flex:1; font-size:.88rem; color:var(--text-dark); }
+.todo-del { background:none; border:none; color:rgba(196,90,90,.5); cursor:pointer; font-size:1rem; padding:0 4px; transition:color .2s; }
+.todo-del:hover { color:#c45a5a; }
+.todo-empty { text-align:center; color:var(--text-muted); font-size:.85rem; padding:20px 0; font-family:'Amiri',serif; }
+.todo-filter { display:flex; gap:8px; margin-bottom:14px; justify-content:center; }
+.todo-filter button { padding:5px 14px; border-radius:14px; border:1px solid rgba(26,39,68,.15); background:none; font-family:'Cairo',sans-serif; font-size:.75rem; cursor:pointer; color:var(--text-muted); transition:all .2s; }
+.todo-filter button.active { background:var(--navy); color:var(--gold-light); border-color:var(--navy); }
+
+/* ══════════════════════════════════════
+   INSTAGRAM + FEEDBACK + REVIEWS
+   ══════════════════════════════════════ */
+.insta-section { background:var(--cream-light); padding:36px 20px; text-align:center; border-top:1px solid rgba(26,39,68,.1); transition:background .3s; }
+[data-theme="dark"] .insta-section { border-top-color:rgba(201,168,76,.1); }
+.insta-title { font-family:'Amiri',serif; font-size:1.2rem; color:var(--text-dark); margin-bottom:20px; }
+.insta-cards { display:flex; gap:14px; justify-content:center; flex-wrap:wrap; }
+.insta-card { background:var(--card-bg); border-radius:14px; padding:18px 22px; box-shadow:0 2px 16px rgba(26,39,68,.08); text-decoration:none; display:flex; align-items:center; gap:12px; transition:transform .2s,box-shadow .2s,background .3s; min-width:200px; }
+.insta-card:hover { transform:translateY(-3px); box-shadow:0 8px 24px rgba(26,39,68,.14); }
+.insta-icon { width:42px; height:42px; border-radius:12px; background:linear-gradient(135deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+.insta-icon svg { width:22px; height:22px; fill:white; }
+.insta-info { text-align:right; }
+.insta-handle { font-size:.85rem; font-weight:700; color:var(--text-dark); direction:ltr; }
+.insta-label { font-size:.72rem; color:var(--text-muted); margin-top:2px; }
+
+.feedback-wrap { background:var(--cream); padding:40px 20px 10px; transition:background .3s; }
+.feedback-section { background:var(--card-bg); border-radius:18px; padding:32px 24px; max-width:580px; margin:0 auto; box-shadow:0 4px 24px rgba(26,39,68,.08); transition:background .3s; }
+.feedback-title { font-family:'Amiri',serif; font-size:1.25rem; color:var(--text-dark); text-align:center; margin-bottom:6px; }
+.feedback-sub { font-size:.8rem; color:var(--text-muted); text-align:center; margin-bottom:22px; }
+.feedback-section label { display:block; font-size:.8rem; font-weight:600; color:var(--text-dark); margin-bottom:6px; }
+.feedback-section input, .feedback-section textarea, .feedback-section select { width:100%; padding:11px 14px; border:1.5px solid rgba(26,39,68,.15); border-radius:10px; font-family:'Cairo',sans-serif; font-size:.85rem; color:var(--text-dark); background:var(--cream-light); margin-bottom:16px; outline:none; transition:border-color .2s,background .3s,color .3s; direction:rtl; }
+[data-theme="dark"] .feedback-section input,
+[data-theme="dark"] .feedback-section textarea,
+[data-theme="dark"] .feedback-section select { background:var(--navy); border-color:rgba(201,168,76,.25); color:var(--text-dark); }
+.feedback-section input:focus, .feedback-section textarea:focus, .feedback-section select:focus { border-color:var(--gold); }
+.feedback-section textarea { resize:vertical; min-height:90px; }
+.submit-btn { width:100%; padding:13px; background:var(--navy); color:white; border:none; border-radius:12px; font-family:'Cairo',sans-serif; font-size:.9rem; font-weight:700; cursor:pointer; transition:background .2s; letter-spacing:.5px; }
+.submit-btn:hover { background:var(--navy-light); }
+.submit-btn:disabled { opacity:.6; cursor:not-allowed; }
+.form-success { display:none; text-align:center; padding:20px; }
+.form-success .check { color:var(--gold); font-size:2.5rem; display:block; margin-bottom:10px; }
+.form-success p { font-family:'Amiri',serif; font-size:1.1rem; color:var(--text-dark); }
+
+.reviews-wrap { background:var(--cream-light); padding:40px 20px; border-top:1px solid rgba(26,39,68,.08); transition:background .3s; }
+[data-theme="dark"] .reviews-wrap { border-top-color:rgba(201,168,76,.08); }
+.reviews-title { font-family:'Amiri',serif; font-size:1.3rem; color:var(--text-dark); text-align:center; margin-bottom:6px; padding-bottom:14px; position:relative; }
+.reviews-title::after { content:''; position:absolute; bottom:0; left:50%; transform:translateX(-50%); width:50px; height:2px; background:linear-gradient(90deg,var(--gold),var(--gold-light)); }
+.reviews-sub { text-align:center; font-size:.8rem; color:var(--text-muted); margin-bottom:26px; margin-top:14px; }
+.review-card { background:var(--card-bg); border-radius:14px; padding:20px; margin-bottom:14px; box-shadow:0 2px 14px rgba(26,39,68,.07); border-right:4px solid var(--gold); transition:background .3s; }
+.review-header { display:flex; align-items:center; gap:12px; margin-bottom:10px; }
+.review-avatar { width:40px; height:40px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:1.1rem; font-weight:700; color:white; flex-shrink:0; }
+.review-name { font-size:.88rem; font-weight:700; color:var(--text-dark); }
+.review-date { font-size:.72rem; color:var(--text-muted); }
+.review-stars { color:#f59e0b; font-size:.95rem; margin-bottom:8px; letter-spacing:2px; }
+.review-text { font-size:.85rem; color:var(--text-dark); line-height:1.75; }
+.review-tag { display:inline-block; margin-top:10px; padding:3px 10px; background:rgba(201,168,76,.12); color:var(--gold); border-radius:12px; font-size:.68rem; font-weight:600; }
+
+/* ── QR ── */
+.qr-outer { padding:0 20px 40px; max-width:620px; margin:0 auto; }
+.qr-section { background:var(--navy); border-radius:18px; padding:32px 20px; text-align:center; position:relative; overflow:hidden; }
+.qr-section::before { content:''; position:absolute; inset:0; background:repeating-linear-gradient(45deg,transparent,transparent 20px,rgba(201,168,76,.04) 20px,rgba(201,168,76,.04) 21px); pointer-events:none; }
+.qr-title { font-family:'Amiri',serif; color:white; font-size:1.2rem; margin-bottom:6px; position:relative; z-index:1; }
+.qr-subtitle { color:rgba(255,255,255,.5); font-size:.78rem; margin-bottom:20px; position:relative; z-index:1; }
+.qr-tagline { color:var(--gold-light); font-family:'Amiri',serif; font-size:.95rem; margin-bottom:16px; position:relative; z-index:1; }
+#qrcode { display:inline-block; background:white; padding:12px; border-radius:12px; position:relative; z-index:1; }
+
+footer { text-align:center; padding:24px 20px; color:var(--text-muted); font-size:.78rem; border-top:1px solid rgba(26,39,68,.08); transition:color .3s,border-color .3s; }
+[data-theme="dark"] footer { border-top-color:rgba(201,168,76,.08); }
+
+/* ── TOAST ── */
+.qa-toast { position:fixed; bottom:90px; left:50%; transform:translateX(-50%) translateY(10px); background:var(--navy); color:var(--gold-light); padding:10px 20px; border-radius:20px; font-size:.82rem; opacity:0; pointer-events:none; transition:opacity .3s,transform .3s; z-index:300; white-space:nowrap; }
+.qa-toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
+
+/* ── SCROLL ANIMATIONS ── */
+.reveal { opacity:0; transform:translateY(24px); transition:opacity .6s ease,transform .6s ease; }
+.reveal.visible { opacity:1; transform:translateY(0); }
+
+/* ── DESKTOP CARD SHADOW ── */
+@media (min-width:768px) {
+  .page-section.active { padding-bottom: 32px; }
+  .quote-hero { margin-bottom: 0; }
+  .video-card { transition: transform .25s, box-shadow .25s, background .3s; }
+}
+
+/* ── THEME CUSTOMIZER BAR ── */
+.theme-customizer-bar {
+  display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+  padding: 14px 20px;
+  background: var(--navy-deep);
+  border-bottom: 1px solid rgba(201,168,76,.2);
+}
+.tc-label { color: var(--gold-light); font-size:.85rem; font-family:'Cairo',sans-serif; font-weight:600; white-space:nowrap; }
+.tc-presets { display:flex; gap:8px; }
+.tc-preset {
+  width:26px; height:26px; border-radius:50%; border:2px solid transparent;
+  cursor:pointer; transition:all .2s; flex-shrink:0;
+}
+.tc-preset.active, .tc-preset:hover { border-color:var(--gold-light); transform:scale(1.15); }
+.tc-custom-label {
+  display:flex; align-items:center; gap:6px;
+  color:rgba(255,255,255,.6); font-size:.78rem; font-family:'Cairo',sans-serif;
+  cursor:pointer;
+}
+.tc-custom-label input[type="color"] {
+  width:26px; height:26px; border-radius:6px; border:1px solid rgba(201,168,76,.4);
+  padding:1px; cursor:pointer; background:none;
+}
+
+/* ── GALLERY HOVER POLISH ── */
+.gallery-grid img {
+  transition: transform .35s cubic-bezier(.4,0,.2,1), box-shadow .35s, opacity .35s;
+  opacity: .96;
+}
+.gallery-grid img:hover {
+  transform: scale(1.04) translateY(-3px);
+  box-shadow: 0 16px 40px rgba(0,0,0,.55);
+  opacity: 1;
+}
+.notebook-option {
+  transition: transform .35s cubic-bezier(.4,0,.2,1), box-shadow .35s;
+}
+.notebook-option:hover {
+  transform: translateY(-8px) scale(1.03);
+  box-shadow: 0 20px 48px rgba(0,0,0,.35);
+}
+
+/* ── WATCHED SECTION ── */
+#watchedSection .bento-grid { opacity:.7; filter:grayscale(.3); }
+#watchedSection .video-card { border: 1px solid rgba(201,168,76,.2); }
+.watch-btn.watched {
+  background: var(--gold) !important;
+  color: var(--navy-deep) !important;
+  border-color: var(--gold) !important;
+}
+.watch-btn.watched::before { content: '✓ '; }
+
+
+
+/* ══════════════════════════════════════════════════
+   COMPREHENSIVE DARK MODE — Navy/Gold Identity
+   ALL text, backgrounds, borders, inputs covered
+   ══════════════════════════════════════════════════ */
+
+/* Body & base */
+[data-theme="dark"] body { background: var(--cream); color: var(--text-dark); }
+
+/* Mobile header */
+[data-theme="dark"] .mobile-header { background: var(--navy-deep); border-bottom-color: rgba(201,168,76,.2); }
+[data-theme="dark"] .mobile-header .brand { color: #f0ead6; }
+
+/* Sidebar */
+[data-theme="dark"] .sidebar { background: #0d1628; border-left-color: rgba(201,168,76,.15); }
+
+/* Settings panel */
+[data-theme="dark"] .settings-panel { background: #1a2744; box-shadow: 0 20px 60px rgba(0,0,0,.6); }
+[data-theme="dark"] .settings-item { color: #f0ead6; border-bottom-color: rgba(201,168,76,.08); }
+[data-theme="dark"] .settings-item:hover { background: rgba(201,168,76,.08); }
+
+/* Quote hero */
+[data-theme="dark"] .quote-hero { background: var(--cream-light); border-color: var(--gold); }
+[data-theme="dark"] .quote-text { color: #f0ead6; }
+[data-theme="dark"] .quote-source { color: var(--gold); }
+[data-theme="dark"] .quote-ornament { color: var(--gold); }
+[data-theme="dark"] .quote-type-badge { background: #0d1628; color: var(--gold-light); }
+[data-theme="dark"] .qa-btn { background: #1e2f52; color: #f0ead6; border-color: rgba(201,168,76,.3); }
+[data-theme="dark"] .qa-btn:hover { background: var(--gold); color: var(--navy-deep); }
+
+/* Verse band — always navy, text always cream */
+.verse-text { color: #f0ead6; }
+
+/* Section titles */
+[data-theme="dark"] .section-title { color: #f0ead6; }
+[data-theme="dark"] .section-title::after { background: linear-gradient(90deg, var(--gold), var(--gold-light)); }
+
+/* Video / content cards */
+[data-theme="dark"] .video-card { background: #1e2f52; border: 1px solid rgba(201,168,76,.1); }
+[data-theme="dark"] .card-title { color: #f0ead6; }
+[data-theme="dark"] .card-topic { color: var(--gold-light); }
+[data-theme="dark"] .card-channel { color: #b8a87a; }
+[data-theme="dark"] .card-arrow { color: var(--gold); }
+
+/* Bento watched section */
+[data-theme="dark"] #watchedSection .section-title { color: #f0ead6; }
+
+/* Color picker / dafater page */
+[data-theme="dark"] .color-section-title { color: #f0ead6; }
+[data-theme="dark"] .color-section-sub { color: rgba(240,234,214,.5); }
+[data-theme="dark"] .color-question { color: rgba(240,234,214,.7); }
+[data-theme="dark"] .notebook-label { color: #f0ead6; }
+[data-theme="dark"] .gallery-title { color: #f0ead6; }
+[data-theme="dark"] .gallery-sub { color: rgba(240,234,214,.5); }
+
+/* Theme customizer bar */
+[data-theme="dark"] .theme-customizer-bar { background: #0d1628; border-bottom-color: rgba(201,168,76,.2); }
+[data-theme="dark"] .tc-label { color: var(--gold-light); }
+[data-theme="dark"] .tc-custom-label { color: rgba(240,234,214,.65); }
+
+/* Instagram section */
+[data-theme="dark"] .insta-section { background: var(--cream-light); border-top-color: rgba(201,168,76,.12); }
+[data-theme="dark"] .insta-title { color: #f0ead6; }
+[data-theme="dark"] .insta-card { background: #1e2f52; border: 1px solid rgba(201,168,76,.12); }
+[data-theme="dark"] .insta-handle { color: #f0ead6; }
+[data-theme="dark"] .insta-label { color: #b8a87a; }
+
+/* Feedback form */
+[data-theme="dark"] .feedback-wrap { background: var(--cream); }
+[data-theme="dark"] .feedback-section { background: #1e2f52; }
+[data-theme="dark"] .feedback-title { color: #f0ead6; }
+[data-theme="dark"] .feedback-sub { color: #b8a87a; }
+[data-theme="dark"] .feedback-section label { color: #f0ead6; }
+[data-theme="dark"] .feedback-section input,
+[data-theme="dark"] .feedback-section textarea,
+[data-theme="dark"] .feedback-section select {
+  background: #111c36;
+  color: #f0ead6;
+  border-color: rgba(201,168,76,.3);
+}
+[data-theme="dark"] .feedback-section input::placeholder,
+[data-theme="dark"] .feedback-section textarea::placeholder { color: #b8a87a; }
+[data-theme="dark"] .submit-btn { background: #0d1628; }
+[data-theme="dark"] .submit-btn:hover { background: #1a2744; }
+[data-theme="dark"] .form-success p { color: #f0ead6; }
+
+/* Reviews / testimonials */
+[data-theme="dark"] .reviews-wrap { background: var(--cream-light); border-top-color: rgba(201,168,76,.08); }
+[data-theme="dark"] .reviews-title { color: #f0ead6; }
+[data-theme="dark"] .reviews-sub { color: #b8a87a; }
+[data-theme="dark"] .review-card { background: #1e2f52; border-right-color: var(--gold); }
+[data-theme="dark"] .review-name { color: #f0ead6; }
+[data-theme="dark"] .review-date { color: #b8a87a; }
+[data-theme="dark"] .review-text { color: #ddd5c0; }
+[data-theme="dark"] .review-tag { background: rgba(201,168,76,.15); color: var(--gold-light); }
+
+/* QR section */
+[data-theme="dark"] .qr-title { color: #f0ead6; }
+[data-theme="dark"] .qr-subtitle { color: rgba(240,234,214,.55); }
+[data-theme="dark"] .qr-tagline { color: var(--gold-light); }
+
+/* Footer */
+[data-theme="dark"] footer { color: #b8a87a; border-top-color: rgba(201,168,76,.1); }
+
+/* Pomodoro */
+[data-theme="dark"] .pomodoro-time { fill: #f0ead6; }
+[data-theme="dark"] .pomodoro-ring .track { stroke: rgba(201,168,76,.15); }
+[data-theme="dark"] .pomodoro-modes button { color: #f0ead6; border-color: rgba(201,168,76,.4); }
+[data-theme="dark"] .pomodoro-modes button.active { background: #0d1628; color: var(--gold-light); border-color: transparent; }
+[data-theme="dark"] .pomodoro-actions button { background: #0d1628; }
+[data-theme="dark"] .pomodoro-actions button:hover { background: #1a2744; }
+[data-theme="dark"] #pomLabel { fill: #b8a87a; }
+
+/* To-Do */
+[data-theme="dark"] .todo-wrap { background: #1e2f52; }
+[data-theme="dark"] .todo-header { color: #f0ead6; }
+[data-theme="dark"] .todo-input { background: #111c36; color: #f0ead6; border-color: rgba(201,168,76,.3); }
+[data-theme="dark"] .todo-input::placeholder { color: #b8a87a; }
+[data-theme="dark"] .todo-add-btn { background: #0d1628; }
+[data-theme="dark"] .todo-add-btn:hover { background: #1a2744; }
+[data-theme="dark"] .todo-item { background: #111c36; border-color: rgba(201,168,76,.1); }
+[data-theme="dark"] .todo-text { color: #f0ead6; }
+[data-theme="dark"] .todo-filter button { color: #b8a87a; border-color: rgba(201,168,76,.2); }
+[data-theme="dark"] .todo-filter button.active { background: #0d1628; color: var(--gold-light); border-color: transparent; }
+[data-theme="dark"] .todo-empty { color: #b8a87a; }
+
+/* Bottom nav */
+[data-theme="dark"] .bottom-nav { background: rgba(13,22,40,.92); border-top-color: rgba(201,168,76,.2); }
+[data-theme="dark"] .nav-btn { color: rgba(240,234,214,.45); }
+[data-theme="dark"] .nav-btn.active { color: var(--gold-light); }
+
+/* Progress track */
+[data-theme="dark"] .progress-track { background: rgba(201,168,76,.08); }
+
+/* Modal overlay */
+[data-theme="dark"] .modal-overlay { background: rgba(13,22,40,.75); }
+
+/* TAWASOL improvements */
+.insta-card { position: relative; overflow: hidden; }
+.insta-card::before {
+  content: '';
+  position: absolute;
+  top: 0; right: 0;
+  width: 4px; height: 100%;
+  background: linear-gradient(180deg, #f09433, #bc1888);
+  border-radius: 0 14px 14px 0;
+}
+.qr-tagline {
+  font-family: 'Amiri', serif;
+  color: var(--gold-light);
+  font-size: 1.05rem;
+  margin-bottom: 6px;
+  opacity: .9;
+}
+.form-success { display: none; text-align: center; padding: 28px 16px; }
+.form-success .check { color: var(--gold); font-size: 2.8rem; display: block; margin-bottom: 12px; }
+.form-success p { font-family: 'Amiri', serif; font-size: 1.15rem; color: var(--text-dark); line-height: 1.8; }
+
+/* ══ LANGUAGE SUPPORT ══ */
+[data-lang="en"] .brand::after { content: ' | An Omrek'; font-size: .6em; opacity: .6; }
+
+
+/* ══════════════════════════════════════════════════
+   DARK MODE — COMPREHENSIVE CONTRAST FIXES
+   Target: all text must be readable on navy backgrounds
+   ══════════════════════════════════════════════════ */
+
+/* ── Body & global text ── */
+[data-theme="dark"] body { color: #f0ead6; }
+/* wildcard removed */
+
+/* ── Section titles & headings ── */
+[data-theme="dark"] .section-title,
+[data-theme="dark"] h1, [data-theme="dark"] h2,
+[data-theme="dark"] h3, [data-theme="dark"] h4 {
+  color: #f0ead6 !important;
+}
+
+/* ── Pomodoro page ── */
+[data-theme="dark"] .pomodoro-wrap { background: transparent; }
+[data-theme="dark"] .pomodoro-wrap p,
+[data-theme="dark"] .pomodoro-wrap strong { color: #f0ead6 !important; }
+[data-theme="dark"] #pomLabel { fill: #b8a87a !important; }
+[data-theme="dark"] .pomodoro-time { fill: #f0ead6 !important; }
+[data-theme="dark"] .pomodoro-modes button { color: #f0ead6 !important; border-color: rgba(201,168,76,.35); }
+[data-theme="dark"] .pomodoro-modes button.active { background: var(--navy-deep); color: var(--gold-light) !important; }
+[data-theme="dark"] .pomodoro-actions button { color: #f0ead6 !important; background: #243560; }
+[data-theme="dark"] .pomodoro-actions button:hover { background: #2d4270; }
+[data-theme="dark"] #streakCount { color: var(--gold-light) !important; }
+
+/* ── Pomodoro button clipping fix ── */
+.pomodoro-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+.pomodoro-actions button {
+  min-width: 110px;
+  padding: 10px 20px;
+  white-space: nowrap;
+  overflow: visible;
+  text-overflow: unset;
+  font-size: .88rem;
+}
+
+/* ── To-Do ── */
+[data-theme="dark"] .todo-wrap { background: #1e2f52; }
+[data-theme="dark"] .todo-header { color: #f0ead6 !important; }
+[data-theme="dark"] .todo-text { color: #f0ead6 !important; }
+[data-theme="dark"] .todo-item { background: #243560; border-color: rgba(201,168,76,.1); }
+[data-theme="dark"] .todo-item.done .todo-text { color: #b8a87a !important; }
+[data-theme="dark"] .todo-input { background: #111c36; color: #f0ead6 !important; border-color: rgba(201,168,76,.3); }
+[data-theme="dark"] .todo-input::placeholder { color: #b8a87a; }
+[data-theme="dark"] .todo-add-btn { background: #243560; color: #f0ead6 !important; }
+[data-theme="dark"] .todo-filter button { color: #b8a87a; border-color: rgba(201,168,76,.2); }
+[data-theme="dark"] .todo-filter button.active { background: #1a2744; color: var(--gold-light) !important; border-color: var(--gold); }
+[data-theme="dark"] .todo-empty { color: #b8a87a !important; }
+[data-theme="dark"] .todo-del { color: rgba(220,100,100,.6); }
+[data-theme="dark"] .todo-del:hover { color: #e08080; }
+
+/* ── Video cards (dark) ── */
+[data-theme="dark"] .video-card { background: #1e2f52 !important; border: 1px solid rgba(201,168,76,.1); }
+[data-theme="dark"] .card-title { color: #f0ead6 !important; }
+[data-theme="dark"] .card-channel { color: #b8a87a !important; }
+[data-theme="dark"] .card-topic { color: var(--gold) !important; }
+[data-theme="dark"] .watch-btn { background: rgba(201,168,76,.1); color: #f0ead6; border-color: rgba(201,168,76,.3); }
+[data-theme="dark"] .watch-btn.watched { background: var(--gold) !important; color: #111c36 !important; }
+
+/* ── Quote hero ── */
+[data-theme="dark"] .quote-hero { background: #1a2744 !important; }
+[data-theme="dark"] .quote-text { color: #f0ead6 !important; }
+[data-theme="dark"] .quote-source { color: var(--gold) !important; }
+[data-theme="dark"] .quote-ornament { color: var(--gold) !important; }
+[data-theme="dark"] .quote-type-badge { background: #111c36; color: var(--gold) !important; }
+[data-theme="dark"] .qa-btn { background: #1e2f52; color: #f0ead6 !important; border-color: rgba(201,168,76,.25); }
+[data-theme="dark"] .qa-btn:hover { background: #243560; color: var(--gold-light) !important; }
+
+/* ── Instagram + Feedback + Review cards ── */
+[data-theme="dark"] .insta-card { background: #1e2f52 !important; border: 1px solid rgba(201,168,76,.12); }
+[data-theme="dark"] .insta-handle { color: #f0ead6 !important; }
+[data-theme="dark"] .insta-label { color: #b8a87a !important; }
+[data-theme="dark"] .insta-title { color: #f0ead6 !important; }
+[data-theme="dark"] .insta-section { background: #1a2744 !important; border-top-color: rgba(201,168,76,.1); }
+
+[data-theme="dark"] .feedback-section { background: #1e2f52 !important; }
+[data-theme="dark"] .feedback-title { color: #f0ead6 !important; }
+[data-theme="dark"] .feedback-sub { color: #b8a87a !important; }
+[data-theme="dark"] .feedback-section label { color: #f0ead6 !important; }
+[data-theme="dark"] .feedback-section input,
+[data-theme="dark"] .feedback-section textarea,
+[data-theme="dark"] .feedback-section select {
+  background: #111c36 !important; color: #f0ead6 !important;
+  border-color: rgba(201,168,76,.3);
+}
+[data-theme="dark"] .feedback-section input::placeholder,
+[data-theme="dark"] .feedback-section textarea::placeholder { color: #b8a87a; }
+[data-theme="dark"] .feedback-wrap { background: #111c36 !important; }
+[data-theme="dark"] .submit-btn { background: #243560; color: #f0ead6 !important; }
+[data-theme="dark"] .submit-btn:hover { background: #2d4270; }
+[data-theme="dark"] .form-success p { color: #f0ead6 !important; }
+
+[data-theme="dark"] .reviews-wrap { background: #1a2744 !important; border-top-color: rgba(201,168,76,.08); }
+[data-theme="dark"] .reviews-title { color: #f0ead6 !important; }
+[data-theme="dark"] .reviews-sub { color: #b8a87a !important; }
+[data-theme="dark"] .review-card { background: #1e2f52 !important; }
+[data-theme="dark"] .review-name { color: #f0ead6 !important; }
+[data-theme="dark"] .review-date { color: #b8a87a !important; }
+[data-theme="dark"] .review-text { color: #ddd5c0 !important; }
+[data-theme="dark"] .review-tag { background: rgba(201,168,76,.18); color: var(--gold-light) !important; }
+
+/* ── Settings panel (dark) ── */
+[data-theme="dark"] .settings-panel { background: #1a2744 !important; }
+[data-theme="dark"] .settings-item { color: #f0ead6 !important; }
+[data-theme="dark"] .settings-item:hover { background: rgba(201,168,76,.08); }
+
+/* ── Footer & misc text ── */
+[data-theme="dark"] footer { color: #b8a87a !important; border-top-color: rgba(201,168,76,.08); }
+[data-theme="dark"] .text-muted,
+[data-theme="dark"] [style*="color:var(--text-muted)"] { color: #b8a87a !important; }
+[data-theme="dark"] .color-section-title { color: white !important; }
+[data-theme="dark"] .color-section-sub { color: rgba(255,255,255,.55) !important; }
+[data-theme="dark"] .gallery-title { color: white !important; }
+[data-theme="dark"] .gallery-sub { color: rgba(255,255,255,.5) !important; }
+[data-theme="dark"] .notebook-label { color: #f0ead6 !important; }
+
+/* ── Theme customizer bar (dark) ── */
+[data-theme="dark"] .theme-customizer-bar { background: #0d1628; }
+
+/* ── Bottom padding so content clears FAB ── */
+.page-section.active > *:last-child { margin-bottom: 20px; }
+.page-section.active { padding-bottom: 90px; }
+@media (min-width: 768px) { .page-section.active { padding-bottom: 32px; } }
+
+/* ── Mobile header always readable ── */
+.mobile-header .brand { color: white !important; }
+[data-theme="dark"] .mobile-header { background: #0d1628; border-bottom-color: rgba(201,168,76,.2); }
+
+
+/* ══════════════════════════════════════════════════
+   DARK MODE — CLEAN TARGETED OVERRIDES
+   Never use wildcard * selector
+   ══════════════════════════════════════════════════ */
+
+/* Body */
+[data-theme="dark"] body { background: var(--cream); }
+
+/* Page sections background */
+[data-theme="dark"] #page-1,
+[data-theme="dark"] #page-2,
+[data-theme="dark"] #page-3 { background: var(--cream); }
+
+/* Headings & section titles */
+[data-theme="dark"] .section-title { color: #f0ead6; }
+[data-theme="dark"] .todo-header   { color: #f0ead6; }
+[data-theme="dark"] .pomodoro-wrap > p { color: #f0ead6; }
+[data-theme="dark"] .pomodoro-wrap strong { color: var(--gold-light); }
+
+/* Pomodoro SVG text */
+[data-theme="dark"] .pomodoro-time { fill: #f0ead6; }
+[data-theme="dark"] #pomLabel { fill: #b8a87a; }
+[data-theme="dark"] .pomodoro-ring .track { stroke: rgba(201,168,76,.18); }
+
+/* Pomodoro buttons */
+[data-theme="dark"] .pomodoro-modes button { color: #f0ead6; border-color: rgba(201,168,76,.35); }
+[data-theme="dark"] .pomodoro-modes button.active { background: #0d1628; color: var(--gold-light); border-color: var(--gold); }
+[data-theme="dark"] .pomodoro-actions button { background: #1e2f52; color: #f0ead6; }
+[data-theme="dark"] .pomodoro-actions button:hover { background: #243560; }
+
+/* Pomodoro button: prevent text clipping */
+.pomodoro-actions { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
+.pomodoro-actions button { min-width:120px; padding:10px 22px; white-space:nowrap; font-size:.88rem; }
+
+/* To-Do List */
+[data-theme="dark"] .todo-wrap      { background: #1e2f52; }
+[data-theme="dark"] .todo-text      { color: #f0ead6; }
+[data-theme="dark"] .todo-item      { background: #243560; border-color: rgba(201,168,76,.12); }
+[data-theme="dark"] .todo-item.done .todo-text { color: #b8a87a; }
+[data-theme="dark"] .todo-input     { background: #111c36; color: #f0ead6; border-color: rgba(201,168,76,.3); }
+[data-theme="dark"] .todo-add-btn   { background: #243560; color: #f0ead6; }
+[data-theme="dark"] .todo-filter button { color: #b8a87a; border-color: rgba(201,168,76,.2); }
+[data-theme="dark"] .todo-filter button.active { background: #1a2744; color: var(--gold-light); border-color: var(--gold); }
+[data-theme="dark"] .todo-empty     { color: #b8a87a; }
+[data-theme="dark"] .todo-del       { color: rgba(220,100,100,.5); }
+
+/* Quote hero */
+[data-theme="dark"] .quote-hero        { background: #1a2744; }
+[data-theme="dark"] .quote-text        { color: #f0ead6; }
+[data-theme="dark"] .quote-source      { color: var(--gold); }
+[data-theme="dark"] .quote-type-badge  { background: #0d1628; color: var(--gold); }
+[data-theme="dark"] .quote-ornament    { color: var(--gold); opacity: .4; }
+[data-theme="dark"] .qa-btn            { background: #1e2f52; color: #f0ead6; border-color: rgba(201,168,76,.25); }
+[data-theme="dark"] .qa-btn:hover      { background: #243560; color: var(--gold-light); }
+
+/* Video cards */
+[data-theme="dark"] .video-card   { background: #1e2f52; border: 1px solid rgba(201,168,76,.1); }
+[data-theme="dark"] .card-title   { color: #f0ead6; }
+[data-theme="dark"] .card-channel { color: #b8a87a; }
+[data-theme="dark"] .watch-btn    { background: rgba(201,168,76,.1); color: #f0ead6; border-color: rgba(201,168,76,.3); }
+[data-theme="dark"] .watch-btn.watched { background: var(--gold); color: #111c36; }
+
+/* Instagram */
+[data-theme="dark"] .insta-section { background: #1a2744; border-top-color: rgba(201,168,76,.1); }
+[data-theme="dark"] .insta-title   { color: #f0ead6; }
+[data-theme="dark"] .insta-card    { background: #1e2f52; border: 1px solid rgba(201,168,76,.12); }
+[data-theme="dark"] .insta-handle  { color: #f0ead6; }
+[data-theme="dark"] .insta-label   { color: #b8a87a; }
+
+/* Feedback */
+[data-theme="dark"] .feedback-wrap      { background: #111c36; }
+[data-theme="dark"] .feedback-section   { background: #1e2f52; }
+[data-theme="dark"] .feedback-title     { color: #f0ead6; }
+[data-theme="dark"] .feedback-sub       { color: #b8a87a; }
+[data-theme="dark"] .feedback-section label { color: #f0ead6; }
+[data-theme="dark"] .feedback-section input,
+[data-theme="dark"] .feedback-section textarea,
+[data-theme="dark"] .feedback-section select { background: #111c36; color: #f0ead6; border-color: rgba(201,168,76,.3); }
+[data-theme="dark"] .submit-btn { background: #243560; color: #f0ead6; }
+[data-theme="dark"] .form-success p { color: #f0ead6; }
+
+/* Reviews */
+[data-theme="dark"] .reviews-wrap    { background: #1a2744; border-top-color: rgba(201,168,76,.08); }
+[data-theme="dark"] .reviews-title   { color: #f0ead6; }
+[data-theme="dark"] .reviews-sub     { color: #b8a87a; }
+[data-theme="dark"] .review-card     { background: #1e2f52; }
+[data-theme="dark"] .review-name     { color: #f0ead6; }
+[data-theme="dark"] .review-date     { color: #b8a87a; }
+[data-theme="dark"] .review-text     { color: #ddd5c0; }
+[data-theme="dark"] .review-tag      { background: rgba(201,168,76,.18); color: var(--gold-light); }
+
+/* Settings panel */
+[data-theme="dark"] .settings-panel          { background: #1a2744; }
+[data-theme="dark"] .settings-item           { color: #f0ead6; border-bottom-color: rgba(201,168,76,.1); }
+[data-theme="dark"] .settings-item:hover     { background: rgba(201,168,76,.08); }
+[data-theme="dark"] .settings-item svg       { stroke: var(--gold); }
+
+/* Footer */
+[data-theme="dark"] footer { color: #b8a87a; border-top-color: rgba(201,168,76,.08); }
+
+/* Mobile header */
+[data-theme="dark"] .mobile-header { background: #0d1628; border-bottom-color: rgba(201,168,76,.2); }
+
+/* Theme customizer bar */
+[data-theme="dark"] .theme-customizer-bar { background: #0d1628; }
+
+/* Color section & gallery (already navy-deep — keep white text) */
+[data-theme="dark"] .color-section-title { color: white; }
+[data-theme="dark"] .color-section-sub   { color: rgba(255,255,255,.55); }
+[data-theme="dark"] .gallery-title       { color: white; }
+[data-theme="dark"] .gallery-sub         { color: rgba(255,255,255,.5); }
+[data-theme="dark"] .notebook-label.label-navy { color: var(--gold-light); }
+[data-theme="dark"] .notebook-label.label-rose { color: #e8d5cc; }
+[data-theme="dark"] .color-question { color: rgba(255,255,255,.75); }
+
+/* QR section */
+[data-theme="dark"] .qr-title    { color: white; }
+[data-theme="dark"] .qr-subtitle { color: rgba(255,255,255,.55); }
+[data-theme="dark"] .qr-tagline  { color: var(--gold-light); }
+
+/* Bottom padding so content never clips under FAB */
+.page-section.active { padding-bottom: 90px; }
+@media (min-width: 768px) { .page-section.active { padding-bottom: 32px; } }
+/* ── Activity heatmap (dashboard) ── */
+.act-day { aspect-ratio: 1; border-radius: 4px; background: rgba(26,39,68,.08); }
+[data-theme="dark"] .act-day { background: rgba(255,255,255,.08); }
+.act-day.mid { background: rgba(201,168,76,.4); }
+.act-day.active { background: var(--gold); }
+
+/* ── Login Modal (merged from login.html) ── */
+#loginModal .auth-card {
+  background: var(--cream-light);
+  border-radius: 24px;
+  padding: 40px 36px 28px;
+  width: 100%; max-width: 420px;
+  max-height: 92vh; overflow-y: auto;
+  box-shadow: 0 32px 80px rgba(0,0,0,.4);
+  position: relative;
+  animation: slideUp .35s ease;
+}
+#loginModal .login-close {
+  position: absolute; top: 14px; left: 14px;
+  background: none; border: none; font-size: 1.1rem;
+  color: var(--text-muted); cursor: pointer; padding: 4px;
+}
+#loginModal .brand-top { text-align: center; margin-bottom: 24px; }
+#loginModal .brand-top .logo { font-family:'Amiri',serif; font-size:2rem; color:var(--navy); letter-spacing:2px; display:block; margin-bottom:4px; }
+#loginModal .brand-top .tagline { font-family:'Amiri',serif; color:var(--gold); font-size:.9rem; opacity:.85; }
+#loginModal .divider-gold { height:2px; background:linear-gradient(90deg,transparent,var(--gold),var(--gold-light),var(--gold),transparent); margin-bottom:24px; border-radius:2px; }
+#loginModal .auth-tabs { display:flex; background:rgba(26,39,68,.06); border-radius:12px; padding:4px; margin-bottom:24px; gap:2px; }
+#loginModal .tab-btn { flex:1; padding:9px 6px; border:none; background:transparent; border-radius:9px; font-family:'Cairo',sans-serif; font-size:.78rem; font-weight:600; color:var(--text-muted); cursor:pointer; transition:all .25s; }
+#loginModal .tab-btn.active { background:var(--navy); color:var(--gold-light); box-shadow:0 2px 8px rgba(26,39,68,.25); }
+#loginModal .auth-form { display:none; }
+#loginModal .auth-form.active { display:block; }
+#loginModal .form-group { margin-bottom:16px; }
+#loginModal .form-group label { display:block; font-size:.78rem; font-weight:600; color:var(--navy); margin-bottom:6px; }
+#loginModal .form-group input {
+  width:100%; padding:12px 14px; border:1.5px solid rgba(26,39,68,.15); border-radius:10px;
+  font-family:'Cairo',sans-serif; font-size:.9rem; color:var(--navy); background:white;
+  outline:none; transition:border-color .2s, box-shadow .2s; direction:ltr;
+}
+#loginModal .form-group input:focus { border-color:var(--gold); box-shadow:0 0 0 3px rgba(201,168,76,.12); }
+#loginModal .phone-row { display:flex; gap:8px; }
+#loginModal .phone-row select {
+  width:110px; flex-shrink:0; padding:12px 8px; border:1.5px solid rgba(26,39,68,.15); border-radius:10px;
+  font-family:'Cairo',sans-serif; font-size:.82rem; color:var(--navy); background:white; outline:none;
+  cursor:pointer; transition:border-color .2s; direction:ltr;
+}
+#loginModal .phone-row select:focus { border-color:var(--gold); }
+#loginModal .phone-row input { flex:1; }
+#loginModal .otp-row { display:flex; gap:8px; justify-content:center; margin:16px 0; }
+#loginModal .otp-input {
+  width:46px; height:52px; border:2px solid rgba(26,39,68,.2); border-radius:10px; text-align:center;
+  font-size:1.4rem; font-weight:700; color:var(--navy); background:white; outline:none;
+  transition:all .2s; direction:ltr;
+}
+#loginModal .otp-input:focus { border-color:var(--gold); box-shadow:0 0 0 3px rgba(201,168,76,.15); }
+#loginModal .otp-input.filled { border-color:var(--navy); background:var(--cream); }
+#loginModal .btn-primary {
+  width:100%; padding:13px; background:var(--navy); color:white; border:none; border-radius:12px;
+  font-family:'Cairo',sans-serif; font-size:.9rem; font-weight:700; cursor:pointer; transition:all .2s;
+  letter-spacing:.5px; margin-top:4px; position:relative; overflow:hidden;
+}
+#loginModal .btn-primary:hover { background:var(--navy-light); transform:translateY(-1px); }
+#loginModal .btn-primary:active { transform:translateY(0); }
+#loginModal .btn-primary:disabled { opacity:.6; cursor:not-allowed; transform:none; }
+#loginModal .btn-primary .spinner {
+  display:none; width:18px; height:18px; border:2px solid rgba(255,255,255,.3); border-top-color:white;
+  border-radius:50%; animation:spin .7s linear infinite; margin:0 auto;
+}
+#loginModal .btn-primary.loading .spinner { display:block; }
+#loginModal .btn-primary.loading .btn-text { display:none; }
+@keyframes spin { to { transform:rotate(360deg); } }
+#loginModal .or-divider { display:flex; align-items:center; gap:12px; margin:20px 0; color:var(--text-muted); font-size:.8rem; }
+#loginModal .or-divider::before, #loginModal .or-divider::after { content:''; flex:1; height:1px; background:rgba(26,39,68,.12); }
+#loginModal .btn-google {
+  width:100%; padding:12px; background:white; color:var(--text-dark); border:1.5px solid rgba(26,39,68,.15);
+  border-radius:12px; font-family:'Cairo',sans-serif; font-size:.88rem; font-weight:600; cursor:pointer;
+  display:flex; align-items:center; justify-content:center; gap:10px; transition:all .2s;
+}
+#loginModal .btn-google:hover { border-color:var(--gold); background:var(--cream-light); transform:translateY(-1px); }
+#loginModal .btn-google img { width:20px; height:20px; }
+#loginModal .toggle-link { text-align:center; margin-top:20px; font-size:.82rem; color:var(--text-muted); }
+#loginModal .toggle-link a { color:var(--navy); font-weight:700; text-decoration:none; cursor:pointer; }
+#loginModal .toggle-link a:hover { color:var(--gold); }
+#loginModal .msg {
+  padding:10px 14px; border-radius:10px; font-size:.82rem; margin-bottom:14px; display:none;
+  align-items:center; gap:8px;
+}
+#loginModal .msg.error { background:rgba(229,62,62,.08); color:var(--error,#e53e3e); border:1px solid rgba(229,62,62,.2); display:flex; }
+#loginModal .msg.success { background:rgba(56,161,105,.08); color:var(--success,#38a169); border:1px solid rgba(56,161,105,.2); display:flex; }
+#loginModal .msg.info { background:rgba(26,39,68,.06); color:var(--navy); border:1px solid rgba(26,39,68,.12); display:flex; }
+#loginModal .step-indicator { display:flex; justify-content:center; gap:6px; margin-bottom:20px; }
+#loginModal .step-dot { width:8px; height:8px; border-radius:50%; background:rgba(26,39,68,.15); transition:all .3s; }
+#loginModal .step-dot.active { background:var(--navy); width:22px; border-radius:4px; }
+#loginModal .step-dot.done { background:var(--gold); }
+#loginModal .input-wrapper { position:relative; }
+#loginModal .input-wrapper input { padding-left:40px; }
+#loginModal .toggle-pass {
+  position:absolute; left:12px; top:50%; transform:translateY(-50%); background:none; border:none;
+  cursor:pointer; color:var(--text-muted); font-size:1rem; padding:0; transition:color .2s;
+}
+#loginModal .toggle-pass:hover { color:var(--navy); }
+#loginModal .back-btn {
+  background:none; border:none; color:var(--text-muted); font-family:'Cairo',sans-serif; font-size:.82rem;
+  cursor:pointer; padding:0; margin-bottom:16px; display:flex; align-items:center; gap:4px; transition:color .2s;
+}
+#loginModal .back-btn:hover { color:var(--navy); }
+#loginModal #recaptcha-container { display:flex; justify-content:center; margin:12px 0; }
+#loginModal .resend-row { text-align:center; margin-top:12px; font-size:.8rem; color:var(--text-muted); }
+#loginModal .resend-btn { background:none; border:none; color:var(--navy); font-weight:700; cursor:pointer; font-family:'Cairo',sans-serif; font-size:.8rem; }
+#loginModal .resend-btn:disabled { color:var(--text-muted); cursor:not-allowed; }
+@media (max-width:480px) {
+  #loginModal .auth-card { padding:28px 20px; }
+  #loginModal .otp-input { width:40px; height:46px; font-size:1.2rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- SETTINGS MODAL -->
+<div class="modal-overlay" id="settingsModal" onclick="closeSettings(event)">
+  <div class="settings-panel" onclick="event.stopPropagation()">
+
+    <!-- Header -->
+    <div style="padding:16px 20px 12px;border-bottom:1px solid rgba(201,168,76,.15);display:flex;align-items:center;justify-content:space-between;">
+      <span style="font-family:'Amiri',serif;font-size:1.15rem;color:var(--text-dark);font-weight:700;">الإعدادات ⚙️</span>
+      <button onclick="closeSettingsDirect()" style="background:none;border:none;font-size:1.3rem;cursor:pointer;color:var(--text-muted);line-height:1;padding:0 4px;">✕</button>
+    </div>
+
+    <!-- USER PROFILE (logged in) -->
+    <div id="settingsUserCard" style="display:none;padding:14px 20px;border-bottom:1px solid rgba(201,168,76,.12);background:rgba(201,168,76,.04);cursor:pointer;" onclick="openDashboard();closeSettingsDirect();">
+      <div style="display:flex;align-items:center;gap:12px;">
+        <div id="settingsAvatar" style="width:46px;height:46px;border-radius:50%;background:var(--navy);display:flex;align-items:center;justify-content:center;font-size:1.3rem;color:var(--gold);font-weight:700;flex-shrink:0;overflow:hidden;"></div>
+        <div style="flex:1;min-width:0;">
+          <div id="settingsUserName" style="font-weight:700;font-size:.92rem;color:var(--text-dark);">طالب</div>
+          <div id="settingsUserSub" style="font-size:.72rem;color:var(--text-muted);margin-top:1px;">اضغط لعرض ملفك الشخصي ←</div>
+        </div>
+        <div style="color:var(--gold);font-size:1.2rem;">📊</div>
+      </div>
+    </div>
+
+    <!-- LOGIN BUTTON (logged out) -->
+    <div id="settingsLoginBtn" class="settings-item" onclick="openLoginModal();closeSettingsDirect();" style="background:rgba(201,168,76,.05);">
+      <svg viewBox="0 0 24 24" style="flex-shrink:0;fill:none;stroke:var(--gold);stroke-width:1.8;"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      <div style="flex:1;">
+        <div style="font-weight:700;color:var(--navy);">تسجيل الدخول</div>
+        <div style="font-size:.75rem;color:var(--text-muted);margin-top:2px;">ادخل لحفظ بياناتك</div>
+      </div>
+      <div style="color:var(--gold);">←</div>
+    </div>
+
+    <!-- Theme toggle -->
+    <div class="settings-item" onclick="toggleThemeFromSettings();" style="cursor:pointer;">
+      <svg viewBox="0 0 24 24" style="flex-shrink:0;fill:none;stroke:currentColor;stroke-width:1.8;"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      <div style="flex:1;">
+        <div style="font-weight:600;color:var(--text-dark);">المظهر</div>
+        <div style="font-size:.75rem;color:var(--text-muted);margin-top:2px;" id="themeLabel">اضغط للتبديل</div>
+      </div>
+      <div id="themeSwitch" style="width:48px;height:26px;border-radius:13px;background:var(--navy-deep);position:relative;transition:background .3s;flex-shrink:0;border:1px solid rgba(201,168,76,.4);">
+        <div id="themeSwitchKnob" style="position:absolute;top:3px;right:3px;width:20px;height:20px;border-radius:50%;background:var(--gold);transition:right .3s;display:flex;align-items:center;justify-content:center;font-size:.75rem;">🌙</div>
+      </div>
+    </div>
+
+    <!-- Language -->
+    <div class="settings-item" onclick="toggleLang();" style="cursor:pointer;">
+      <svg viewBox="0 0 24 24" style="flex-shrink:0;fill:none;stroke:currentColor;stroke-width:1.8;"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+      <div style="flex:1;">
+        <div style="font-weight:600;color:var(--text-dark);">اللغة / Language</div>
+        <div style="font-size:.75rem;color:var(--text-muted);margin-top:2px;" id="langLabel">العربية</div>
+      </div>
+      <div id="langChip" style="padding:5px 14px;border-radius:14px;font-size:.75rem;font-weight:700;background:rgba(201,168,76,.15);color:var(--gold);border:1px solid rgba(201,168,76,.3);">AR</div>
+    </div>
+
+    <!-- Theme color -->
+    <div class="settings-item" onclick="closeSettingsDirect();showPage(0);" style="cursor:pointer;">
+      <svg viewBox="0 0 24 24" style="flex-shrink:0;fill:none;stroke:currentColor;stroke-width:1.8;"><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/></svg>
+      <div style="flex:1;">
+        <div style="font-weight:600;color:var(--text-dark);">تخصيص لون الثيم</div>
+        <div style="font-size:.75rem;color:var(--text-muted);margin-top:2px;">غيّر لون الهوية البصرية</div>
+      </div>
+      <div style="color:var(--text-muted);">←</div>
+    </div>
+
+    <!-- Contact -->
+    <div class="settings-item" style="flex-direction:column;align-items:flex-start;gap:10px;">
+      <div style="display:flex;align-items:center;gap:10px;width:100%;">
+        <svg viewBox="0 0 24 24" style="flex-shrink:0;fill:none;stroke:currentColor;stroke-width:1.8;"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+        <div style="font-weight:600;color:var(--text-dark);">تواصل معنا</div>
+      </div>
+      <div style="display:flex;gap:8px;padding-right:32px;">
+        <a href="https://www.instagram.com/3mersalh" target="_blank" style="background:linear-gradient(135deg,#f09433,#bc1888);color:white;padding:6px 12px;border-radius:10px;font-size:.75rem;text-decoration:none;font-family:'Cairo',sans-serif;">3mersalh@ 📸</a>
+        <a href="https://www.instagram.com/dr.dt.3mer" target="_blank" style="background:linear-gradient(135deg,#f09433,#bc1888);color:white;padding:6px 12px;border-radius:10px;font-size:.75rem;text-decoration:none;font-family:'Cairo',sans-serif;">dr.dt.3mer@ 📸</a>
+      </div>
+    </div>
+
+    <!-- About -->
+    <div class="settings-item" style="cursor:default;">
+      <svg viewBox="0 0 24 24" style="flex-shrink:0;fill:none;stroke:currentColor;stroke-width:1.8;"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+      <div style="flex:1;">
+        <div style="font-weight:600;color:var(--text-dark);">عَن عُمْرِك</div>
+        <div style="font-size:.75rem;color:var(--text-muted);margin-top:2px;">معلومات عن الدفتر</div>
+      </div>
+    </div>
+
+    <!-- Logout (logged in only) -->
+    <div id="settingsLogoutBtn" style="display:none;" class="settings-item" onclick="logoutUser()">
+      <svg viewBox="0 0 24 24" style="flex-shrink:0;fill:none;stroke:#e53e3e;stroke-width:1.8;"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      <div style="flex:1;"><div style="font-weight:600;color:#e53e3e;">تسجيل الخروج</div></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- DASHBOARD MODAL -->
+<div class="modal-overlay" id="dashboardModal" onclick="closeDashboard(event)" style="display:none;align-items:flex-start;padding-top:0;">
+  <div style="background:var(--cream-light);width:100%;max-width:520px;min-height:100vh;margin:0 auto;overflow-y:auto;animation:slideUp .3s ease;" onclick="event.stopPropagation()">
+
+    <!-- Dash Header -->
+    <div style="background:var(--navy-deep);padding:16px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10;border-bottom:2px solid rgba(201,168,76,.3);">
+      <button onclick="closeDashboard()" style="background:none;border:none;color:rgba(255,255,255,.7);font-family:'Cairo',sans-serif;font-size:.85rem;cursor:pointer;">← رجوع</button>
+      <span style="font-family:'Amiri',serif;color:white;font-size:1.1rem;">ملفي الشخصي</span>
+      <button onclick="toggleDashEdit()" style="background:rgba(201,168,76,.15);border:1px solid rgba(201,168,76,.3);color:var(--gold);padding:5px 12px;border-radius:8px;font-family:'Cairo',sans-serif;font-size:.75rem;cursor:pointer;">تعديل ✏️</button>
+    </div>
+
+    <div style="padding:20px 16px;">
+
+      <!-- Profile Card -->
+      <div style="background:var(--navy);border-radius:18px;padding:24px 20px;margin-bottom:16px;">
+        <div style="display:flex;align-items:center;gap:14px;margin-bottom:18px;">
+          <div style="position:relative;flex-shrink:0;">
+            <div id="dashAvatar" style="width:64px;height:64px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;font-size:1.6rem;font-weight:700;color:var(--navy-deep);overflow:hidden;border:3px solid rgba(201,168,76,.4);"></div>
+            <label for="avatarFileInput" title="تغيير الصورة" style="position:absolute;bottom:-2px;right:-2px;width:24px;height:24px;background:var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.72rem;cursor:pointer;border:2px solid var(--navy);">📷</label>
+            <input type="file" id="avatarFileInput" accept="image/*" style="display:none;" onchange="uploadAvatarPhoto(this)">
+          </div>
+          <div style="flex:1;min-width:0;">
+            <div id="dashName" style="font-family:'Amiri',serif;font-size:1.3rem;color:white;"></div>
+            <div id="dashEmail" style="font-size:.72rem;color:rgba(255,255,255,.5);direction:ltr;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;"></div>
+            <div id="dashTags" style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px;"></div>
+          </div>
+        </div>
+        <!-- Stats -->
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(255,255,255,.08);border-radius:12px;overflow:hidden;">
+          <div style="background:rgba(255,255,255,.05);padding:12px 8px;text-align:center;">
+            <div id="dashSessions" style="font-size:1.6rem;font-weight:700;color:var(--gold-light);line-height:1;">0</div>
+            <div style="font-size:.62rem;color:rgba(255,255,255,.5);margin-top:4px;">🍅 جلسات</div>
+          </div>
+          <div style="background:rgba(255,255,255,.05);padding:12px 8px;text-align:center;">
+            <div id="dashTodos" style="font-size:1.6rem;font-weight:700;color:var(--gold-light);line-height:1;">0</div>
+            <div style="font-size:.62rem;color:rgba(255,255,255,.5);margin-top:4px;">✅ مهام</div>
+          </div>
+          <div style="background:rgba(255,255,255,.05);padding:12px 8px;text-align:center;">
+            <div id="dashStreak" style="font-size:1.6rem;font-weight:700;color:var(--gold-light);line-height:1;">0</div>
+            <div style="font-size:.62rem;color:rgba(255,255,255,.5);margin-top:4px;">🔥 أيام</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Edit Form -->
+      <div id="dashEditForm" style="display:none;background:var(--card-bg,white);border-radius:16px;padding:20px;margin-bottom:16px;box-shadow:0 2px 12px rgba(26,39,68,.07);">
+        <div style="font-family:'Amiri',serif;font-size:1.05rem;color:var(--text-dark);margin-bottom:14px;">تعديل المعلومات</div>
+        <div id="dashEditMsg" style="display:none;padding:10px;border-radius:8px;font-size:.8rem;margin-bottom:12px;"></div>
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          <div><label style="font-size:.75rem;font-weight:600;color:var(--text-dark);display:block;margin-bottom:4px;">الاسم الكامل</label>
+          <input id="dashEditName" style="width:100%;padding:10px 12px;border:1.5px solid rgba(26,39,68,.15);border-radius:10px;font-family:'Cairo',sans-serif;font-size:.85rem;color:var(--text-dark);background:var(--cream-light);outline:none;" placeholder="اسمك"></div>
+          <div><label style="font-size:.75rem;font-weight:600;color:var(--text-dark);display:block;margin-bottom:4px;">الجامعة</label>
+          <input id="dashEditUni" style="width:100%;padding:10px 12px;border:1.5px solid rgba(26,39,68,.15);border-radius:10px;font-family:'Cairo',sans-serif;font-size:.85rem;color:var(--text-dark);background:var(--cream-light);outline:none;" placeholder="جامعة دمشق"></div>
+          <div><label style="font-size:.75rem;font-weight:600;color:var(--text-dark);display:block;margin-bottom:4px;">التخصص</label>
+          <input id="dashEditMajor" style="width:100%;padding:10px 12px;border:1.5px solid rgba(26,39,68,.15);border-radius:10px;font-family:'Cairo',sans-serif;font-size:.85rem;color:var(--text-dark);background:var(--cream-light);outline:none;" placeholder="طب الأسنان"></div>
+          <div><label style="font-size:.75rem;font-weight:600;color:var(--text-dark);display:block;margin-bottom:4px;">السنة الدراسية</label>
+          <select id="dashEditYear" style="width:100%;padding:10px 12px;border:1.5px solid rgba(26,39,68,.15);border-radius:10px;font-family:'Cairo',sans-serif;font-size:.85rem;color:var(--text-dark);background:var(--cream-light);outline:none;">
+            <option value="">اختر</option>
+            <option>السنة الأولى</option><option>السنة الثانية</option>
+            <option>السنة الثالثة</option><option>السنة الرابعة</option>
+            <option>السنة الخامسة</option><option>السنة السادسة</option>
+          </select></div>
+        </div>
+        <button onclick="saveDashProfile()" style="width:100%;margin-top:14px;padding:12px;background:var(--navy);color:white;border:none;border-radius:10px;font-family:'Cairo',sans-serif;font-size:.88rem;font-weight:700;cursor:pointer;">حفظ التعديلات ←</button>
+      </div>
+
+      <!-- Activity Heatmap -->
+      <div style="background:var(--card-bg,white);border-radius:16px;padding:18px;margin-bottom:16px;box-shadow:0 2px 12px rgba(26,39,68,.07);">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+          <div style="font-family:'Amiri',serif;font-size:1.05rem;color:var(--text-dark);">نشاط المذاكرة</div>
+          <span style="font-size:.7rem;color:var(--text-muted);">آخر 4 أسابيع</span>
+        </div>
+        <div id="dashActivityGrid" style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px;"></div>
+        <div style="display:flex;justify-content:space-between;margin-top:6px;font-size:.62rem;color:var(--text-muted);">
+          <span>الأسبوع الأول</span><span>الثاني</span><span>الثالث</span><span>الرابع</span>
+        </div>
+      </div>
+
+      <!-- Recent Todos -->
+      <div style="background:var(--card-bg,white);border-radius:16px;padding:18px;margin-bottom:16px;box-shadow:0 2px 12px rgba(26,39,68,.07);">
+        <div style="font-family:'Amiri',serif;font-size:1.05rem;color:var(--text-dark);margin-bottom:12px;">آخر المهام 📋</div>
+        <div id="dashTodosList"><div style="text-align:center;color:var(--text-muted);font-size:.85rem;padding:16px;">لا توجد مهام</div></div>
+      </div>
+
+      <!-- Logout -->
+      <button onclick="logoutUser()" style="width:100%;padding:12px;background:rgba(229,62,62,.08);color:#e53e3e;border:1px solid rgba(229,62,62,.2);border-radius:12px;font-family:'Cairo',sans-serif;font-size:.88rem;font-weight:600;cursor:pointer;">تسجيل الخروج</button>
+
+    </div>
+  </div>
+</div>
+
+<!-- LOGIN MODAL (merged from login.html) -->
+<div class="modal-overlay" id="loginModal" onclick="closeLoginModal(event)" style="display:none;align-items:center;justify-content:center;padding:20px;">
+  <div class="auth-card" onclick="event.stopPropagation()">
+    <button class="login-close" onclick="closeLoginModal()">✕</button>
+
+    <!-- BRAND -->
+    <div class="brand-top">
+      <span class="logo">عَن عُمْرِك</span>
+      <span class="tagline">... وفيمَ أفنيتَه؟</span>
+    </div>
+    <div class="divider-gold"></div>
+
+    <!-- TABS -->
+    <div class="auth-tabs">
+      <button class="tab-btn active" onclick="switchTab('login')">دخول</button>
+      <button class="tab-btn" onclick="switchTab('register')">حساب جديد</button>
+      <button class="tab-btn" onclick="switchTab('phone')">📱 جوال</button>
+    </div>
+
+    <!-- MESSAGE AREA -->
+    <div class="msg" id="globalMsg"></div>
+
+    <!-- LOGIN FORM -->
+    <div class="auth-form active" id="form-login">
+      <div class="form-group">
+        <label>البريد الإلكتروني</label>
+        <input type="email" id="loginEmail" placeholder="name@example.com" autocomplete="email">
+      </div>
+      <div class="form-group">
+        <label>كلمة المرور</label>
+        <div class="input-wrapper">
+          <input type="password" id="loginPass" placeholder="••••••••" autocomplete="current-password">
+          <button class="toggle-pass" onclick="togglePass('loginPass', this)" type="button">👁</button>
+        </div>
+      </div>
+      <div style="text-align:left; margin-bottom:16px;">
+        <a href="#" style="font-size:.78rem; color:var(--text-muted); text-decoration:none;" onclick="showReset()">نسيت كلمة المرور؟</a>
+      </div>
+      <button class="btn-primary" onclick="loginEmail()" id="loginBtn">
+        <span class="btn-text">دخول ←</span>
+        <div class="spinner"></div>
+      </button>
+      <div class="or-divider">أو</div>
+      <button class="btn-google" onclick="loginGoogle()">
+        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" loading="lazy">
+        المتابعة بحساب Google
+      </button>
+    </div>
+
+    <!-- REGISTER FORM -->
+    <div class="auth-form" id="form-register">
+      <div class="form-group">
+        <label>الاسم الكامل</label>
+        <input type="text" id="regName" placeholder="عامر جمال" autocomplete="name">
+      </div>
+      <div class="form-group">
+        <label>البريد الإلكتروني</label>
+        <input type="email" id="regEmail" placeholder="name@example.com" autocomplete="email">
+      </div>
+      <div class="form-group">
+        <label>كلمة المرور</label>
+        <div class="input-wrapper">
+          <input type="password" id="regPass" placeholder="٨ أحرف على الأقل" autocomplete="new-password">
+          <button class="toggle-pass" onclick="togglePass('regPass', this)" type="button">👁</button>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>الجامعة (اختياري)</label>
+        <input type="text" id="regUni" placeholder="جامعة دمشق">
+      </div>
+      <div class="form-group">
+        <label>التخصص (اختياري)</label>
+        <input type="text" id="regMajor" placeholder="طب الأسنان">
+      </div>
+      <button class="btn-primary" onclick="registerEmail()" id="regBtn">
+        <span class="btn-text">إنشاء الحساب ←</span>
+        <div class="spinner"></div>
+      </button>
+      <div class="or-divider">أو</div>
+      <button class="btn-google" onclick="loginGoogle()">
+        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" loading="lazy">
+        التسجيل بحساب Google
+      </button>
+    </div>
+
+    <!-- PHONE FORM -->
+    <div class="auth-form" id="form-phone">
+      <div id="phone-step1">
+        <div class="step-indicator">
+          <div class="step-dot active" id="dot1"></div>
+          <div class="step-dot" id="dot2"></div>
+        </div>
+        <div class="form-group">
+          <label>رقم الجوال</label>
+          <div class="phone-row">
+            <select id="countryCode">
+              <option value="+963">🇸🇾 +963</option>
+              <option value="+966">🇸🇦 +966</option>
+              <option value="+971">🇦🇪 +971</option>
+              <option value="+962">🇯🇴 +962</option>
+              <option value="+961">🇱🇧 +961</option>
+              <option value="+964">🇮🇶 +964</option>
+              <option value="+20">🇪🇬 +20</option>
+              <option value="+212">🇲🇦 +212</option>
+              <option value="+90">🇹🇷 +90</option>
+              <option value="+44">🇬🇧 +44</option>
+              <option value="+1">🇺🇸 +1</option>
+            </select>
+            <input type="tel" id="phoneNum" placeholder="992968607" autocomplete="tel">
+          </div>
+        </div>
+        <div id="recaptcha-container"></div>
+        <button class="btn-primary" onclick="sendOTP()" id="sendOTPBtn">
+          <span class="btn-text">إرسال الرمز ←</span>
+          <div class="spinner"></div>
+        </button>
+      </div>
+      <div id="phone-step2" style="display:none;">
+        <button class="back-btn" onclick="backToPhone()">← رجوع</button>
+        <div class="step-indicator">
+          <div class="step-dot done" id="dot1b"></div>
+          <div class="step-dot active" id="dot2b"></div>
+        </div>
+        <p style="text-align:center; font-size:.85rem; color:var(--text-muted); margin-bottom:16px;">
+          أدخل الرمز المرسل إلى<br>
+          <strong id="phoneDisplay" style="color:var(--navy);"></strong>
+        </p>
+        <div class="otp-row">
+          <input class="otp-input" maxlength="1" type="number" id="otp0" oninput="otpMove(this,0)">
+          <input class="otp-input" maxlength="1" type="number" id="otp1" oninput="otpMove(this,1)">
+          <input class="otp-input" maxlength="1" type="number" id="otp2" oninput="otpMove(this,2)">
+          <input class="otp-input" maxlength="1" type="number" id="otp3" oninput="otpMove(this,3)">
+          <input class="otp-input" maxlength="1" type="number" id="otp4" oninput="otpMove(this,4)">
+          <input class="otp-input" maxlength="1" type="number" id="otp5" oninput="otpMove(this,5)">
+        </div>
+        <button class="btn-primary" onclick="verifyOTP()" id="verifyBtn">
+          <span class="btn-text">تحقق ودخول ←</span>
+          <div class="spinner"></div>
+        </button>
+        <div class="resend-row">
+          لم يصلك الرمز؟
+          <button class="resend-btn" id="resendBtn" onclick="resendOTP()" disabled>
+            إعادة الإرسال (<span id="resendTimer">60</span>s)
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- RESET PASSWORD -->
+    <div class="auth-form" id="form-reset">
+      <button class="back-btn" onclick="switchTab('login')">← رجوع لتسجيل الدخول</button>
+      <p style="font-size:.85rem; color:var(--text-muted); margin-bottom:16px;">
+        أدخل بريدك وسنرسل لك رابط إعادة تعيين كلمة المرور.
+      </p>
+      <div class="form-group">
+        <label>البريد الإلكتروني</label>
+        <input type="email" id="resetEmail" placeholder="name@example.com">
+      </div>
+      <button class="btn-primary" onclick="sendReset()" id="resetBtn">
+        <span class="btn-text">إرسال رابط الاسترداد ←</span>
+        <div class="spinner"></div>
+      </button>
+    </div>
+
+    <div class="toggle-link" id="toggleLink">
+      ليس لديك حساب؟ <a onclick="switchTab('register')">سجّل الآن</a>
+    </div>
+
+  </div>
+</div>
+
+
+<div class="app-shell">
+
+  <!-- SIDEBAR (desktop) -->
+  <aside class="sidebar">
+    <div class="sidebar-brand">عَن عُمْرِك</div>
+    <nav class="sidebar-nav">
+      <!-- RIGHT TO LEFT ORDER: منتجات، أدوات، رئيسية، محتوى، تواصل -->
+      <button class="sidebar-btn" data-page="0" onclick="showPage(0)">
+        <svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+        <span>منتجات</span>
+      </button>
+      <button class="sidebar-btn" data-page="1" onclick="showPage(1)">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <span>أدوات</span>
+      </button>
+      <button class="sidebar-btn active" data-page="2" onclick="showPage(2)">
+        <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        <span>الرئيسية</span>
+      </button>
+      <button class="sidebar-btn" data-page="3" onclick="showPage(3)">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
+        <span>محتوى</span>
+      </button>
+      <button class="sidebar-btn" data-page="4" onclick="showPage(4)">
+        <svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+        <span>تواصل</span>
+      </button>
+    </nav>
+    <button class="sidebar-theme" onclick="openSettings()" title="الإعدادات">⚙️</button>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="main-content">
+
+    <!-- MOBILE HEADER -->
+    <div class="mobile-header">
+      <button onclick="openSettings()" aria-label="الإعدادات" style="font-size:1.3rem;">⚙️</button>
+      <div class="brand">عَن عُمْرِك</div>
+      <div style="width:38px;"></div>
+    </div>
+
+    <!-- ════ PAGE 0: DAFATER (منتجات) ════ -->
+    <div class="page-section" id="page-0">
+
+      <!-- LIVE THEME CUSTOMIZER -->
+      <div class="theme-customizer-bar">
+        <span class="tc-label">🎨 لون الثيم</span>
+        <div class="tc-presets">
+          <button class="tc-preset active" data-navy="#1a2744" style="background:#1a2744;" onclick="applyThemeColor(this)" title="كحلي"></button>
+          <button class="tc-preset" data-navy="#c49a8a" style="background:#c49a8a;" onclick="applyThemeColor(this)" title="وردي ترابي"></button>
+          <button class="tc-preset" data-navy="#2d6a4f" style="background:#2d6a4f;" onclick="applyThemeColor(this)" title="أخضر"></button>
+          <button class="tc-preset" data-navy="#5c3d2e" style="background:#5c3d2e;" onclick="applyThemeColor(this)" title="بني"></button>
+          <button class="tc-preset" data-navy="#7b2d8b" style="background:#7b2d8b;" onclick="applyThemeColor(this)" title="بنفسجي"></button>
+        </div>
+        <label class="tc-custom-label">
+          <span>مخصص</span>
+          <input type="color" id="themeColorPicker" value="#1a2744" oninput="applyThemeColorDirect(this.value)">
+        </label>
+      </div>
+
+<!-- COLOR PICKER -->
+<div class="color-section">
+  <div class="color-section-title reveal">اختر لونك المفضل 🎨</div>
+  <div class="color-section-sub reveal">اضغط على الدفتر الذي يعجبك — سيأخذك لصفحتنا على إنستغرام</div>
+  <div class="notebooks-row">
+    <a class="notebook-option reveal" href="https://www.instagram.com/dr.dt.3mer?igsh=cHR6OXJucGVqMXZn&utm_source=qr" target="_blank">
+      <img id="img-notebook-rose" alt="دفتر عن عمرك — الإصدار الوردي" src="assets/images/notebook-rose.webp" loading="lazy">
+      <div class="notebook-badge badge-rose">🌸 وردي دافئ</div>
+      <div class="notebook-label label-rose">الإصدار الوردي</div>
+    </a>
+    <a class="notebook-option reveal" href="https://www.instagram.com/3mersalh?igsh=MTNlZmRxN3JpZTgwdQ%3D%3D&utm_source=qr" target="_blank">
+      <img id="img-notebook-navy" alt="دفتر عن عمرك — الإصدار الكحلي" src="assets/images/notebook-navy.webp" loading="lazy">
+      <div class="notebook-badge badge-navy">🌙 كحلي كلاسيكي</div>
+      <div class="notebook-label label-navy">الإصدار الكحلي</div>
+    </a>
+  </div>
+  <p class="color-question reveal">أيّ اللونين تفضل؟ 🤔</p>
+</div>
+
+<!-- GALLERY -->
+<div class="gallery-section">
+  <div class="gallery-title reveal">من داخل الدفتر</div>
+  <div class="gallery-sub reveal">لمحة من عالم عَن عُمْرِك</div>
+  <div class="gallery-grid" id="galleryGrid">
+    <img id="img-gallery-1" class="reveal" alt="دفتر عن عمرك" src="assets/images/gallery-photo-1.webp" loading="lazy">
+    <img id="img-gallery-2" class="reveal" alt="دفتر عن عمرك - الغلاف الخلفي" src="assets/images/gallery-cover-back.webp" loading="lazy">
+    <img id="img-gallery-3" class="reveal wide" alt="دفتر عن عمرك في قاعة الدراسة" src="assets/images/gallery-study-hall.webp" loading="lazy">
+  </div>
+</div>
+
+      <footer>عَن عُمْرِك © 2026 — جميع الحقوق محفوظة</footer>
+    </div>
+
+    <!-- ════ PAGE 1: ADAWAT (أدوات) ════ -->
+    <div class="page-section" id="page-1">
+      <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+
+      <!-- POMODORO -->
+      <div class="pomodoro-wrap reveal">
+        <h2 class="section-title" style="margin-bottom:20px;">مؤقت البومودورو 🍅</h2>
+        <div class="pomodoro-modes">
+          <button id="btnWork" class="active" onclick="setMode('work')">٢٥ دقيقة — مذاكرة</button>
+          <button id="btnBreak" onclick="setMode('break')">٥ دقائق — راحة</button>
+          <button id="btnLong" onclick="setMode('long')">١٥ دقيقة — راحة طويلة</button>
+        </div>
+        <svg class="pomodoro-ring" viewBox="0 0 200 200">
+          <circle class="track" cx="100" cy="100" r="88"/>
+          <circle class="progress" id="pomRing" cx="100" cy="100" r="88"
+            stroke-dasharray="553" stroke-dashoffset="0"
+            transform="rotate(-90 100 100)"/>
+          <text class="pomodoro-time" id="pomTime" x="100" y="106" text-anchor="middle">25:00</text>
+          <text x="100" y="128" text-anchor="middle" font-family="Cairo,sans-serif" font-size="11" fill="#7a8aaa" id="pomLabel">مذاكرة</text>
+        </svg>
+        <div class="pomodoro-actions">
+          <button id="pomBtn" onclick="toggleTimer()">▶ بدء</button>
+          <button onclick="resetTimer()">↺ إعادة</button>
+        </div>
+        <p style="margin-top:18px; font-family:'Amiri',serif; font-size:1rem; color:var(--text-muted);">
+          جلسات منجزة: <strong id="streakCount">0</strong> 🏆
+        </p>
+      </div>
+
+      <!-- TO-DO LIST -->
+      <div class="todo-wrap reveal" style="max-width:560px; margin:0 auto 32px;">
+        <div class="todo-header">قائمة المهام 📋</div>
+        <div class="todo-input-row">
+          <input class="todo-input" id="todoInput" type="text" placeholder="أضف مهمة جديدة..." onkeydown="if(event.key==='Enter')addTodo()">
+          <button class="todo-add-btn" onclick="addTodo()">+ إضافة</button>
+        </div>
+        <div class="todo-filter">
+          <button class="active" id="filterAll" onclick="filterTodos('all')">الكل</button>
+          <button id="filterActive" onclick="filterTodos('active')">قيد التنفيذ</button>
+          <button id="filterDone" onclick="filterTodos('done')">مكتملة</button>
+        </div>
+        <ul class="todo-list" id="todoList">
+          <li class="todo-empty" id="todoEmpty">لا توجد مهام بعد — ابدأ بإضافة مهمتك الأولى 🌱</li>
+        </ul>
+      </div>
+
+      <footer>عَن عُمْرِك © 2026 — جميع الحقوق محفوظة</footer>
+    </div>
+
+    <!-- ════ PAGE 2: HOME / QUOTE (الرئيسية) ════ -->
+    <div class="page-section active" id="page-2">
+      <div class="quote-hero reveal">
+        <span class="quote-ornament">❝</span>
+        <p class="quote-text" id="quoteText"></p>
+        <div class="quote-source" id="quoteSource"></div>
+        <div class="quote-type-badge" id="quoteBadge"></div>
+        <div class="quote-actions">
+          <button class="qa-btn" onclick="newQuote()">اقتباس جديد 🔄</button>
+          <button class="qa-btn" onclick="copyQuote()">نسخ 📋</button>
+          <button class="qa-btn" onclick="shareQuote()">مشاركة 🔗</button>
+        </div>
+      </div>
+      <div class="verse-band">
+        <div class="verse-text">﴿وَأَن لَّيْسَ لِلْإِنسَانِ إِلَّا مَا سَعَىٰ﴾</div>
+      </div>
+      <footer>عَن عُمْرِك © 2026 — جميع الحقوق محفوظة</footer>
+    </div>
+
+    <!-- ════ PAGE 3: MOHTAWA (محتوى) ════ -->
+    <div class="page-section" id="page-3">
+      <div style="padding:28px 0 0;">
+        <h2 class="section-title reveal">المحتوى المختار لك</h2>
+
+        <!-- BENTO GRID -->
+        <div class="bento-grid" id="videoGrid">
+
+          <a class="video-card wide reveal" id="vc-0" href="https://youtu.be/qjl8wdrpEpc" target="_blank">
+            <div class="card-accent"></div>
+            <div class="card-body">
+              <div class="card-topic">الحياة الجامعية</div>
+              <div class="card-title">الـ 7 وصايا لطلاب الجامعة</div>
+              <div class="card-channel">دروس أونلاين</div>
+            </div>
+            <div class="card-arrow">←</div>
+            <button class="watch-btn" data-target="vc-0" onclick="markWatched(event,this)">شاهدت</button>
+          </a>
+
+          <a class="video-card reveal" id="vc-1" href="https://youtube.com/watch?v=bJ6kfrEQJuM" target="_blank">
+            <div class="card-accent"></div>
+            <div class="card-body">
+              <div class="card-topic">إدارة الوقت</div>
+              <div class="card-title">تنظيم الوقت — Time Blocking</div>
+              <div class="card-channel">دروس أونلاين</div>
+            </div>
+            <div class="card-arrow">←</div>
+            <button class="watch-btn" data-target="vc-1" onclick="markWatched(event,this)">شاهدت</button>
+          </a>
+
+          <a class="video-card reveal" id="vc-2" href="https://youtube.com/watch?v=YMCeQVkBbOs" target="_blank">
+            <div class="card-accent"></div>
+            <div class="card-body">
+              <div class="card-topic">التغلب على الفشل</div>
+              <div class="card-title">من الفشل إلى النجاح</div>
+              <div class="card-channel">تحفيز عربي</div>
+            </div>
+            <div class="card-arrow">←</div>
+            <button class="watch-btn" data-target="vc-2" onclick="markWatched(event,this)">شاهدت</button>
+          </a>
+
+          <a class="video-card reveal" id="vc-3" href="https://youtube.com/watch?v=hdTdev3GVCw" target="_blank">
+            <div class="card-accent"></div>
+            <div class="card-body">
+              <div class="card-topic">الصحة النفسية</div>
+              <div class="card-title">كيف تفهم نفسك</div>
+              <div class="card-channel">بودكاست فنجان</div>
+            </div>
+            <div class="card-arrow">←</div>
+            <button class="watch-btn" data-target="vc-3" onclick="markWatched(event,this)">شاهدت</button>
+          </a>
+
+          <a class="video-card reveal" id="vc-4" href="https://youtube.com/watch?v=lkX6mcCD3CI" target="_blank">
+            <div class="card-accent"></div>
+            <div class="card-body">
+              <div class="card-topic">العلاقة مع القرآن</div>
+              <div class="card-title">أنا صاحبك القرآن</div>
+              <div class="card-channel">د. أحمد العربي</div>
+            </div>
+            <div class="card-arrow">←</div>
+            <button class="watch-btn" data-target="vc-4" onclick="markWatched(event,this)">شاهدت</button>
+          </a>
+
+          <a class="video-card wide reveal" id="vc-5" href="https://youtube.com/watch?v=63_AOCldyXo" target="_blank">
+            <div class="card-accent"></div>
+            <div class="card-body">
+              <div class="card-topic">تذوق الصلاة</div>
+              <div class="card-title">سلسلة تذوق العبادات — الصلاة</div>
+              <div class="card-channel">بودكاست فاهم — د. أحمد العربي</div>
+            </div>
+            <div class="card-arrow">←</div>
+            <button class="watch-btn" data-target="vc-5" onclick="markWatched(event,this)">شاهدت</button>
+          </a>
+
+        </div><!-- end bento-grid -->
+
+        <!-- WATCHED VIDEOS SECTION (hidden until populated) -->
+        <div id="watchedSection" style="display:none; padding:0 20px 32px;">
+          <h3 class="section-title" style="font-size:1.1rem; margin-top:24px; margin-bottom:16px;">
+            الفيديوهات المشاهدة ✅
+          </h3>
+          <div class="bento-grid" id="watchedGrid" style="padding:0; opacity:.7;"></div>
+        </div>
+
+      </div>
+      <footer>عَن عُمْرِك © 2026 — جميع الحقوق محفوظة</footer>
+    </div>
+
+    <!-- ════ PAGE 4: TAWASOL (تواصل) ════ -->
+    <div class="page-section" id="page-4">
+
+      <!-- INSTAGRAM PREMIUM CARDS -->
+      <div class="insta-section">
+        <div class="insta-title reveal">تابعني هنا 📲</div>
+        <div class="insta-cards">
+          <a class="insta-card reveal" href="https://www.instagram.com/dr.dt.3mer?igsh=cHR6OXJucGVqMXZn&utm_source=qr" target="_blank">
+            <div class="insta-icon">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="white" d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+            </div>
+            <div class="insta-info">
+              <div class="insta-handle">@dr.dt.3mer</div>
+              <div class="insta-label">تابعني على إنستغرام</div>
+            </div>
+            <div style="margin-right:auto; padding-right:12px;">
+              <div style="background:linear-gradient(135deg,#f09433,#bc1888);color:white;font-size:.7rem;padding:4px 10px;border-radius:12px;font-family:'Cairo',sans-serif;white-space:nowrap;">متابعة ←</div>
+            </div>
+          </a>
+          <a class="insta-card reveal" href="https://www.instagram.com/3mersalh?igsh=MTNlZmRxN3JpZTgwdQ%3D%3D&utm_source=qr" target="_blank">
+            <div class="insta-icon">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="white" d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+            </div>
+            <div class="insta-info">
+              <div class="insta-handle">@3mersalh</div>
+              <div class="insta-label">تابعني على إنستغرام</div>
+            </div>
+            <div style="margin-right:auto; padding-right:12px;">
+              <div style="background:linear-gradient(135deg,#f09433,#bc1888);color:white;font-size:.7rem;padding:4px 10px;border-radius:12px;font-family:'Cairo',sans-serif;white-space:nowrap;">متابعة ←</div>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <!-- FEEDBACK FORM — EmailJS wired -->
+      <div class="feedback-wrap">
+        <div class="feedback-section reveal">
+          <div class="feedback-title">شاركنا رأيك 💬</div>
+          <div class="feedback-sub">رأيك يساعدنا على تطوير الدفتر — نقدّر كل كلمة</div>
+          <div id="formContainer">
+            <label>بريدك الإلكتروني (إلزامي)</label>
+            <input type="email" id="studentEmail" name="student_email" required placeholder="name@example.com">
+            <label>اسمك (اختياري)</label>
+            <input type="text" id="senderName" name="sender_name" placeholder="طالب غامض">
+            <label>تقييمك للدفتر</label>
+            <select id="rating" name="rating">
+              <option value="ممتاز ⭐⭐⭐⭐⭐">ممتاز ⭐⭐⭐⭐⭐</option>
+              <option value="جيد جداً ⭐⭐⭐⭐">جيد جداً ⭐⭐⭐⭐</option>
+              <option value="جيد ⭐⭐⭐">جيد ⭐⭐⭐</option>
+              <option value="يحتاج تحسين ⭐⭐">يحتاج تحسين ⭐⭐</option>
+            </select>
+            <label>ما الذي أعجبك في دفتر عَن عُمْرِك؟</label>
+            <textarea id="opinion" name="opinion" placeholder="اكتب رأيك هنا..."></textarea>
+            <label>اقتراحاتك للنسخ القادمة</label>
+            <textarea id="suggestions" name="suggestions" placeholder="أفكار، إضافات، أو تعديلات..."></textarea>
+            <button class="submit-btn" id="submitBtn" onclick="submitFeedback()">إرسال رأيك ←</button>
+          </div>
+          <div class="form-success" id="formSuccess">
+            <span class="check">✓</span>
+            <p>وصلنا رأيك — شكراً لك على المشاركة!<br>
+            <small style="color:var(--text-muted);font-family:Cairo;font-size:.8rem;">سيكون لرأيك أثر في النسخة القادمة</small></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- TESTIMONIALS -->
+      <!-- STUDENT REVIEWS -->
+<div class="reviews-wrap">
+  <div class="reviews-title reveal">ماذا قالوا عن الدفتر؟</div>
+  <div class="reviews-sub reveal">آراء طلاب جربوا دفتر عَن عُمْرِك</div>
+
+  <div class="review-card reveal">
+    <div class="review-header">
+      <div class="review-avatar" style="background:#c49a8a;">س</div>
+      <div><div class="review-name">سارة الحلبي</div><div class="review-date">منذ أسبوعين</div></div>
+    </div>
+    <div class="review-stars">★★★★★</div>
+    <div class="review-text">والله كنت مش مصدقة إنو دفتر رح يغير حياتي بس صراحة بعد ما بدأت أستخدمه تغير كل شي 😭❤️ صارت عندي روتين واضح وبدأت أحس إنو وقتي إلي. كل طالب جامعي لازم يجرب هاد الدفتر، مش مبالغة!</div>
+    <span class="review-tag">✅ مستخدمة موثقة</span>
+  </div>
+
+  <div class="review-card reveal">
+    <div class="review-header">
+      <div class="review-avatar" style="background:#1a2744;">ع</div>
+      <div><div class="review-name">عمر الشامي</div><div class="review-date">منذ 3 أسابيع</div></div>
+    </div>
+    <div class="review-stars">★★★★★</div>
+    <div class="review-text">أنا من دمشق وبصراحة كنت شايف إنو مجرد دفتر عادي، بس لما بدأت أقرأ التفاصيل وأشوف التصميم وجدية المحتوى داخله — اقتنعت فوراً 🙌 الآن ما بقدر أتخيل الفصل الدراسي بدونه. ترتيبي تحسن ومعدلي ارتفع والحمدلله!</div>
+    <span class="review-tag">📚 طالب طب</span>
+  </div>
+
+  <div class="review-card reveal">
+    <div class="review-header">
+      <div class="review-avatar" style="background:#c9a84c;">ل</div>
+      <div><div class="review-name">لينا الأحمد</div><div class="review-date">منذ شهر</div></div>
+    </div>
+    <div class="review-stars">★★★★½</div>
+    <div class="review-text">يا ربي شو حلو التصميم! 😍 من أول ما وصلني الدفتر والريحة والورق والألوان — كل شي مرتب بشكل ما شفته قبل. صممته بحب واضح وهاد بيحسسك إنك تلتزم بالاستخدام. شكراً عامر على هالمنتج الرائع 💙</div>
+    <span class="review-tag">🎓 سنة ثالثة هندسة</span>
+  </div>
+
+  <div class="review-card reveal">
+    <div class="review-header">
+      <div class="review-avatar" style="background:#374151;">م</div>
+      <div><div class="review-name">محمد السوري</div><div class="review-date">منذ أسبوع</div></div>
+    </div>
+    <div class="review-stars">★★★★★</div>
+    <div class="review-text">الصراحة ما توقعت إنو أقدر أتنظم هيك 😅 أنا شخص فوضوي بطبعي بس هالدفتر عمل معجزة. الآن بحطّ أهدافي وعندي خطة أسبوعية وحتى صار عندي وقت للراحة! أنصح فيه كل طالب حتى لو ما كنت تحب الكتابة 🔥</div>
+    <span class="review-tag">💡 مهندس مستقبلي</span>
+  </div>
+
+  <div class="review-card reveal">
+    <div class="review-header">
+      <div class="review-avatar" style="background:#9f7aea;">ر</div>
+      <div><div class="review-name">رنا الديراني</div><div class="review-date">منذ 10 أيام</div></div>
+    </div>
+    <div class="review-stars">★★★★★</div>
+    <div class="review-text">هدية أهدتيها أختي وغيرت حياتي 🥹 كنت أحس إنو الوقت بيمر وما عم تنتجي بس هلق كل يوم عندي إنجازات أكتبها وبحسس حالي مثمر. الآراء اللي جوا الدفتر من علماء وقرآن بتحسسك إنك مش لحالك بهالرحلة ❤️</div>
+    <span class="review-tag">🌸 طالبة صيدلة</span>
+  </div>
+
+</div>
+
+      <!-- QR CODE SECTION -->
+      <div class="qr-outer">
+        <div class="qr-section reveal">
+          <div style="position:relative;z-index:1;">
+            <div class="qr-tagline" style="font-family:'Amiri',serif;color:var(--gold-light);font-size:1.05rem;margin-bottom:6px;">
+              الدالّ على الخير كفاعله
+            </div>
+            <div class="qr-title">شارك الموقع مع أصدقائك</div>
+            <div class="qr-subtitle">امسح الكود وأوصل الفائدة لمن تحب</div>
+            <div id="qrcode" style="display:inline-block;background:white;padding:12px;border-radius:12px;margin-top:4px;"></div>
+          </div>
+        </div>
+      </div>
+
+      <footer>عَن عُمْرِك © 2026 — جميع الحقوق محفوظة</footer>
+    </div>
+
+
+  </main><!-- end main-content -->
+</div><!-- end app-shell -->
+
+<!-- MOBILE BOTTOM NAV -->
+<nav class="bottom-nav">
+  <!-- Right to left: منتجات، أدوات، 🏠 FAB، محتوى، تواصل -->
+  <button class="nav-btn" data-page="0" onclick="showPage(0)">
+    <svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+    منتجات
+  </button>
+  <button class="nav-btn" data-page="1" onclick="showPage(1)">
+    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+    أدوات
+  </button>
+  <div class="fab-wrapper">
+    <button class="fab" id="fabBtn" data-page="2" onclick="showPage(2)">🏠</button>
+  </div>
+  <button class="nav-btn" data-page="3" onclick="showPage(3)">
+    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
+    محتوى
+  </button>
+  <button class="nav-btn" data-page="4" onclick="showPage(4)">
+    <svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+    تواصل
+  </button>
+</nav>
+
+<div class="qa-toast" id="qaToast"></div>
+
+<script>
+
+// ═══════════════════════════════════════════════════════════
+//  عَن عُمْرِك — Main Script (Clean Build)
+//  No duplicate vars | Proper scoping | Memory-safe
+// ═══════════════════════════════════════════════════════════
+
+// ── THEME ──────────────────────────────────────────────────
+function applyTheme(t) {
+  if (t === 'dark') {
+    document.documentElement.setAttribute('data-theme', 'dark');
+  } else {
+    document.documentElement.removeAttribute('data-theme');
+  }
+  var knob = document.getElementById('themeSwitchKnob');
+  var sw   = document.getElementById('themeSwitch');
+  var lbl  = document.getElementById('themeLabel');
+  if (t === 'dark') {
+    if (knob) { knob.style.right = '3px';  knob.textContent = '🌙'; }
+    if (sw)   sw.style.background = '#243560';
+    if (lbl)  lbl.textContent = 'وضع ليلي مفعّل';
+  } else {
+    if (knob) { knob.style.right = '25px'; knob.textContent = '☀️'; }
+    if (sw)   sw.style.background = 'rgba(201,168,76,.3)';
+    if (lbl)  lbl.textContent = 'وضع نهاري مفعّل';
+  }
+  localStorage.setItem('theme', t);
+}
+
+function toggleThemeFromSettings() {
+  var cur = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+  applyTheme(cur === 'dark' ? 'light' : 'dark');
+}
+
+// Boot theme (runs before DOM ready — safe because we only touch html attr)
+(function() {
+  var saved = localStorage.getItem('theme');
+  if (saved) { applyTheme(saved); return; }
+  if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    applyTheme('dark');
+  } else {
+    applyTheme('light');
+  }
+})();
+
+if (window.matchMedia) {
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(e) {
+    if (!localStorage.getItem('theme')) applyTheme(e.matches ? 'dark' : 'light');
+  });
+}
+
+// ── SETTINGS MODAL ─────────────────────────────────────────
+var _settingsOpen = false;
+
+function openSettings() {
+  _settingsOpen = true;
+  var modal = document.getElementById('settingsModal');
+  if (!modal) return;
+  modal.classList.add('open');
+}
+
+function closeSettingsDirect() {
+  _settingsOpen = false;
+  var modal = document.getElementById('settingsModal');
+  if (modal) modal.classList.remove('open');
+}
+
+function closeSettings(e) {
+  if (!e || e.target === document.getElementById('settingsModal')) {
+    closeSettingsDirect();
+  }
+}
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape' && _settingsOpen) closeSettingsDirect();
+});
+
+// ── SPA ROUTER ─────────────────────────────────────────────
+var currentPage = 2;
+var _qrDone = false;
+
+function showPage(idx) {
+  idx = parseInt(idx);
+
+  // Hide all sections
+  for (var i = 0; i < 5; i++) {
+    var sec = document.getElementById('page-' + i);
+    if (sec) sec.classList.remove('active');
+  }
+
+  // Show target
+  var target = document.getElementById('page-' + idx);
+  if (!target) return;
+  target.classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'instant' });
+
+  // Sidebar active
+  document.querySelectorAll('.sidebar-btn').forEach(function(b) {
+    b.classList.toggle('active', parseInt(b.getAttribute('data-page')) === idx);
+  });
+
+  // Bottom nav active
+  document.querySelectorAll('.bottom-nav .nav-btn').forEach(function(b) {
+    b.classList.toggle('active', parseInt(b.getAttribute('data-page')) === idx);
+  });
+
+  // FAB highlight
+  var fab = document.getElementById('fabBtn');
+  if (fab) fab.classList.toggle('active', idx === 2);
+
+  currentPage = idx;
+
+  // Re-observe reveal elements in the newly shown page
+  target.querySelectorAll('.reveal:not(.visible)').forEach(function(el) {
+    revealObs.observe(el);
+  });
+
+  // Init QR once when tawasol opens
+  if (idx === 4 && !_qrDone) {
+    _qrDone = true;
+    setTimeout(function() {
+      var qrEl = document.getElementById('qrcode');
+      if (qrEl && typeof QRCode !== 'undefined' && !qrEl.firstChild) {
+        new QRCode(qrEl, {
+          text: window.location.href,
+          width: 150, height: 150,
+          colorDark: '#1a2744', colorLight: '#ffffff',
+          correctLevel: QRCode.CorrectLevel.H
+        });
+      }
+    }, 300);
+  }
+
+  // Sync todo display if switching to tools
+  if (idx === 1) renderTodos();
+}
+
+// ── SCROLL REVEAL ──────────────────────────────────────────
+var revealObs = new IntersectionObserver(function(entries) {
+  entries.forEach(function(entry) {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+document.querySelectorAll('.reveal').forEach(function(el) {
+  revealObs.observe(el);
+});
+
+// ── TOAST ───────────────────────────────────────────────────
+function showToast(msg) {
+  var toast = document.getElementById('qaToast');
+  if (!toast) return;
+  toast.textContent = msg;
+  toast.classList.add('show');
+  setTimeout(function() { toast.classList.remove('show'); }, 2500);
+}
+
+// ── QUOTES ─────────────────────────────────────────────────
+const quotes = [
+  { text: "﴿يَا أَيُّهَا الَّذِينَ آمَنُوا اسْتَعِينُوا بِالصَّبْرِ وَالصَّلَاةِ ۚ إِنَّ اللَّهَ مَعَ الصَّابِرِينَ﴾", source: "سورة البقرة — آية 153", type: "آية كريمة" },
+  { text: "﴿فَإِنَّ مَعَ الْعُسْرِ يُسْرًا ۝ إِنَّ مَعَ الْعُسْرِ يُسْرًا﴾", source: "سورة الشرح — آيتان 5-6", type: "آية كريمة" },
+  { text: "﴿وَمَن يَتَّقِ اللَّهَ يَجْعَل لَّهُ مَخْرَجًا ۝ وَيَرْزُقْهُ مِنْ حَيْثُ لَا يَحْتَسِبُ﴾", source: "سورة الطلاق — آيتان 2-3", type: "آية كريمة" },
+  { text: "﴿وَلَا تَهِنُوا وَلَا تَحْزَنُوا وَأَنتُمُ الْأَعْلَوْنَ إِن كُنتُم مُّؤْمِنِينَ﴾", source: "سورة آل عمران — آية 139", type: "آية كريمة" },
+  { text: "﴿وَقُل رَّبِّ زِدْنِي عِلْمًا﴾", source: "سورة طه — آية 114", type: "آية كريمة" },
+  { text: "﴿إِنَّ اللَّهَ لَا يُغَيِّرُ مَا بِقَوْمٍ حَتَّىٰ يُغَيِّرُوا مَا بِأَنفُسِهِمْ﴾", source: "سورة الرعد — آية 11", type: "آية كريمة" },
+  { text: "﴿وَأَن لَّيْسَ لِلْإِنسَانِ إِلَّا مَا سَعَىٰ﴾", source: "سورة النجم — آية 39", type: "آية كريمة" },
+  { text: "﴿وَعَسَىٰ أَن تَكْرَهُوا شَيْئًا وَهُوَ خَيْرٌ لَّكُمْ﴾", source: "سورة البقرة — آية 216", type: "آية كريمة" },
+  { text: "﴿وَتَوَكَّلْ عَلَى اللَّهِ ۚ وَكَفَىٰ بِاللَّهِ وَكِيلًا﴾", source: "سورة الأحزاب — آية 3", type: "آية كريمة" },
+  { text: "﴿وَاصْبِرْ وَمَا صَبْرُكَ إِلَّا بِاللَّهِ﴾", source: "سورة النحل — آية 127", type: "آية كريمة" },
+  { text: "﴿فَإِذَا فَرَغْتَ فَانصَبْ ۝ وَإِلَىٰ رَبِّكَ فَارْغَب﴾", source: "سورة الشرح — آيتان 7-8", type: "آية كريمة" },
+  { text: "﴿وَمَن جَاهَدَ فَإِنَّمَا يُجَاهِدُ لِنَفْسِهِ﴾", source: "سورة العنكبوت — آية 6", type: "آية كريمة" },
+  { text: "﴿وَلَا تَقْنَطُوا مِن رَّحْمَةِ اللَّهِ﴾", source: "سورة الزمر — آية 53", type: "آية كريمة" },
+  { text: "﴿وَهُوَ مَعَكُمْ أَيْنَ مَا كُنتُمْ﴾", source: "سورة الحديد — آية 4", type: "آية كريمة" },
+  { text: "﴿أَلَا بِذِكْرِ اللَّهِ تَطْمَئِنُّ الْقُلُوبُ﴾", source: "سورة الرعد — آية 28", type: "آية كريمة" },
+  { text: "﴿وَاللَّهُ يُحِبُّ الصَّابِرِينَ﴾", source: "سورة آل عمران — آية 146", type: "آية كريمة" },
+  { text: "﴿وَالَّذِينَ جَاهَدُوا فِينَا لَنَهْدِيَنَّهُمْ سُبُلَنَا﴾", source: "سورة العنكبوت — آية 69", type: "آية كريمة" },
+  { text: "﴿إِنَّ اللَّهَ مَعَ الَّذِينَ اتَّقَوا وَّالَّذِينَ هُم مُّحْسِنُونَ﴾", source: "سورة النحل — آية 128", type: "آية كريمة" },
+  { text: "﴿وَمَا تَوْفِيقِي إِلَّا بِاللَّهِ ۚ عَلَيْهِ تَوَكَّلْتُ﴾", source: "سورة هود — آية 88", type: "آية كريمة" },
+  { text: "﴿فَاصْبِرْ صَبْرًا جَمِيلًا﴾", source: "سورة المعارج — آية 5", type: "آية كريمة" },
+  { text: "﴿حَسْبُنَا اللَّهُ وَنِعْمَ الْوَكِيلُ﴾", source: "سورة آل عمران — آية 173", type: "آية كريمة" },
+  { text: "﴿يَرْفَعِ اللَّهُ الَّذِينَ آمَنُوا مِنكُمْ وَالَّذِينَ أُوتُوا الْعِلْمَ دَرَجَاتٍ﴾", source: "سورة المجادلة — آية 11", type: "آية كريمة" },
+  { text: "﴿إِنَّ اللَّهَ لَا يُضِيعُ أَجْرَ الْمُحْسِنِينَ﴾", source: "سورة التوبة — آية 120", type: "آية كريمة" },
+  { text: "﴿وَمَن يَتَوَكَّلْ عَلَى اللَّهِ فَهُوَ حَسْبُهُ﴾", source: "سورة الطلاق — آية 3", type: "آية كريمة" },
+  { text: "﴿لَا يُكَلِّفُ اللَّهُ نَفْسًا إِلَّا وُسْعَهَا﴾", source: "سورة البقرة — آية 286", type: "آية كريمة" },
+  { text: "﴿إِنَّ اللَّهَ مَعَ الصَّابِرِينَ﴾", source: "سورة الأنفال — آية 46", type: "آية كريمة" },
+  { text: "﴿وَبَشِّرِ الصَّابِرِينَ﴾", source: "سورة البقرة — آية 155", type: "آية كريمة" },
+  { text: "﴿إِنَّ الْإِنسَانَ لَفِي خُسْرٍ ۝ إِلَّا الَّذِينَ آمَنُوا وَعَمِلُوا الصَّالِحَاتِ﴾", source: "سورة العصر — آيتان 2-3", type: "آية كريمة" },
+  { text: "﴿هَلْ جَزَاءُ الْإِحْسَانِ إِلَّا الْإِحْسَانُ﴾", source: "سورة الرحمن — آية 60", type: "آية كريمة" },
+  { text: "﴿إِنَّ أَكْرَمَكُمْ عِندَ اللَّهِ أَتْقَاكُمْ﴾", source: "سورة الحجرات — آية 13", type: "آية كريمة" },
+  { text: "﴿فَاسْتَقِمْ كَمَا أُمِرْتَ﴾", source: "سورة هود — آية 112", type: "آية كريمة" },
+  { text: "﴿وَلَمَن صَبَرَ وَغَفَرَ إِنَّ ذَٰلِكَ لَمِنْ عَزْمِ الْأُمُورِ﴾", source: "سورة الشورى — آية 43", type: "آية كريمة" },
+  { text: "﴿وَقُلِ اعْمَلُوا فَسَيَرَى اللَّهُ عَمَلَكُمْ وَرَسُولُهُ وَالْمُؤْمِنُونَ﴾", source: "سورة التوبة — آية 105", type: "آية كريمة" },
+  { text: "﴿وَنَفْسٍ وَمَا سَوَّاهَا ۝ فَأَلْهَمَهَا فُجُورَهَا وَتَقْوَاهَا ۝ قَدْ أَفْلَحَ مَن زَكَّاهَا﴾", source: "سورة الشمس — آيات 7-9", type: "آية كريمة" },
+  { text: "﴿وَذَكِّرْ فَإِنَّ الذِّكْرَىٰ تَنفَعُ الْمُؤْمِنِينَ﴾", source: "سورة الذاريات — آية 55", type: "آية كريمة" },
+  { text: "طلب العلم فريضة على كل مسلم", source: "النبي محمد ﷺ", type: "حديث شريف" },
+  { text: "من سلك طريقاً يلتمس فيه علماً، سهّل الله له به طريقاً إلى الجنة", source: "النبي محمد ﷺ", type: "حديث شريف" },
+  { text: "إن الله يحب إذا عمل أحدكم عملاً أن يتقنه", source: "النبي محمد ﷺ", type: "حديث شريف" },
+  { text: "المؤمن القوي خير وأحب إلى الله من المؤمن الضعيف، وفي كلٍّ خير", source: "النبي محمد ﷺ", type: "حديث شريف" },
+  { text: "احرص على ما ينفعك، واستعن بالله ولا تعجز", source: "النبي محمد ﷺ", type: "حديث شريف" },
+  { text: "خير الناس أنفعهم للناس", source: "النبي محمد ﷺ", type: "حديث شريف" },
+  { text: "نعمتان مغبون فيهما كثير من الناس: الصحة والفراغ", source: "النبي محمد ﷺ", type: "حديث شريف" },
+  { text: "من خرج في طلب العلم فهو في سبيل الله حتى يرجع", source: "النبي محمد ﷺ", type: "حديث شريف" },
+  { text: "تعلموا العلم، فإن تعلمه لله خشية، وطلبه عبادة، ومذاكرته تسبيح", source: "النبي محمد ﷺ", type: "حديث شريف" },
+  { text: "أحب العمل إلى الله أدومه وإن قلّ", source: "النبي محمد ﷺ", type: "حديث شريف" },
+  { text: "بادروا بالأعمال فتناً كقطع الليل المظلم", source: "النبي محمد ﷺ", type: "حديث شريف" },
+  { text: "من يرد الله به خيراً يفقهه في الدين", source: "النبي محمد ﷺ", type: "حديث شريف" },
+  { text: "اتق الله حيثما كنت، وأتبع السيئة الحسنة تمحها، وخالق الناس بخلق حسن", source: "النبي محمد ﷺ", type: "حديث شريف" },
+  { text: "العلماء ورثة الأنبياء، إن الأنبياء لم يورثوا ديناراً ولا درهماً، وإنما ورثوا العلم", source: "النبي محمد ﷺ", type: "حديث شريف" },
+  { text: "إذا مات ابن آدم انقطع عمله إلا من ثلاثة: صدقة جارية، أو علم ينتفع به، أو ولد صالح يدعو له", source: "النبي محمد ﷺ", type: "حديث شريف" },
+  { text: "لا يؤمن أحدكم حتى يحب لأخيه ما يحب لنفسه", source: "النبي محمد ﷺ", type: "حديث شريف" },
+  { text: "الكيّس من دان نفسه وعمل لما بعد الموت", source: "النبي محمد ﷺ", type: "حديث شريف" },
+  { text: "ازهد في الدنيا يحبك الله، وازهد فيما في أيدي الناس يحبك الناس", source: "النبي محمد ﷺ", type: "حديث شريف" },
+  { text: "قيّد العلم بالكتابة", source: "النبي محمد ﷺ", type: "حديث شريف" },
+  { text: "من صمت نجا", source: "النبي محمد ﷺ", type: "حديث شريف" },
+  { text: "المسلم من سلم المسلمون من لسانه ويده", source: "النبي محمد ﷺ", type: "حديث شريف" },
+  { text: "الصدق يهدي إلى البر، والبر يهدي إلى الجنة", source: "النبي محمد ﷺ", type: "حديث شريف" },
+  { text: "البِرّ حسن الخلق", source: "النبي محمد ﷺ", type: "حديث شريف" },
+  { text: "تبسمك في وجه أخيك صدقة", source: "النبي محمد ﷺ", type: "حديث شريف" },
+  { text: "الحياء لا يأتي إلا بخير", source: "النبي محمد ﷺ", type: "حديث شريف" },
+  { text: "من كان يؤمن بالله واليوم الآخر فليقل خيراً أو ليصمت", source: "النبي محمد ﷺ", type: "حديث شريف" },
+  { text: "اليد العليا خير من اليد السفلى", source: "النبي محمد ﷺ", type: "حديث شريف" },
+  { text: "الدال على الخير كفاعله", source: "النبي محمد ﷺ", type: "حديث شريف" },
+  { text: "إن من أشد الناس عذاباً يوم القيامة رجل قتل نبياً أو قتله نبي، وإمام ضلالة", source: "النبي محمد ﷺ", type: "حديث شريف" },
+  { text: "لا تغضب ولك الجنة", source: "النبي محمد ﷺ", type: "حديث شريف" },
+  { text: "أعظم الجهاد جهاد النفس", source: "النبي محمد ﷺ", type: "حديث شريف" },
+  { text: "من حسن إسلام المرء تركه ما لا يعنيه", source: "النبي محمد ﷺ", type: "حديث شريف" },
+  { text: "ارحموا من في الأرض يرحمكم من في السماء", source: "النبي محمد ﷺ", type: "حديث شريف" },
+  { text: "لا تحقرن من المعروف شيئاً", source: "النبي محمد ﷺ", type: "حديث شريف" },
+  { text: "كن في الدنيا كأنك غريب أو عابر سبيل", source: "النبي محمد ﷺ", type: "حديث شريف" },
+  { text: "المؤمن مرآة المؤمن", source: "النبي محمد ﷺ", type: "حديث شريف" },
+  { text: "ليس الشديد بالصرعة، إنما الشديد الذي يملك نفسه عند الغضب", source: "النبي محمد ﷺ", type: "حديث شريف" },
+  { text: "إنما بُعثتُ لأُتمم مكارم الأخلاق", source: "النبي محمد ﷺ", type: "حديث شريف" },
+  { text: "إن الله كتب الإحسان على كل شيء", source: "النبي محمد ﷺ", type: "حديث شريف" },
+  { text: "إن العبد إذا أخطأ فتاب تاب الله عليه", source: "النبي محمد ﷺ", type: "حديث شريف" },
+  { text: "كل ابن آدم خطّاء، وخير الخطّائين التوابون", source: "النبي محمد ﷺ", type: "حديث شريف" },
+  { text: "إن من خياركم أحسنكم أخلاقاً", source: "النبي محمد ﷺ", type: "حديث شريف" },
+  { text: "حسن الظن بالله من حسن العبادة", source: "النبي محمد ﷺ", type: "حديث شريف" },
+  { text: "ابدأ بنفسك ثم بمن تعول", source: "النبي محمد ﷺ", type: "حديث شريف" },
+  { text: "العلم في الصغر كالنقش في الحجر، والعلم في الكبر كالنقش على الماء", source: "الإمام الشافعي رحمه الله", type: "قول العلماء" },
+  { text: "إذا أردتَ أن تعلم ما للرجل عند الله، فانظر ما لله عنده", source: "الإمام الشافعي رحمه الله", type: "قول العلماء" },
+  { text: "أحبّ للناس ما تحب لنفسك تكن مسلماً، وأحسن جوار من جاورك تكن مؤمناً", source: "الإمام الشافعي رحمه الله", type: "قول العلماء" },
+  { text: "من لم يصن نفسه لم ينفعه علمه", source: "الإمام الشافعي رحمه الله", type: "قول العلماء" },
+  { text: "اصبر على مر الجفا من معلم، فإن رسوخ العلم في التعلم", source: "الإمام الشافعي رحمه الله", type: "قول العلماء" },
+  { text: "كلما أدّبني الدهر أراني نقص عقلي، وكلما ازددت علماً ازددت علماً بجهلي", source: "الإمام الشافعي رحمه الله", type: "قول العلماء" },
+  { text: "الوقت كالسيف، إن لم تقطعه قطعك", source: "الإمام الشافعي رحمه الله", type: "قول العلماء" },
+  { text: "من أراد الدنيا فعليه بالعلم، ومن أراد الآخرة فعليه بالعلم", source: "الإمام الشافعي رحمه الله", type: "قول العلماء" },
+  { text: "ثلاثة تُعلَم عند ثلاثة: الشجاعة عند الحرب، والحلم عند الغضب، والأخوّة عند الحاجة", source: "الإمام الشافعي رحمه الله", type: "قول العلماء" },
+  { text: "لا تحتقر من دونك، فلكل شيء مزية", source: "الإمام الشافعي رحمه الله", type: "قول العلماء" },
+  { text: "ليس الجمال في ثياب تُزيّننا، إنما الجمال جمال العلم والأدب", source: "الإمام الشافعي رحمه الله", type: "قول العلماء" },
+  { text: "علمت أن رزقي لن يأخذه غيري فاطمأن قلبي", source: "الإمام الشافعي رحمه الله", type: "قول العلماء" },
+  { text: "من أسرّ سريرة ألبسه الله رداءها", source: "الإمام الشافعي رحمه الله", type: "قول العلماء" },
+  { text: "أعظم الناس قدراً من يرى قدره صغيراً", source: "الإمام الشافعي رحمه الله", type: "قول العلماء" },
+  { text: "ليس العلم ما حُفظ، العلم ما نفع", source: "الإمام الشافعي رحمه الله", type: "قول العلماء" },
+  { text: "تعلّموا العلم وتعلّموا للعلم السكينةَ والحلمَ، وتواضعوا لمن تتعلمون منه", source: "عمر بن الخطاب رضي الله عنه", type: "قول العلماء" },
+  { text: "الصبر نصف الإيمان واليقين الإيمان كله", source: "عمر بن الخطاب رضي الله عنه", type: "قول العلماء" },
+  { text: "حاسبوا أنفسكم قبل أن تحاسبوا، وزنوا أعمالكم قبل أن توزن عليكم", source: "عمر بن الخطاب رضي الله عنه", type: "قول العلماء" },
+  { text: "قيمة المرء ما يُحسنه", source: "عمر بن الخطاب رضي الله عنه", type: "قول العلماء" },
+  { text: "أنبل الناس همةً أعلاهم مع الله درجة", source: "عمر بن الخطاب رضي الله عنه", type: "قول العلماء" },
+  { text: "العقل الكامل من لا يتعجل", source: "عمر بن الخطاب رضي الله عنه", type: "قول العلماء" },
+  { text: "استشر ذا العقل تستفد من عقله", source: "عمر بن الخطاب رضي الله عنه", type: "قول العلماء" },
+  { text: "من عرف نفسه اشتغل بإصلاحها عن عيوب غيره", source: "الإمام الغزالي رحمه الله", type: "قول العلماء" },
+  { text: "وقتك هو عمرك، وعمرك رأس مالك، فلا تضيّع منه لحظة إلا فيما يُرضي الله", source: "الإمام الغزالي رحمه الله", type: "قول العلماء" },
+  { text: "النفس إن لم تُشغلها بالحق شغلتك بالباطل", source: "الإمام الغزالي رحمه الله", type: "قول العلماء" },
+  { text: "العالم بلا عمل كالمصباح يُضيء للناس ويحرق نفسه", source: "الإمام الغزالي رحمه الله", type: "قول العلماء" },
+  { text: "التوبة أول منازل السالكين وأوسطها وآخرها", source: "الإمام الغزالي رحمه الله", type: "قول العلماء" },
+  { text: "من صحّ يقينه صحّ توكله، ومن صحّ توكله كفاه الله ما أهمّه", source: "الإمام الغزالي رحمه الله", type: "قول العلماء" },
+  { text: "طهّر قلبك يطهر عملك", source: "الإمام الغزالي رحمه الله", type: "قول العلماء" },
+  { text: "الغني الحقيقي من كان راضياً بما آتاه الله", source: "الإمام الغزالي رحمه الله", type: "قول العلماء" },
+  { text: "النية تبلغ بالعبد مالا يبلغه العمل", source: "الإمام الغزالي رحمه الله", type: "قول العلماء" },
+  { text: "الإخلاص سر العبادة وروحها", source: "الإمام الغزالي رحمه الله", type: "قول العلماء" },
+  { text: "من كانت بدايته مجاهدة انتهى أمره إلى المشاهدة", source: "ابن القيم الجوزية رحمه الله", type: "قول العلماء" },
+  { text: "ضياع الوقت أشد من الموت، لأن ضياع الوقت يقطعك عن الله والدار الآخرة", source: "ابن القيم الجوزية رحمه الله", type: "قول العلماء" },
+  { text: "الدنيا ساعة، فاجعلها طاعة", source: "ابن القيم الجوزية رحمه الله", type: "قول العلماء" },
+  { text: "الهمة العالية لا تقنع بالدون، ولا ترضى بالنذر اليسير", source: "ابن القيم الجوزية رحمه الله", type: "قول العلماء" },
+  { text: "التفكير مفتاح أبواب المعرفة", source: "ابن القيم الجوزية رحمه الله", type: "قول العلماء" },
+  { text: "الكسل والتواني يقطع على العبد مصالح دينه ودنياه", source: "ابن القيم الجوزية رحمه الله", type: "قول العلماء" },
+  { text: "رأيت الذنوب تُميت القلوب، وقد يُورث الذُّل إدمانها", source: "ابن القيم الجوزية رحمه الله", type: "قول العلماء" },
+  { text: "لحظة صادقة مع الله خيرٌ من عمر طويل في الغفلة", source: "ابن القيم الجوزية رحمه الله", type: "قول العلماء" },
+  { text: "أكثر الناس شكاوى أقلهم شكراً", source: "ابن القيم الجوزية رحمه الله", type: "قول العلماء" },
+  { text: "عليك بتقوى الله فهي أغنى الغنى وأقوى القوة", source: "ابن القيم الجوزية رحمه الله", type: "قول العلماء" },
+  { text: "إذا صدق العزم وضح السبيل", source: "ابن القيم الجوزية رحمه الله", type: "قول العلماء" },
+  { text: "إن اجتمعت همتك على نيتك ونيتك على عملك فأنت السعيد", source: "ابن القيم الجوزية رحمه الله", type: "قول العلماء" },
+  { text: "الاستقامة أن تستقيم على الأمر وإن كثرت العقبات", source: "ابن القيم الجوزية رحمه الله", type: "قول العلماء" },
+  { text: "لا تيأس من روح الله؛ فإن اليأس من روح الله كفر", source: "الإمام ابن تيمية رحمه الله", type: "قول العلماء" },
+  { text: "في الدنيا جنة من لم يدخلها لم يدخل جنة الآخرة", source: "الإمام ابن تيمية رحمه الله", type: "قول العلماء" },
+  { text: "ما يصنع أعدائي بي؟ أنا جنتي وبستاني في صدري أينما رحلت فهي معي", source: "الإمام ابن تيمية رحمه الله", type: "قول العلماء" },
+  { text: "الإيمان يزداد بالطاعة وينقص بالمعصية", source: "الإمام ابن تيمية رحمه الله", type: "قول العلماء" },
+  { text: "من أراد السعادة الأبدية فليلزم عتبة العبودية", source: "الإمام ابن تيمية رحمه الله", type: "قول العلماء" },
+  { text: "اغتنم في الفراغ فضل ركعة وفي الشباب قبل أن تهرما", source: "ابن الجوزي رحمه الله", type: "قول العلماء" },
+  { text: "ما ضاع وقت فيه عمل صالح", source: "ابن الجوزي رحمه الله", type: "قول العلماء" },
+  { text: "إياك والكسل، فإن الكسل جماع كل خير فائت", source: "ابن الجوزي رحمه الله", type: "قول العلماء" },
+  { text: "الجاهل كالميت لا يشعر بقيمة الحياة", source: "ابن الجوزي رحمه الله", type: "قول العلماء" },
+  { text: "صديقك من صدقك لا من صدّقك", source: "علي بن أبي طالب رضي الله عنه", type: "قول العلماء" },
+  { text: "اعرف نفسك تعرف ربك", source: "علي بن أبي طالب رضي الله عنه", type: "قول العلماء" },
+  { text: "قيمة كل امرئ ما يُحسنه", source: "علي بن أبي طالب رضي الله عنه", type: "قول العلماء" },
+  { text: "لا فقر أشد من الجهل", source: "علي بن أبي طالب رضي الله عنه", type: "قول العلماء" },
+  { text: "العلم خير من المال، العلم يحرسك وأنت تحرس المال", source: "علي بن أبي طالب رضي الله عنه", type: "قول العلماء" },
+  { text: "تكلم حتى تُعرف، فإن المرء مخبوء تحت لسانه", source: "علي بن أبي طالب رضي الله عنه", type: "قول العلماء" },
+  { text: "الناس نيام فإذا ماتوا انتبهوا", source: "علي بن أبي طالب رضي الله عنه", type: "قول العلماء" },
+  { text: "لا تكن عبد غيرك وقد خلقك الله حراً", source: "علي بن أبي طالب رضي الله عنه", type: "قول العلماء" },
+  { text: "أشجع الناس من غلب هواه", source: "علي بن أبي طالب رضي الله عنه", type: "قول العلماء" },
+  { text: "صلاح القلب بالعلم النافع والعمل الصالح", source: "الإمام النووي رحمه الله", type: "قول العلماء" },
+  { text: "من رزقه الله علماً فليشكر الله بتعليمه", source: "الإمام النووي رحمه الله", type: "قول العلماء" },
+  { text: "إحياء العلم خير من إحياء الليالي", source: "السلف الصالح", type: "قول العلماء" },
+  { text: "من جدّ وجد، ومن زرع حصد", source: "المثل العربي", type: "قول العلماء" },
+  { text: "الصمت حكمة وقليل فاعله", source: "الإمام الشافعي رحمه الله", type: "قول العلماء" },
+  { text: "النجاة في الصدق", source: "الإمام أحمد بن حنبل رحمه الله", type: "قول العلماء" },
+  { text: "العلم لا يعدله شيء لمن صحّت نيته", source: "الإمام أحمد بن حنبل رحمه الله", type: "قول العلماء" },
+  { text: "لا يصلح آخر هذه الأمة إلا ما أصلح أولها", source: "الإمام مالك رحمه الله", type: "قول العلماء" },
+  { text: "أصل كل خير في الدنيا والآخرة العلم والعدل", source: "ابن حزم الأندلسي رحمه الله", type: "قول العلماء" },
+];
+
+
+var curQIdx = Math.floor(Math.random() * quotes.length);
+
+function setQuoteDOM(q) {
+  var textEl   = document.getElementById('quoteText');
+  var sourceEl = document.getElementById('quoteSource');
+  var badgeEl  = document.getElementById('quoteBadge');
+  var shareBtn = document.getElementById('shareBtn');
+  if (textEl)   textEl.textContent   = q.text;
+  if (sourceEl) sourceEl.textContent = q.source;
+  if (badgeEl)  badgeEl.textContent  = q.type;
+  if (shareBtn) shareBtn.href = 'https://wa.me/?text=' + encodeURIComponent(q.text + '\n— ' + q.source);
+}
+
+function newQuote() {
+  var next;
+  do { next = Math.floor(Math.random() * quotes.length); }
+  while (next === curQIdx && quotes.length > 1);
+  curQIdx = next;
+
+  var fadeEls = ['quoteText','quoteSource','quoteBadge'];
+  fadeEls.forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el) el.classList.add('fade-out');
+  });
+
+  setTimeout(function() {
+    setQuoteDOM(quotes[curQIdx]);
+    fadeEls.forEach(function(id) {
+      var el = document.getElementById(id);
+      if (el) el.classList.remove('fade-out');
+    });
+  }, 450);
+}
+
+function copyQuote() {
+  var q = quotes[curQIdx];
+  var text = q.text + '\n— ' + q.source;
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(text).then(function() {
+      showToast('تم النسخ ✨');
+    }).catch(function() {
+      showToast('تم النسخ ✨');
+    });
+  } else {
+    showToast('تم النسخ ✨');
+  }
+}
+
+function shareQuote() {
+  var q = quotes[curQIdx];
+  var text = q.text + '\n— ' + q.source + '\n\nعَن عُمْرِك';
+  if (navigator.share) {
+    navigator.share({ title: 'عَن عُمْرِك', text: text }).catch(function() {});
+  } else {
+    window.open('https://wa.me/?text=' + encodeURIComponent(text), '_blank');
+  }
+}
+
+// Init first quote
+setQuoteDOM(quotes[curQIdx]);
+
+// ── POMODORO ────────────────────────────────────────────────
+// All pomodoro state in one object — no scope issues
+var Pom = {
+  modes: { work: 25*60, break: 5*60, long: 15*60 },
+  labels: { work: 'مذاكرة', break: 'راحة', long: 'راحة طويلة' },
+  mode: 'work',
+  total: 25 * 60,
+  remaining: 25 * 60,
+  running: false,
+  timer: null,
+  CIRC: 2 * Math.PI * 88   // 552.9
+};
+
+function pomUpdateDisplay() {
+  var m = Math.floor(Pom.remaining / 60);
+  var s = Pom.remaining % 60;
+  var timeEl  = document.getElementById('pomTime');
+  var ringEl  = document.getElementById('pomRing');
+  var labelEl = document.getElementById('pomLabel');
+  if (timeEl)  timeEl.textContent = (m < 10 ? '0' : '') + m + ':' + (s < 10 ? '0' : '') + s;
+  if (ringEl) {
+    var pct = Pom.remaining / Pom.total;
+    ringEl.style.strokeDashoffset = Pom.CIRC - Pom.CIRC * pct;
+  }
+  if (labelEl) labelEl.textContent = Pom.labels[Pom.mode];
+}
+
+function setMode(mode) {
+  Pom.mode      = mode;
+  Pom.total     = Pom.modes[mode];
+  Pom.remaining = Pom.total;
+  Pom.running   = false;
+  clearInterval(Pom.timer);
+  Pom.timer = null;
+
+  var btn = document.getElementById('pomBtn');
+  if (btn) btn.textContent = '▶ بدء';
+
+  ['btnWork','btnBreak','btnLong'].forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el) el.classList.remove('active');
+  });
+  var activeBtn = document.getElementById('btn' + mode.charAt(0).toUpperCase() + mode.slice(1));
+  if (activeBtn) activeBtn.classList.add('active');
+
+  pomUpdateDisplay();
+}
+
+function toggleTimer() {
+  if (Pom.running) {
+    clearInterval(Pom.timer);
+    Pom.timer   = null;
+    Pom.running = false;
+    var btn = document.getElementById('pomBtn');
+    if (btn) btn.textContent = '▶ استمرار';
+  } else {
+    Pom.running = true;
+    var btn = document.getElementById('pomBtn');
+    if (btn) btn.textContent = '⏸ إيقاف';
+
+    Pom.timer = setInterval(function() {
+      if (Pom.remaining <= 0) {
+        clearInterval(Pom.timer);
+        Pom.timer   = null;
+        Pom.running = false;
+        var b = document.getElementById('pomBtn');
+        if (b) b.textContent = '▶ بدء';
+
+        if (Pom.mode === 'work') {
+          var streak = parseInt(localStorage.getItem('studyStreak') || '0') + 1;
+          localStorage.setItem('studyStreak', streak);
+          updateStreak(streak);
+          showToast('أحسنت! جلسة منجزة 🏆');
+        } else {
+          showToast('انتهت فترة الراحة 🔔');
+        }
+        return;
+      }
+      Pom.remaining--;
+      pomUpdateDisplay();
+    }, 1000);
+  }
+}
+
+function resetTimer() {
+  clearInterval(Pom.timer);
+  Pom.timer     = null;
+  Pom.running   = false;
+  Pom.remaining = Pom.total;
+  var btn = document.getElementById('pomBtn');
+  if (btn) btn.textContent = '▶ بدء';
+  pomUpdateDisplay();
+}
+
+function updateStreak(val) {
+  var n    = (val !== undefined) ? val : parseInt(localStorage.getItem('studyStreak') || '0');
+  var el   = document.getElementById('streakCount');
+  var fill = document.getElementById('progressFill');
+  if (el)   el.textContent = n;
+  if (fill) fill.style.width = Math.min(n / 10, 1) * 100 + '%';
+}
+
+// Init pomodoro display
+pomUpdateDisplay();
+updateStreak();
+
+// ── TO-DO LIST ──────────────────────────────────────────────
+var todos      = JSON.parse(localStorage.getItem('anomerk_todos') || '[]');
+var todoFilter = 'all';
+var _saveTodoTimeout = null;
+
+function saveTodos() {
+  // Debounced save — prevents excessive localStorage writes
+  clearTimeout(_saveTodoTimeout);
+  _saveTodoTimeout = setTimeout(function() {
+    localStorage.setItem('anomerk_todos', JSON.stringify(todos));
+  }, 300);
+}
+
+function escHtml(s) {
+  return String(s)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+function renderTodos() {
+  var list = document.getElementById('todoList');
+  if (!list) return;
+
+  var filtered = todos.filter(function(t) {
+    if (todoFilter === 'active') return !t.done;
+    if (todoFilter === 'done')   return t.done;
+    return true;
+  });
+
+  if (filtered.length === 0) {
+    var msg = todoFilter === 'done'
+      ? 'لا توجد مهام مكتملة بعد 🎯'
+      : 'لا توجد مهام — ابدأ بإضافة مهمتك 🌱';
+    list.innerHTML = '<li class="todo-empty">' + msg + '</li>';
+    return;
+  }
+
+  var html = '';
+  filtered.forEach(function(t) {
+    html += '<li class="todo-item' + (t.done ? ' done' : '') + '" data-id="' + t.id + '">' +
+      '<button class="todo-check' + (t.done ? ' checked' : '') + '" data-action="toggle" data-id="' + t.id + '"></button>' +
+      '<span class="todo-text">' + escHtml(t.text) + '</span>' +
+      '<button class="todo-del" data-action="delete" data-id="' + t.id + '">🗑</button>' +
+      '</li>';
+  });
+  list.innerHTML = html;
+}
+
+// Single delegated event listener — no per-item listeners (memory efficient)
+(function() {
+  var list = document.getElementById('todoList');
+  if (!list) return;
+  list.addEventListener('click', function(e) {
+    var btn = e.target.closest('[data-action]');
+    if (!btn) return;
+    var action = btn.getAttribute('data-action');
+    var id     = btn.getAttribute('data-id');
+    if (action === 'toggle') {
+      var t = todos.find(function(x) { return x.id === id; });
+      if (t) { t.done = !t.done; saveTodos(); renderTodos(); }
+    } else if (action === 'delete') {
+      todos = todos.filter(function(x) { return x.id !== id; });
+      saveTodos(); renderTodos();
+    }
+  });
+})();
+
+function addTodo() {
+  var inp = document.getElementById('todoInput');
+  if (!inp) return;
+  var text = inp.value.trim();
+  if (!text) return;
+  todos.unshift({ id: Date.now().toString(), text: text, done: false });
+  saveTodos();
+  renderTodos();
+  inp.value = '';
+  inp.focus();
+}
+
+function filterTodos(f) {
+  todoFilter = f;
+  ['all','active','done'].forEach(function(k) {
+    var btn = document.getElementById('filter' + k.charAt(0).toUpperCase() + k.slice(1));
+    if (btn) btn.classList.toggle('active', k === f);
+  });
+  renderTodos();
+}
+
+// Allow Enter key in todo input
+(function() {
+  var inp = document.getElementById('todoInput');
+  if (inp) {
+    inp.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') { e.preventDefault(); addTodo(); }
+    });
+  }
+})();
+
+renderTodos();
+
+// ── WATCHED VIDEOS ──────────────────────────────────────────
+function markWatched(e, btn) {
+  e.preventDefault();
+  e.stopPropagation();
+  var cardId = btn.getAttribute('data-target');
+  var card   = document.getElementById(cardId);
+  if (!card) return;
+
+  btn.classList.toggle('watched');
+  var isWatched = btn.classList.contains('watched');
+  btn.textContent = isWatched ? 'تمت المشاهدة' : 'شاهدت';
+
+  if (isWatched) {
+    card.style.opacity = '0.5';
+    var watchedGrid    = document.getElementById('watchedGrid');
+    var watchedSection = document.getElementById('watchedSection');
+    if (watchedGrid && watchedSection) {
+      var clone = card.cloneNode(true);
+      clone.id  = cardId + '-w';
+      clone.style.opacity = '1';
+      var cloneBtn = clone.querySelector('.watch-btn');
+      if (cloneBtn) {
+        cloneBtn.textContent = '✓ مشاهَد';
+        cloneBtn.classList.add('watched');
+        cloneBtn.setAttribute('onclick', '');
+      }
+      watchedGrid.appendChild(clone);
+      watchedSection.style.display = 'block';
+    }
+  } else {
+    card.style.opacity = '1';
+    var rm = document.getElementById(cardId + '-w');
+    if (rm) rm.remove();
+    var wg = document.getElementById('watchedGrid');
+    var ws = document.getElementById('watchedSection');
+    if (wg && ws && wg.children.length === 0) ws.style.display = 'none';
+  }
+}
+
+// ── THEME COLOR CUSTOMIZER ──────────────────────────────────
+function shadeColor(hex, pct) {
+  hex = hex.replace('#', '');
+  if (hex.length === 3) hex = hex[0]+hex[0]+hex[1]+hex[1]+hex[2]+hex[2];
+  var r = parseInt(hex.slice(0,2),16);
+  var g = parseInt(hex.slice(2,4),16);
+  var b = parseInt(hex.slice(4,6),16);
+  r = Math.max(0, Math.min(255, r + Math.round(r * pct / 100)));
+  g = Math.max(0, Math.min(255, g + Math.round(g * pct / 100)));
+  b = Math.max(0, Math.min(255, b + Math.round(b * pct / 100)));
+  return '#' + [r,g,b].map(function(x) { return x.toString(16).padStart(2,'0'); }).join('');
+}
+
+function applyThemeColorDirect(hex) {
+  var root = document.documentElement;
+  root.style.setProperty('--navy',       hex);
+  root.style.setProperty('--navy-deep',  shadeColor(hex, -20));
+  root.style.setProperty('--navy-light', shadeColor(hex,  15));
+  var picker = document.getElementById('themeColorPicker');
+  if (picker) picker.value = hex;
+  document.querySelectorAll('.tc-preset').forEach(function(b) { b.classList.remove('active'); });
+}
+
+function applyThemeColor(btn) {
+  var hex = btn.getAttribute('data-navy');
+  applyThemeColorDirect(hex);
+  document.querySelectorAll('.tc-preset').forEach(function(b) { b.classList.remove('active'); });
+  btn.classList.add('active');
+  var picker = document.getElementById('themeColorPicker');
+  if (picker) picker.value = hex;
+}
+
+// ── LANGUAGE SWITCHER ───────────────────────────────────────
+var currentLang = localStorage.getItem('lang') || 'ar';
+
+var translations = {
+  ar: {
+    brand: 'عَن عُمْرِك',
+    slogan: '... وفيمَ أفنيتَه؟',
+    home: 'الرئيسية', tools: 'أدوات', content: 'محتوى', products: 'منتجات', contact: 'تواصل',
+    newQuote: 'اقتباس جديد 🔄', copyBtn: 'نسخ 📋', shareBtn: 'مشاركة 🔗',
+    pomTitle: 'مؤقت البومودورو 🍅',
+    pomWork: '٢٥ دقيقة — مذاكرة', pomBreak: '٥ دقائق — راحة', pomLong: '١٥ دقيقة — راحة طويلة',
+    pomStart: '▶ بدء', pomPause: '⏸ إيقاف', pomResume: '▶ استمرار', pomReset: '↺ إعادة',
+    todoTitle: 'قائمة المهام 📋', todoPlaceholder: 'أضف مهمة جديدة...', todoAdd: '+ إضافة',
+    filterAll: 'الكل', filterActive: 'قيد التنفيذ', filterDone: 'مكتملة',
+    contentTitle: 'المحتوى المختار لك', watchedLabel: 'شاهدت', watchedTitle: 'الفيديوهات المشاهدة ✅',
+    followHere: 'تابعني هنا 📲', shareUs: 'شاركنا رأيك 💬',
+    settingsTitle: 'الإعدادات', langLabel: 'العربية', langCode: 'AR'
+  },
+  en: {
+    brand: 'An Omrek',
+    slogan: '... How did you spend it?',
+    home: 'Home', tools: 'Tools', content: 'Content', products: 'Notebooks', contact: 'Contact',
+    newQuote: 'New Quote 🔄', copyBtn: 'Copy 📋', shareBtn: 'Share 🔗',
+    pomTitle: 'Pomodoro Timer 🍅',
+    pomWork: '25 min — Study', pomBreak: '5 min — Break', pomLong: '15 min — Long Break',
+    pomStart: '▶ Start', pomPause: '⏸ Pause', pomResume: '▶ Resume', pomReset: '↺ Reset',
+    todoTitle: 'To-Do List 📋', todoPlaceholder: 'Add a new task...', todoAdd: '+ Add',
+    filterAll: 'All', filterActive: 'Active', filterDone: 'Done',
+    contentTitle: 'Curated Content', watchedLabel: 'Watched', watchedTitle: 'Watched Videos ✅',
+    followHere: 'Follow Me 📲', shareUs: 'Share Your Feedback 💬',
+    settingsTitle: 'Settings', langLabel: 'English', langCode: 'EN'
+  }
+};
+
+
+function applyLang(lang) {
+  currentLang = lang;
+  localStorage.setItem('lang', lang);
+  var isAr  = (lang === 'ar');
+  var t     = translations[lang];
+  var root  = document.documentElement;
+
+  root.setAttribute('lang', lang);
+  root.setAttribute('dir',  isAr ? 'rtl' : 'ltr');
+
+  // Update all elements with data-i18n attribute
+  document.querySelectorAll('[data-i18n]').forEach(function(el) {
+    var key = el.getAttribute('data-i18n');
+    if (t[key] !== undefined) el.textContent = t[key];
+  });
+
+  // Update lang chip in settings
+  var chip = document.getElementById('langChip');
+  var lbl  = document.getElementById('langLabel');
+  if (chip) chip.textContent = isAr ? 'AR' : 'EN';
+  if (lbl)  lbl.textContent  = isAr ? 'العربية' : 'English';
+}
+
+function toggleLang() {
+  applyLang(currentLang === 'ar' ? 'en' : 'ar');
+  closeSettingsDirect();
+}
+
+// Apply saved lang on boot
+applyLang(currentLang);
+
+// ── EMAILJS ─────────────────────────────────────────────────
+if (typeof emailjs !== 'undefined') {
+  emailjs.init('jk0p_nyultzG_m0gf');
+}
+
+function submitFeedback() {
+  var email       = (document.getElementById('studentEmail') || {}).value || '';
+  var name        = (document.getElementById('senderName')   || {}).value || 'طالب غامض';
+  var rating      = (document.getElementById('rating')       || {}).value || 'ممتاز';
+  var opinion     = (document.getElementById('opinion')      || {}).value || '';
+  var suggestions = (document.getElementById('suggestions')  || {}).value || '';
+
+  email = email.trim();
+  if (!email || !email.includes('@')) {
+    showToast('الرجاء إدخال بريد إلكتروني صحيح ⚠️');
+    return;
+  }
+  if (!opinion.trim()) {
+    showToast('الرجاء كتابة رأيك في الدفتر ✍️');
+    return;
+  }
+
+  var btn = document.getElementById('submitBtn');
+  if (btn) { btn.disabled = true; btn.textContent = 'جاري الإرسال...'; }
+
+  var params = {
+    name:    name,
+    email:   email,
+    title:   rating,
+    message: 'الرأي:\n' + opinion + '\n\nالاقتراحات:\n' + (suggestions || '—')
+  };
+
+  emailjs.send('Feedback Section', 'template_oj794br', params)
+    .then(function() {
+      var fc = document.getElementById('formContainer');
+      var fs = document.getElementById('formSuccess');
+      if (fc) fc.style.display = 'none';
+      if (fs) fs.style.display = 'block';
+      showToast('تم إرسال رأيك بنجاح 🎉');
+    })
+    .catch(function(err) {
+      console.error('EmailJS error:', err);
+      // Fallback: mailto
+      var subject = encodeURIComponent('رأي في دفتر عَن عُمْرِك');
+      var body = encodeURIComponent('الاسم: ' + name + '\nالبريد: ' + email + '\nالتقييم: ' + rating + '\n\nالرأي:\n' + opinion + '\n\nالاقتراحات:\n' + suggestions);
+      window.location.href = 'mailto:onomerk@gmail.com?subject=' + subject + '&body=' + body;
+      if (btn) { btn.disabled = false; btn.textContent = 'إرسال رأيك ←'; }
+    });
+}
+
+
+// ── SWIPE SUPPORT ───────────────────────────────────────────
+(function() {
+  var el = document.querySelector('.notebooks-row');
+  if (!el) return;
+  var startX = 0;
+  el.addEventListener('touchstart', function(e) {
+    startX = e.touches[0].clientX;
+  }, { passive: true });
+  el.addEventListener('touchmove', function(e) {
+    var diff = startX - e.touches[0].clientX;
+    el.scrollLeft += diff;
+    startX = e.touches[0].clientX;
+  }, { passive: true });
+})();
+
+// ── BOOT ────────────────────────────────────────────────────
+window.addEventListener('load', function() {
+  document.body.classList.add('loaded');
+});
+
+// Start on home (page 2)
+showPage(2);
+
+</script>
+
+
+
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-app.js";
+import {
+  getAuth, onAuthStateChanged, signOut, updateProfile,
+  signInWithEmailAndPassword, createUserWithEmailAndPassword,
+  signInWithPopup, GoogleAuthProvider, RecaptchaVerifier,
+  signInWithPhoneNumber, sendPasswordResetEmail
+} from "https://www.gstatic.com/firebasejs/11.0.0/firebase-auth.js";
+import { getFirestore, doc, getDoc, setDoc, updateDoc, serverTimestamp, collection, getDocs } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-firestore.js";
+import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-storage.js";
+
+const app  = initializeApp({
+  apiKey: "AIzaSyCGQH8ifVKgRpsN-sqVaC7VqV4RpucCT1c",
+  authDomain: "anomerk.firebaseapp.com",
+  projectId: "anomerk",
+  storageBucket: "anomerk.firebasestorage.app",
+  messagingSenderId: "617738540912",
+  appId: "1:617738540912:web:39f51da06b684c5181e1b5"
+});
+const auth = getAuth(app);
+const db   = getFirestore(app);
+const storage = getStorage(app);
+const googleProvider = new GoogleAuthProvider();
+let _user = null;
+let _userData = {};
+
+// ── SITE IMAGES (managed from media-admin.html, no code edits needed) ──
+// Collection "siteImages": each doc id is a "slot" key (e.g. notebook-rose, gallery-1, gallery-4).
+// - If an <img id="img-{slot}"> exists on the page, its src/alt gets updated (= replace image).
+// - If the slot starts with "gallery-" and no matching element exists, a new <img> is
+//   appended to #galleryGrid automatically (= add new image), ordered by the "order" field.
+async function loadSiteImages() {
+  try {
+    const snap = await getDocs(collection(db, "siteImages"));
+    const newGalleryItems = [];
+
+    snap.forEach(function(docSnap) {
+      const slot = docSnap.id;
+      const data = docSnap.data();
+      if (!data || !data.url) return;
+
+      const existingImg = document.getElementById("img-" + slot);
+      if (existingImg) {
+        existingImg.src = data.url;
+        if (data.alt) existingImg.alt = data.alt;
+      } else if (slot.indexOf("gallery-") === 0) {
+        newGalleryItems.push({ slot: slot, url: data.url, alt: data.alt || "", order: data.order || 999 });
+      }
+    });
+
+    if (newGalleryItems.length) {
+      const grid = document.getElementById("galleryGrid");
+      if (grid) {
+        newGalleryItems.sort(function(a, b) { return a.order - b.order; });
+        newGalleryItems.forEach(function(item) {
+          const img = document.createElement("img");
+          img.id = "img-" + item.slot;
+          img.className = "reveal visible";
+          img.loading = "lazy";
+          img.src = item.url;
+          img.alt = item.alt;
+          grid.appendChild(img);
+        });
+      }
+    }
+  } catch (e) {
+    // Firestore unreachable or empty collection — page keeps its bundled default images
+    console.warn("loadSiteImages: using default bundled images", e);
+  }
+}
+loadSiteImages();
+
+// ── Auth state ──
+onAuthStateChanged(auth, async function(user) {
+  _user = user;
+  if (user) {
+    await syncUser(user);
+    showLoggedInUI(user);
+    closeLoginModal();
+  } else {
+    showLoggedOutUI();
+  }
+});
+
+async function syncUser(user, extra) {
+  extra = extra || {};
+  try {
+    var ref  = doc(db, 'users', user.uid);
+    var snap = await getDoc(ref);
+    if (!snap.exists()) {
+      await setDoc(ref, {
+        uid: user.uid,
+        name: user.displayName || extra.name || 'طالب',
+        email: user.email || '',
+        phone: user.phoneNumber || '',
+        university: extra.university || '',
+        major: extra.major || '',
+        role: 'student',
+        createdAt: serverTimestamp(),
+        lastLogin: serverTimestamp(),
+        stats: { pomodoroSessions: 0, todosCompleted: 0, streakDays: 0 }
+      });
+      _userData = { name: user.displayName || extra.name || 'طالب', university: extra.university || '', major: extra.major || '', stats: {} };
+    } else {
+      _userData = snap.data();
+      await updateDoc(ref, { lastLogin: serverTimestamp() });
+      // Restore todos from Firestore
+      if (_userData.todos && _userData.todos.length > 0) {
+        todos = _userData.todos;
+        renderTodos();
+      }
+    }
+  } catch(e) { _userData = {}; }
+}
+
+// ── Login Modal controls ──
+window.openLoginModal = function() {
+  var modal = document.getElementById('loginModal');
+  if (modal) { modal.classList.add('open'); modal.style.display = 'flex'; }
+};
+window.closeLoginModal = function(e) {
+  if (e && e.target !== document.getElementById('loginModal')) return;
+  var modal = document.getElementById('loginModal');
+  if (modal) { modal.classList.remove('open'); modal.style.display = 'none'; }
+};
+
+window.switchTab = function(tab) {
+  document.querySelectorAll('#loginModal .auth-form').forEach(function(f){ f.classList.remove('active'); });
+  document.querySelectorAll('#loginModal .tab-btn').forEach(function(b){ b.classList.remove('active'); });
+  var target = document.getElementById('form-' + tab);
+  if (target) target.classList.add('active');
+  var gm = document.getElementById('globalMsg'); if (gm) gm.className = 'msg';
+  var toggleLink = document.getElementById('toggleLink');
+  var tabs = document.querySelectorAll('#loginModal .tab-btn');
+  if (tab === 'login') {
+    if (tabs[0]) tabs[0].classList.add('active');
+    if (toggleLink) { toggleLink.style.display = ''; toggleLink.innerHTML = 'ليس لديك حساب؟ <a onclick="switchTab(\'register\')">سجّل الآن</a>'; }
+  } else if (tab === 'register') {
+    if (tabs[1]) tabs[1].classList.add('active');
+    if (toggleLink) { toggleLink.style.display = ''; toggleLink.innerHTML = 'لديك حساب؟ <a onclick="switchTab(\'login\')">سجّل دخولك</a>'; }
+  } else {
+    if (toggleLink) toggleLink.style.display = 'none';
+    if (tab === 'phone' && tabs[2]) tabs[2].classList.add('active');
+  }
+};
+
+window.showReset = function() {
+  document.querySelectorAll('#loginModal .auth-form').forEach(function(f){ f.classList.remove('active'); });
+  var fr = document.getElementById('form-reset'); if (fr) fr.classList.add('active');
+  var tl = document.getElementById('toggleLink'); if (tl) tl.style.display = 'none';
+  document.querySelectorAll('#loginModal .tab-btn').forEach(function(b){ b.classList.remove('active'); });
+};
+
+window.backToPhone = function() {
+  document.getElementById('phone-step2').style.display = 'none';
+  document.getElementById('phone-step1').style.display = 'block';
+};
+
+window.togglePass = function(inputId, btn) {
+  var inp = document.getElementById(inputId);
+  if (inp.type === 'password') { inp.type = 'text'; btn.textContent = '🙈'; }
+  else { inp.type = 'password'; btn.textContent = '👁'; }
+};
+
+window.otpMove = function(el, idx) {
+  el.classList.toggle('filled', el.value !== '');
+  if (el.value && idx < 5) document.getElementById('otp' + (idx+1)).focus();
+  if (!el.value && idx > 0) document.getElementById('otp' + (idx-1)).focus();
+};
+
+function firebaseError(code) {
+  var map = {
+    'auth/user-not-found':       'لا يوجد حساب بهذا البريد',
+    'auth/wrong-password':       'كلمة المرور غير صحيحة',
+    'auth/invalid-credential':   'البريد أو كلمة المرور غير صحيحة',
+    'auth/email-already-in-use': 'هذا البريد مستخدم بالفعل',
+    'auth/weak-password':        'كلمة المرور ضعيفة جداً',
+    'auth/invalid-email':        'البريد الإلكتروني غير صحيح',
+    'auth/too-many-requests':    'محاولات كثيرة، حاول لاحقاً',
+    'auth/network-request-failed': 'تحقق من اتصالك بالإنترنت',
+    'auth/invalid-verification-code': 'رمز التحقق غير صحيح',
+    'auth/invalid-phone-number': 'رقم الهاتف غير صحيح'
+  };
+  return map[code] || 'حدث خطأ، حاول مجدداً';
+}
+
+window.showMsg = function(text, type) {
+  var el = document.getElementById('globalMsg');
+  if (!el) return;
+  el.className = 'msg ' + type;
+  el.textContent = (type === 'error' ? '⚠ ' : '✓ ') + text;
+  setTimeout(function(){ el.className = 'msg'; }, 4000);
+};
+
+window.setLoading = function(btnId, state) {
+  var btn = document.getElementById(btnId);
+  if (!btn) return;
+  btn.disabled = state;
+  btn.classList.toggle('loading', state);
+};
+
+window.loginEmail = async function() {
+  var email = document.getElementById('loginEmail').value.trim();
+  var pass  = document.getElementById('loginPass').value;
+  if (!email || !pass) { showMsg('يرجى ملء جميع الحقول', 'error'); return; }
+  setLoading('loginBtn', true);
+  try {
+    await signInWithEmailAndPassword(auth, email, pass);
+    showMsg('تم الدخول بنجاح ✓', 'success');
+  } catch(e) {
+    showMsg(firebaseError(e.code), 'error');
+  }
+  setLoading('loginBtn', false);
+};
+
+window.registerEmail = async function() {
+  var name  = document.getElementById('regName').value.trim();
+  var email = document.getElementById('regEmail').value.trim();
+  var pass  = document.getElementById('regPass').value;
+  var uni   = document.getElementById('regUni').value.trim();
+  var major = document.getElementById('regMajor').value.trim();
+  if (!name || !email || !pass) { showMsg('يرجى ملء الحقول الإلزامية', 'error'); return; }
+  if (pass.length < 8) { showMsg('كلمة المرور يجب أن تكون 8 أحرف على الأقل', 'error'); return; }
+  setLoading('regBtn', true);
+  try {
+    var cred = await createUserWithEmailAndPassword(auth, email, pass);
+    await updateProfile(cred.user, { displayName: name });
+    await syncUser(cred.user, { name: name, university: uni, major: major });
+    showMsg('تم إنشاء الحساب بنجاح ✓', 'success');
+  } catch(e) {
+    showMsg(firebaseError(e.code), 'error');
+  }
+  setLoading('regBtn', false);
+};
+
+window.loginGoogle = async function() {
+  try {
+    await signInWithPopup(auth, googleProvider);
+  } catch(e) {
+    if (e.code !== 'auth/popup-closed-by-user') showMsg(firebaseError(e.code), 'error');
+  }
+};
+
+// ── Phone auth ──
+var confirmationResult = null;
+var resendCountdown = null;
+
+window.sendOTP = async function() {
+  var code  = document.getElementById('countryCode').value;
+  var phone = document.getElementById('phoneNum').value.trim().replace(/^0/, '');
+  if (!phone || phone.length < 7) { showMsg('أدخل رقماً صحيحاً', 'error'); return; }
+  var fullPhone = code + phone;
+  setLoading('sendOTPBtn', true);
+  try {
+    if (!window.recaptchaVerifier) {
+      window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', { size: 'normal' });
+    }
+    confirmationResult = await signInWithPhoneNumber(auth, fullPhone, window.recaptchaVerifier);
+    document.getElementById('phoneDisplay').textContent = fullPhone;
+    document.getElementById('phone-step1').style.display = 'none';
+    document.getElementById('phone-step2').style.display = 'block';
+    document.getElementById('otp0').focus();
+    startResendTimer();
+    showMsg('تم إرسال الرمز 📱', 'success');
+  } catch(e) {
+    showMsg(firebaseError(e.code), 'error');
+    if (window.recaptchaVerifier) { window.recaptchaVerifier.clear(); window.recaptchaVerifier = null; }
+  }
+  setLoading('sendOTPBtn', false);
+};
+
+window.verifyOTP = async function() {
+  var code = [0,1,2,3,4,5].map(function(i){ return document.getElementById('otp'+i).value; }).join('');
+  if (code.length < 6) { showMsg('أدخل الرمز المكوّن من 6 أرقام', 'error'); return; }
+  setLoading('verifyBtn', true);
+  try {
+    await confirmationResult.confirm(code);
+    showMsg('تم الدخول بنجاح ✓', 'success');
+  } catch(e) {
+    showMsg('الرمز غير صحيح أو انتهت صلاحيته', 'error');
+  }
+  setLoading('verifyBtn', false);
+};
+
+window.resendOTP = async function() {
+  if (window.recaptchaVerifier) { window.recaptchaVerifier.clear(); window.recaptchaVerifier = null; }
+  document.getElementById('phone-step2').style.display = 'none';
+  document.getElementById('phone-step1').style.display = 'block';
+  clearInterval(resendCountdown);
+};
+
+window.sendReset = async function() {
+  var email = document.getElementById('resetEmail').value.trim();
+  if (!email) { showMsg('أدخل بريدك الإلكتروني', 'error'); return; }
+  setLoading('resetBtn', true);
+  try {
+    await sendPasswordResetEmail(auth, email);
+    showMsg('تم إرسال رابط الاسترداد — تحقق من بريدك ✓', 'success');
+  } catch(e) {
+    showMsg(firebaseError(e.code), 'error');
+  }
+  setLoading('resetBtn', false);
+};
+
+function startResendTimer() {
+  var t = 60;
+  var btn = document.getElementById('resendBtn');
+  var timerEl = document.getElementById('resendTimer');
+  btn.disabled = true;
+  resendCountdown = setInterval(function() {
+    t--;
+    timerEl.textContent = t;
+    if (t <= 0) {
+      clearInterval(resendCountdown);
+      btn.disabled = false;
+      btn.textContent = 'إعادة الإرسال';
+    }
+  }, 1000);
+}
+
+// Enter key support inside login modal
+document.addEventListener('keydown', function(e) {
+  if (e.key !== 'Enter') return;
+  var active = document.querySelector('#loginModal .auth-form.active');
+  if (!active) return;
+  var id = active.id;
+  if (id === 'form-login')    window.loginEmail();
+  else if (id === 'form-register') window.registerEmail();
+  else if (id === 'form-reset')    window.sendReset();
+});
+
+function showLoggedInUI(user) {
+  var name   = _userData.name || user.displayName || 'طالب';
+  var email  = user.email || user.phoneNumber || '';
+  var letter = name.charAt(0).toUpperCase();
+
+  // Settings panel
+  var card    = document.getElementById('settingsUserCard');
+  var loginBtn = document.getElementById('settingsLoginBtn');
+  var logoutBtn = document.getElementById('settingsLogoutBtn');
+  var avEl    = document.getElementById('settingsAvatar');
+  var nameEl  = document.getElementById('settingsUserName');
+
+  if (card)     card.style.display = 'block';
+  if (loginBtn) loginBtn.style.display = 'none';
+  if (logoutBtn) logoutBtn.style.display = 'flex';
+  if (nameEl)   nameEl.textContent = name;
+
+  // Avatar: photo or letter
+  if (avEl) {
+    if (user.photoURL) {
+      avEl.innerHTML = '<img src="' + user.photoURL + '" style="width:100%;height:100%;object-fit:cover;" loading="lazy">';
+    } else {
+      avEl.textContent = letter;
+    }
+  }
+
+  // Header greeting
+  var hi = document.getElementById('headerIntro');
+  if (hi) hi.textContent = 'أهلاً ' + name.split(' ')[0] + ' 👋';
+}
+
+function showLoggedOutUI() {
+  var card    = document.getElementById('settingsUserCard');
+  var loginBtn = document.getElementById('settingsLoginBtn');
+  var logoutBtn = document.getElementById('settingsLogoutBtn');
+  if (card)     card.style.display = 'none';
+  if (loginBtn) loginBtn.style.display = 'flex';
+  if (logoutBtn) logoutBtn.style.display = 'none';
+  var hi = document.getElementById('headerIntro');
+  if (hi) hi.textContent = 'دليلك التكتيكي لرحلتك الجامعية';
+}
+
+// ── Dashboard ──
+window.openDashboard = function() {
+  if (!_user) { openLoginModal(); return; }
+  var modal = document.getElementById('dashboardModal');
+  if (modal) { modal.classList.add('open'); modal.style.display = 'flex'; }
+  loadDashData();
+};
+
+window.closeDashboard = function(e) {
+  if (e && e.target !== document.getElementById('dashboardModal')) return;
+  var modal = document.getElementById('dashboardModal');
+  if (modal) { modal.style.display = 'none'; }
+};
+
+window.toggleDashEdit = function() {
+  var f = document.getElementById('dashEditForm');
+  if (f) f.style.display = f.style.display === 'none' ? 'block' : 'none';
+};
+
+function loadDashData() {
+  if (!_user) return;
+  var name   = _userData.name  || _user.displayName || 'طالب';
+  var email  = _user.email || _user.phoneNumber || '';
+  var stats  = _userData.stats || {};
+  var letter = name.charAt(0).toUpperCase();
+
+  // Avatar
+  var av = document.getElementById('dashAvatar');
+  if (av) {
+    if (_user.photoURL) {
+      av.innerHTML = '<img src="' + _user.photoURL + '" style="width:100%;height:100%;object-fit:cover;" loading="lazy">';
+    } else {
+      av.textContent = letter;
+    }
+  }
+
+  var el;
+  el = document.getElementById('dashName');    if (el) el.textContent = name;
+  el = document.getElementById('dashEmail');   if (el) el.textContent = email;
+  el = document.getElementById('dashSessions'); if (el) el.textContent = stats.pomodoroSessions || 0;
+  el = document.getElementById('dashStreak');  if (el) el.textContent = parseInt(localStorage.getItem('studyStreak') || stats.streakDays || 0);
+
+  renderActivityGrid(stats.pomodoroSessions || 0);
+
+  // Count completed todos
+  var allTodos = todos || JSON.parse(localStorage.getItem('anomerk_todos') || '[]');
+  var doneTodos = allTodos.filter(function(t) { return t.done; }).length;
+  el = document.getElementById('dashTodos'); if (el) el.textContent = doneTodos;
+
+  // Tags
+  var tagsEl = document.getElementById('dashTags');
+  if (tagsEl) {
+    var tags = '';
+    if (_userData.university) tags += '<span style="background:rgba(201,168,76,.15);border:1px solid rgba(201,168,76,.25);color:var(--gold-light);padding:2px 8px;border-radius:10px;font-size:.65rem;">' + _userData.university + '</span>';
+    if (_userData.major)      tags += '<span style="background:rgba(201,168,76,.15);border:1px solid rgba(201,168,76,.25);color:var(--gold-light);padding:2px 8px;border-radius:10px;font-size:.65rem;">' + _userData.major + '</span>';
+    if (_userData.year)       tags += '<span style="background:rgba(201,168,76,.15);border:1px solid rgba(201,168,76,.25);color:var(--gold-light);padding:2px 8px;border-radius:10px;font-size:.65rem;">' + _userData.year + '</span>';
+    tagsEl.innerHTML = tags;
+  }
+
+  // Prefill edit form
+  el = document.getElementById('dashEditName');  if (el) el.value = name;
+  el = document.getElementById('dashEditUni');   if (el) el.value = _userData.university || '';
+  el = document.getElementById('dashEditMajor'); if (el) el.value = _userData.major || '';
+  el = document.getElementById('dashEditYear');  if (el) el.value = _userData.year  || '';
+
+  // Recent todos
+  var tl = document.getElementById('dashTodosList');
+  if (tl) {
+    var recent = allTodos.slice(0, 5);
+    if (recent.length === 0) {
+      tl.innerHTML = '<div style="text-align:center;color:var(--text-muted);font-size:.85rem;padding:16px;">لا توجد مهام بعد</div>';
+    } else {
+      tl.innerHTML = recent.map(function(t) {
+        return '<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid rgba(26,39,68,.06);">' +
+          '<div style="width:18px;height:18px;border-radius:50%;' + (t.done ? 'background:var(--gold);' : 'border:2px solid rgba(26,39,68,.2);') + 'flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:.65rem;color:white;">' + (t.done ? '✓' : '') + '</div>' +
+          '<span style="font-size:.83rem;color:var(--text-dark);' + (t.done ? 'text-decoration:line-through;opacity:.5;' : '') + '">' + t.text + '</span>' +
+          '</div>';
+      }).join('');
+    }
+  }
+}
+
+// ── Activity heatmap (approximate visual — based on total study sessions) ──
+function renderActivityGrid(sessions) {
+  var grid = document.getElementById('dashActivityGrid');
+  if (!grid) return;
+  grid.innerHTML = '';
+  for (var i = 0; i < 28; i++) {
+    var cell = document.createElement('div');
+    cell.className = 'act-day';
+    var seed = (i * 17 + sessions * 7) % 10;
+    if (sessions > 20 && seed > 4) cell.className += ' active';
+    else if (sessions > 5 && seed > 6) cell.className += ' mid';
+    grid.appendChild(cell);
+  }
+}
+
+// ── Avatar photo upload ──
+window.uploadAvatarPhoto = async function(input) {
+  if (!_user || !input.files || !input.files[0]) return;
+  var file = input.files[0];
+  if (!file.type.startsWith('image/')) { showToast('الرجاء اختيار ملف صورة'); return; }
+  if (file.size > 5 * 1024 * 1024) { showToast('حجم الصورة كبير جداً (الحد 5MB)'); return; }
+  try {
+    showToast('جاري رفع الصورة...');
+    var fileRef = storageRef(storage, 'avatars/' + _user.uid + '/' + Date.now() + '_' + file.name);
+    await uploadBytes(fileRef, file);
+    var url = await getDownloadURL(fileRef);
+    await updateProfile(_user, { photoURL: url });
+    await updateDoc(doc(db, 'users', _user.uid), { photoURL: url });
+    _userData.photoURL = url;
+    var imgHtml = '<img src="' + url + '" style="width:100%;height:100%;object-fit:cover;" loading="lazy">';
+    var av1 = document.getElementById('settingsAvatar'); if (av1) av1.innerHTML = imgHtml;
+    var av2 = document.getElementById('dashAvatar');     if (av2) av2.innerHTML = imgHtml;
+    showToast('تم تحديث الصورة ✓');
+  } catch (e) {
+    showToast('حدث خطأ أثناء رفع الصورة');
+  }
+  input.value = '';
+};
+
+// ── Save profile ──
+window.saveDashProfile = async function() {
+  if (!_user) return;
+  var name  = (document.getElementById('dashEditName')  || {}).value || '';
+  var uni   = (document.getElementById('dashEditUni')   || {}).value || '';
+  var major = (document.getElementById('dashEditMajor') || {}).value || '';
+  var year  = (document.getElementById('dashEditYear')  || {}).value || '';
+  var msgEl = document.getElementById('dashEditMsg');
+
+  if (!name.trim()) {
+    if (msgEl) { msgEl.style.display='block'; msgEl.style.background='rgba(229,62,62,.08)'; msgEl.style.color='#e53e3e'; msgEl.textContent='⚠ الاسم مطلوب'; }
+    return;
+  }
+  try {
+    await updateDoc(doc(db, 'users', _user.uid), {
+      name: name.trim(), university: uni, major: major, year: year,
+      updatedAt: serverTimestamp()
+    });
+    _userData.name = name.trim();
+    _userData.university = uni;
+    _userData.major = major;
+    _userData.year = year;
+    if (msgEl) { msgEl.style.display='block'; msgEl.style.background='rgba(56,161,105,.08)'; msgEl.style.color='#38a169'; msgEl.textContent='✓ تم الحفظ'; }
+    // Update UI
+    var sn = document.getElementById('settingsUserName'); if (sn) sn.textContent = name.trim();
+    var dn = document.getElementById('dashName');         if (dn) dn.textContent = name.trim();
+    var hi = document.getElementById('headerIntro');
+    if (hi) hi.textContent = 'أهلاً ' + name.trim().split(' ')[0] + ' 👋';
+    setTimeout(function() {
+      if (msgEl) msgEl.style.display='none';
+      document.getElementById('dashEditForm').style.display = 'none';
+      loadDashData();
+    }, 1500);
+  } catch(e) {
+    console.error('saveDashProfile error:', e);
+    var errText = '⚠ حدث خطأ';
+    if (e && e.code === 'permission-denied') errText = '⚠ لا تملك صلاحية الحفظ (تحقق من Firestore Rules)';
+    else if (e && e.message) errText = '⚠ ' + e.message;
+    if (msgEl) { msgEl.style.display='block'; msgEl.style.background='rgba(229,62,62,.08)'; msgEl.style.color='#e53e3e'; msgEl.textContent=errText; }
+  }
+};
+
+// ── Logout ──
+window.logoutUser = async function() {
+  if (!confirm('تأكيد تسجيل الخروج؟')) return;
+  await signOut(auth);
+  showLoggedOutUI();
+  var dm = document.getElementById('dashboardModal'); if (dm) dm.style.display = 'none';
+  closeSettingsDirect();
+  showToast('تم تسجيل الخروج ✓');
+};
+
+// ── Save todos to Firestore ──
+var _fsTimeout = null;
+var _origSave = window.saveTodos;
+window.saveTodos = function() {
+  if (_origSave) _origSave();
+  if (!_user) return;
+  clearTimeout(_fsTimeout);
+  _fsTimeout = setTimeout(async function() {
+    try {
+      await updateDoc(doc(db, 'users', _user.uid), { todos: todos });
+    } catch(e) {}
+  }, 2000);
+};
+
+</script>
+
+</body>
+</html>
